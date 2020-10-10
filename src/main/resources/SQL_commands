@@ -1,0 +1,26 @@
+#########Команды postgresql для создания Базы данных #####################
+
+CREATE SCHEMA dosport;
+SET SEARCH_PATH TO dosport;
+
+### МОДУЛЬ АВТОРИЗАЦИИ ###
+CREATE TABLE users (id bigserial not null, username varchar(50) not null UNIQUE, password varchar(255) not null, enabled boolean not null, creation_date timestamp not null, first_name varchar(255), last_name varchar(255), email varchar(255) UNIQUE, photo_link varchar(255), PRIMARY KEY (id));
+CREATE TABLE authorities (id serial not null, authority varchar(100) not null, PRIMARY KEY (id));
+CREATE TABLE users_authorities (user_id bigint not null, authority_id int not null, FOREIGN KEY (user_id) REFERENCES users (id), FOREIGN KEY (authority_id) REFERENCES authorities (id));
+INSERT INTO users (username, password, enabled, creation_date, first_name, last_name, email, photo_link) VALUES ('admin', '$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS', true, '2020-08-03', 'Иван', 'Иванов', 'ivan@mail.ru', 'myfoto.png');
+INSERT INTO users (username, password, enabled, creation_date, first_name, last_name, email, photo_link) VALUES ('user', '$2a$10$7v8.w1xVYIu6TKY3a58CX.xcmSXPpW6mVLTqB11kAn10jezppGdE2', true, '2020-08-30', 'Сергей', 'Сергеев', 'sergey@mail.ru', 'sergey.png');
+INSERT INTO authorities (authority) VALUES ('ROLE_ADMIN'), ('ROLE_USER');
+INSERT INTO users_authorities (user_id, authority_id) VALUES (1, 1), (2, 2);
+
+
+### РАБОТА С БД ###
+
+SELECT * FROM users;
+SELECT * FROM authorities;
+
+DROP TABLE users_authorities CASCADE;
+DROP TABLE authorities CASCADE;
+DROP TABLE users CASCADE;
+
+alter table users drop column login;
+alter table users add column username varchar(50) not null UNIQUE;
