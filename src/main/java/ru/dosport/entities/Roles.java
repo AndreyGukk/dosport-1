@@ -6,7 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 /**
  * Класс, хранящий имена ролей пользователей
  */
-public class Roles {
+public final class Roles {
+
+    private Roles() {
+    }
 
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";

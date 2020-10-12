@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import static ru.dosport.entities.Messages.ACCESS_DENIED;
+import static ru.dosport.entities.Messages.ILLEGAL_ARGUMENT;
+
 /**
  * Контроллер - глобальный обработчик исключений.
  */
@@ -19,13 +22,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class })
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
-        String bodyOfResponse = "This should be application specific";
-        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
+        return handleExceptionInternal(ex, ILLEGAL_ARGUMENT, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler({ AccessDeniedException.class })
     public ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request) {
-        return new ResponseEntity<>("Доступ в данный раздел запрещен", new HttpHeaders(), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(ACCESS_DENIED, new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({ UsernameNotFoundException.class, BadCredentialsException.class})

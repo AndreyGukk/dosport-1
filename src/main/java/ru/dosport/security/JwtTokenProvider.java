@@ -8,12 +8,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import ru.dosport.exceptions.JwtAuthenticationException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+
+import static ru.dosport.entities.Messages.JWT_TOKEN_NOT_VALID;
 
 /**
  * Утилитный класс провайдера JWT токенов, генерирующий и валидирующий JWT токены.
@@ -74,7 +77,7 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("Токен авторизации неверный либо истек его срок");
+            throw new JwtAuthenticationException(JWT_TOKEN_NOT_VALID);
         }
     }
 }

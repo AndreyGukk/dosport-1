@@ -1,4 +1,4 @@
-package ru.dosport.security;
+package ru.dosport.exceptions;
 
 import org.springframework.security.core.AuthenticationException;
 
