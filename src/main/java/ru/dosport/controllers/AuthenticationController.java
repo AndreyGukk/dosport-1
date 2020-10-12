@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static ru.dosport.entities.Messages.BAD_CREDENTIALS;
+import static ru.dosport.entities.Messages.USER_NOT_FOUND;
+
 /**
  * Контроллер аутентификации.
  */
@@ -47,7 +50,7 @@ public class AuthenticationController {
                     new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             JwtUser user = userService.getJwtUserByUsername(username);
             if (user == null) {
-                throw new UsernameNotFoundException("Пользователь с именем: " + username + " не найден");
+                throw new UsernameNotFoundException(String.format(USER_NOT_FOUND, username));
             }
 
             String token = jwtTokenProvider.createToken(username,
@@ -60,7 +63,7 @@ public class AuthenticationController {
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Неверное имя пользователя или пароль");
+            throw new BadCredentialsException(BAD_CREDENTIALS);
         }
     }
 }
