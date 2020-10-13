@@ -1,8 +1,7 @@
 package ru.dosport.configs;
 
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -19,9 +18,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static ru.dosport.entities.Messages.SWAGGER_IS_INITIALIZING;
+import static ru.dosport.entities.Messages.SWAGGER_WAS_STARTED;
+
 /**
  * Класс конфигурации Swagger
  */
+@Log4j2
 @Configuration
 @EnableSwagger2
 @Import(springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class)
@@ -29,11 +32,10 @@ public class SwaggerConfig {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String DEFAULT_INCLUDE_PATTERN = "/api/.*";
-    private final Logger log = LoggerFactory.getLogger(SwaggerConfig.class);
 
     @Bean
     public Docket api() {
-        log.debug("Инициализируется Swagger");
+        log.debug(SWAGGER_IS_INITIALIZING);
 
         ApiInfo apiInfo = new ApiInfo(
                 "Dosport backend API",
@@ -60,7 +62,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
 
-        log.debug("Swagger запущен");
+        log.debug(SWAGGER_WAS_STARTED);
 
         return docket;
     }

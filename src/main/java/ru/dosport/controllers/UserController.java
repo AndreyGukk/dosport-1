@@ -2,6 +2,7 @@ package ru.dosport.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -13,8 +14,6 @@ import ru.dosport.services.api.UserService;
 
 import static ru.dosport.entities.Roles.ROLE_ADMIN;
 import static ru.dosport.entities.Roles.ROLE_USER;
-import static ru.dosport.mappers.ResponseMapper.getBooleanResponse;
-import static ru.dosport.mappers.ResponseMapper.getDtoResponse;
 
 /**
  * Контроллер профиля пользователя.
@@ -35,7 +34,7 @@ public class UserController {
     @ApiOperation(value = "Выводит данные пользователя")
     @GetMapping(value = "", produces = DATA_TYPE)
     public ResponseEntity<UserDto> readUser(Authentication authentication) {
-        return getDtoResponse(userService.getByUsername(authentication.getName()));
+        return new ResponseEntity<>(userService.getByUsername(authentication.getName()), HttpStatus.OK);
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
@@ -43,7 +42,7 @@ public class UserController {
     @PostMapping(value = "", produces = DATA_TYPE)
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,
                                               Authentication authentication) {
-        return getDtoResponse(userService.update(userDto, authentication.getName()));
+        return new ResponseEntity<>(userService.update(userDto, authentication.getName()), HttpStatus.OK);
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
@@ -51,12 +50,12 @@ public class UserController {
     @PostMapping(value = "/password", produces = DATA_TYPE)
     public ResponseEntity<Boolean> updateUserPassword(@RequestBody PasswordRequest passwordRequest,
                                                       Authentication authentication) {
-        return getBooleanResponse(userService.updatePassword(passwordRequest, authentication));
+        return new ResponseEntity<>(userService.updatePassword(passwordRequest, authentication), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Создает новый профиль пользователя")
     @PostMapping(value = "/create", produces = DATA_TYPE)
     public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest) {
-        return getDtoResponse(userService.save(userRequest));
+        return new ResponseEntity<>(userService.save(userRequest), HttpStatus.OK);
     }
 }

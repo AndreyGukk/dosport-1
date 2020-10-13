@@ -10,6 +10,7 @@ import ru.dosport.dto.UserRequest;
 import ru.dosport.entities.Authority;
 import ru.dosport.entities.JwtUser;
 import ru.dosport.entities.User;
+import ru.dosport.exceptions.EntityBadRequestException;
 import ru.dosport.mappers.UserMapper;
 import ru.dosport.repositories.AuthorityRepository;
 import ru.dosport.repositories.UserRepository;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static ru.dosport.entities.Messages.*;
 import static ru.dosport.entities.Roles.ROLE_USER;
 import static ru.dosport.entities.Roles.hasAuthenticationRoleAdmin;
 
@@ -74,15 +76,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto save(UserRequest userRequest) {
-        if (userRequest.getPassword() == null || userRequest.getPassword().isEmpty()
-                || !userRequest.getPassword().equals(userRequest.getPasswordConfirm())
-                || userRequest.getUsername() == null || userRequest.getUsername().isEmpty()
-                || userRepository.findByUsername(userRequest.getUsername()).isPresent()) {
-            return null;
+        String username = userRequest.getUsername();
+        String password = userRequest.getPassword();
+
+        if (password == null || password.isEmpty() || username == null || username.isEmpty()) {
+            throw new EntityBadRequestException(BAD_REQUEST);
         }
+        if (!password.equals(userRequest.getPasswordConfirm())) {
+            throw new EntityBadRequestException(PASSWORD_MISMATCH);
+        }
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new EntityBadRequestException(String.format(USER_HAS_ALREADY_CREATED, username));
+        }
+
         User newUser = new User(
                 userRequest.getUsername(),
-                passwordEncoder.encode(userRequest.getPassword()),
+                passwordEncoder.encode(password),
                 true,
                 LocalDate.now());
         Authority authority = authorityRepository.findByAuthority(ROLE_USER);
