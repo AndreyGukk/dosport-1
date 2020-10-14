@@ -7,7 +7,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -26,7 +28,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    // Логин
+    // Логин == e-mail
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -34,9 +36,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    // Пользователь активен (true) или заблокирован (false)
-    @Column(name = "enabled", nullable = false)
-    private boolean enabled;
+//    // Пользователь активен (true) или заблокирован (false)
+//    @Column(name = "enabled", nullable = false)
+//    private boolean enabled;
 
     // Список ролей
     @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
@@ -51,6 +53,10 @@ public class User {
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
+    // День рождения
+    @Column(name = "birthday")
+    private LocalDate birthday;
+
     // Имя
     @Column(name = "first_name")
     private String firstName;
@@ -59,11 +65,24 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    // Адрес электронной почты
-    @Column(name = "email", unique = true)
-    private String email;
+    // Пол
+    @Column(name = "gender")
+    private String gender;
+
+    // информация "о себе"
+    @Column(name = "info")
+    private String info;
 
     // Ссылка на адрес фотографии
     @Column(name = "photo_link")
     private String photoLink;
+
+    // Список увлечений
+    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "users_kindsOfSport",
+            // Внешний ключ для User в в таблице users_authorities
+            joinColumns = @JoinColumn(name = "user_id"),
+            // Внешний ключ для другой стороны, User в таблице users_authorities
+            inverseJoinColumns = @JoinColumn(name = "kindsOfSport_id"))
+    private Map<KindOfSport, Integer> kindsOfSport = new HashMap<>();
 }

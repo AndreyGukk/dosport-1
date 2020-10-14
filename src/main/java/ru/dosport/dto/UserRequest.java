@@ -26,7 +26,7 @@ public class UserRequest {
 
     private String lastName;
 
-    @Size(min=4, max=20, message = INVALID_PASSWORD)
+    @Size(min=4, max=40, message = INVALID_PASSWORD)
     @NotNull(message = NOT_NULL)
     @NotBlank(message = NOT_BLANK)
     private String password;

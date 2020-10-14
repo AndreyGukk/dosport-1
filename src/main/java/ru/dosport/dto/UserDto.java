@@ -18,13 +18,17 @@ public class UserDto {
 
     private Long id;
 
-    @Size(min=4, max=20, message = INVALID_USERNAME)
+    @Size(min=4, max=40, message = INVALID_USERNAME)
     @NotNull(message = NOT_NULL)
     @NotBlank(message = NOT_BLANK)
 //    @Email(message = EMAIL_FORMAT_ERROR)
     private String username;
 
-    private String creationDate;
+    private String birthday;
+
+    private String gender;
+
+    private String info;
 
     @NotNull(message = NOT_NULL)
     @NotBlank(message = NOT_BLANK)
