@@ -12,6 +12,8 @@ import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
 import ru.dosport.services.api.UserService;
 
+import javax.validation.Valid;
+
 import static ru.dosport.entities.Roles.ROLE_ADMIN;
 import static ru.dosport.entities.Roles.ROLE_USER;
 
@@ -34,13 +36,13 @@ public class UserController {
     @ApiOperation(value = "Выводит данные пользователя")
     @GetMapping(value = "", produces = DATA_TYPE)
     public ResponseEntity<UserDto> readUser(Authentication authentication) {
-        return new ResponseEntity<>(userService.getByUsername(authentication.getName()), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserDtoByUsername(authentication.getName()), HttpStatus.OK);
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @ApiOperation(value = "Изменяет данные пользователя")
     @PostMapping(value = "", produces = DATA_TYPE)
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto,
                                               Authentication authentication) {
         return new ResponseEntity<>(userService.update(userDto, authentication.getName()), HttpStatus.OK);
     }
@@ -48,14 +50,14 @@ public class UserController {
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @ApiOperation(value = "Изменяет пароль пользователя")
     @PostMapping(value = "/password", produces = DATA_TYPE)
-    public ResponseEntity<Boolean> updateUserPassword(@RequestBody PasswordRequest passwordRequest,
+    public ResponseEntity<Boolean> updateUserPassword(@Valid @RequestBody PasswordRequest passwordRequest,
                                                       Authentication authentication) {
         return new ResponseEntity<>(userService.updatePassword(passwordRequest, authentication), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Создает новый профиль пользователя")
     @PostMapping(value = "/create", produces = DATA_TYPE)
-    public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserRequest userRequest) {
         return new ResponseEntity<>(userService.save(userRequest), HttpStatus.OK);
     }
 }
