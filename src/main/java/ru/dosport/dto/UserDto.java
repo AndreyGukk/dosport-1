@@ -3,7 +3,11 @@ package ru.dosport.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import java.time.LocalDate;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import static ru.dosport.entities.Messages.*;
 
 /**
  * DTO представление сущности Пользователь
@@ -14,15 +18,19 @@ public class UserDto {
 
     private Long id;
 
+    @Size(min=4, max=20, message = INVALID_USERNAME)
+    @NotNull(message = NOT_NULL)
+    @NotBlank(message = NOT_BLANK)
+//    @Email(message = EMAIL_FORMAT_ERROR)
     private String username;
 
-    private LocalDate creationDate;
+    private String creationDate;
 
+    @NotNull(message = NOT_NULL)
+    @NotBlank(message = NOT_BLANK)
     private String firstName;
 
     private String lastName;
-
-    private String email;
 
     private String photoLink;
 }
