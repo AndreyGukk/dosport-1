@@ -34,7 +34,7 @@ public final class Messages {
 
     public static final String PASSWORD_MISMATCH = "Пароль и подтверждение пароля не совпадают";
 
-    public static final String OLD_PASSWORD_INVALID = "Старый пароль введен неверно";
+    public static final String OLD_PASSWORD_INVALID = "Текущий пароль введен неверно";
 
     /**
      * Иные сообщения об ошибках логики и полей запросов
