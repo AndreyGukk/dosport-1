@@ -66,14 +66,4 @@ public class User {
     // Ссылка на адрес фотографии
     @Column(name = "photo_link")
     private String photoLink;
-
-    public User(String username,
-                String password,
-                boolean enabled,
-                LocalDate creationDate) {
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        this.creationDate = creationDate;
-    }
 }

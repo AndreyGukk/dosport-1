@@ -37,7 +37,7 @@ public interface UserService {
      * @param userId идентификатор пользователя
      * @return пользователь
      */
-    UserDto getDtoById(Long userId);
+    UserDto getUserDtoById(Long userId);
 
     /**
      * Найти пользователя по логину
@@ -45,7 +45,7 @@ public interface UserService {
      * @param username логин пользователя
      * @return пользователь
      */
-    UserDto getByUsername(String username);
+    UserDto getUserDtoByUsername(String username);
 
     /**
      * Найти всех пользователей
