@@ -28,27 +28,27 @@ import static ru.dosport.entities.Messages.*;
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-
     @Override
-    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleTypeMismatch(
+            TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error(ex.getMessage());
         String message = String.format(INVALID_VALUE, "value", ex.getValue());
         return new ResponseEntity<>(new ErrorDto(400, message), HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         StringBuilder stringBuilder = new StringBuilder();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            stringBuilder.append("Параметр ").append(((FieldError) error).getField())
-                    .append(" имеет неверное значение: ").append(error.getDefaultMessage()).append(". ");
-        });
+        ex.getBindingResult().getAllErrors()
+                .forEach((error) -> stringBuilder.append(error.getDefaultMessage()).append(". "));
         log.error(stringBuilder.toString());
         return new ResponseEntity<>(new ErrorDto(400, stringBuilder.toString()), HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleBindException(
+            BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error(ex.getMessage());
         FieldError fieldError = ex.getFieldError();
         String message = fieldError != null?

@@ -3,9 +3,9 @@ package ru.dosport.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import static ru.dosport.entities.Messages.*;
 
@@ -18,21 +18,19 @@ public class UserDto {
 
     private Long id;
 
-    @NotNull(message = MUST_BE_NOT_NULL)
-    @NotBlank(message = MUST_BE_NOT_BLANK)
+    @Size(min=4, max=20, message = INVALID_USERNAME)
+    @NotNull(message = NOT_NULL)
+    @NotBlank(message = NOT_BLANK)
+//    @Email(message = EMAIL_FORMAT_ERROR)
     private String username;
 
     private String creationDate;
 
-    @NotNull(message = MUST_BE_NOT_NULL)
-    @NotBlank(message = MUST_BE_NOT_BLANK)
+    @NotNull(message = NOT_NULL)
+    @NotBlank(message = NOT_BLANK)
     private String firstName;
 
     private String lastName;
-
-    @NotNull(message = MUST_BE_NOT_NULL)
-    @Email(message = MUST_BE_EMAIL)
-    private String email;
 
     private String photoLink;
 }

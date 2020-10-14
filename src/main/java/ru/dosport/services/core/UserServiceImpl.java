@@ -74,6 +74,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto save(UserRequest userRequest) {
+        if (!userRequest.getPassword().equals(userRequest.getPasswordConfirm())) {
+            log.info(PASSWORD_MISMATCH);
+            throw new EntityBadRequestException(PASSWORD_MISMATCH);
+        }
         String username = userRequest.getUsername();
         if (userRepository.findByUsername(username).isPresent()) {
             log.info(String.format(USER_HAS_ALREADY_CREATED, username));
@@ -116,12 +120,12 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = findByUsername(authentication.getName());
-        if (passwordEncoder.matches(passwordRequest.getOldPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(passwordRequest.getOldPassword(), user.getPassword())) {
+            throw new EntityBadRequestException(OLD_PASSWORD_INVALID);
+        } else {
             user.setPassword(passwordEncoder.encode(passwordRequest.getNewPassword()));
             userRepository.save(user);
             return true;
-        } else {
-            return false;
         }
     }
 
