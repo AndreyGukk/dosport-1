@@ -16,4 +16,9 @@ import org.springframework.security.core.GrantedAuthority;
 public class JwtRole implements GrantedAuthority {
 
     private String authority;
+//todo реализовать (это заглушка)
+    @Override
+    public String getAuthority() {
+        return null;
+    }
 }
