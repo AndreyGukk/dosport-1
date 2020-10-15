@@ -52,9 +52,10 @@ public class AuthenticationController {
                     new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             JwtUser user = userService.getJwtByUsername(username);
             if (user == null) {
+                log.debug(String.format(USER_NOT_FOUND_BY_USERNAME, username));
                 throw new UsernameNotFoundException(String.format(USER_NOT_FOUND_BY_USERNAME, username));
             }
-            log.info(String.format(USER_FOUND, username));
+            log.debug(String.format(USER_WAS_FOUND, username));
 
             String token = jwtTokenProvider.createToken(username,
                     user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));

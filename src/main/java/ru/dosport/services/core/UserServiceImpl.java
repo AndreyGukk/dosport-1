@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto save(UserRequest userRequest) {
         if (!userRequest.getPassword().equals(userRequest.getPasswordConfirm())) {
-            log.debug(PASSWORD_MISMATCH);
-            throw new EntityBadRequestException(PASSWORD_MISMATCH);
+            log.debug(PASSWORDS_MISMATCH);
+            throw new EntityBadRequestException(PASSWORDS_MISMATCH);
         }
         String username = userRequest.getUsername();
         if (userRepository.findByUsername(username).isPresent()) {
@@ -110,8 +110,8 @@ public class UserServiceImpl implements UserService {
     public boolean updatePassword(PasswordRequest passwordRequest,
                                   Authentication authentication) {
         if (!passwordRequest.getNewPassword().equals(passwordRequest.getNewPasswordConfirm())) {
-            log.debug(PASSWORD_MISMATCH);
-            throw new EntityBadRequestException(PASSWORD_MISMATCH);
+            log.debug(PASSWORDS_MISMATCH);
+            throw new EntityBadRequestException(PASSWORDS_MISMATCH);
         }
 
         User user = findByUsername(authentication.getName());

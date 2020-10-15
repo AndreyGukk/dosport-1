@@ -59,10 +59,6 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    // Адрес электронной почты
-    @Column(name = "email", unique = true)
-    private String email;
-
     // Ссылка на адрес фотографии
     @Column(name = "photo_link")
     private String photoLink;
