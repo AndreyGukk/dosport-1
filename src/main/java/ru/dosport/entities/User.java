@@ -18,7 +18,8 @@ import static javax.persistence.FetchType.EAGER;
  * Сущность Пользователь
  */
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
@@ -64,7 +65,8 @@ public class User {
 
     // Пол
     @Column(name = "gender")
-    private String gender;
+    @Enumerated(EnumType.ORDINAL)
+    private Gender gender;
 
     // информация "о себе"
     @Column(name = "info")

@@ -1,7 +1,9 @@
 package ru.dosport.entities;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,7 +11,8 @@ import javax.persistence.*;
  * Сущность Виды спорта
  */
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "sportType")
 public class SportType {
@@ -19,8 +22,8 @@ public class SportType {
     private Long id;
 
     // Вид спорта
-    @Column(name = "type", nullable = false, unique = true)
-    private String type;
+    @Column(name = "title", nullable = false, unique = true)
+    private String title;
 
     //возможные поля: количество человек, продолжительность игры, сезон, классификация (танцы/игры/единоборства/экстрим)
 }

@@ -14,7 +14,7 @@ import java.util.List;
  * Сущность Роль пользователя
  */
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
 @Table(name = "authorities")
 public class Authority implements GrantedAuthority {
@@ -36,8 +36,4 @@ public class Authority implements GrantedAuthority {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users = new ArrayList<>();
 
-    @Override
-    public String getAuthority() {
-        return null; //todo
-    }
 }

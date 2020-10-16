@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @Table(name = "user_SportType")
-public class User_SportType {
+public class UserSportType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

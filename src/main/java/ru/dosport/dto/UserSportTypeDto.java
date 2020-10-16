@@ -12,7 +12,7 @@ import static ru.dosport.entities.Messages.NOT_BLANK;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User_SportTypeDto {
+public class UserSportTypeDto {
 
     @NotBlank(message = NOT_BLANK)
     private Long user_id;
