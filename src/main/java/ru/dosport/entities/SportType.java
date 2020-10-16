@@ -16,14 +16,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "sport_types")
 public class SportType {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     // Вид спорта
-    @Column(name = "title", nullable = false, unique = true)
-    private String title;
+    @Column(name = "description", nullable = false, unique = true)
+    private String description;
 
-    //возможные поля: количество человек, продолжительность игры, сезон, классификация (танцы/игры/единоборства/экстрим)
+    // Дополнительные поля: количество человек, продолжительность игры, сезон, классификация по разделам
 }
