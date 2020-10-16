@@ -1,7 +1,8 @@
 package ru.dosport.future;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.dosport.entities.SportType;
 import ru.dosport.entities.User;
 
@@ -14,10 +15,12 @@ import java.util.List;
  * Сущность событие
  */
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "event")
 public class Event {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -36,15 +39,13 @@ public class Event {
     @JoinColumn(name = "kindOfSport_id")
     private SportType sportType;
 
-    //площадка
+    // Игровая площадка
     @ManyToMany
     @JoinColumn(name = "field_id", nullable = false)
     private Field field;
 
-    //список участников этого мероприятия
+    // Список участников этого мероприятия
     @OneToMany
     @JoinTable(name = "User_id")
     private List<User> users = new ArrayList<>();
-
-
 }
