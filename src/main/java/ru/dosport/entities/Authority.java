@@ -1,6 +1,5 @@
 package ru.dosport.entities;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +14,7 @@ import java.util.List;
  */
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "authorities")
 public class Authority implements GrantedAuthority {
@@ -35,5 +35,4 @@ public class Authority implements GrantedAuthority {
             // Внешний ключ для другой стороны, Authority в таблице users_authorities
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users = new ArrayList<>();
-
 }
