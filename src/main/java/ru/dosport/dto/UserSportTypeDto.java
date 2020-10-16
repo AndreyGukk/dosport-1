@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-
 
 /**
  * DTO представление список навыков пользователя
@@ -13,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserSportTypeDto {
+    
     @Digits(integer = 20, fraction = 0)
     private Long user_id;
 
@@ -21,5 +20,4 @@ public class UserSportTypeDto {
     private String SportType;
 
     private byte level;
-
 }
