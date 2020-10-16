@@ -26,17 +26,13 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    // Логин
+    // Логин (email)
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     // Пароль
     @Column(name = "password", nullable = false)
     private String password;
-
-    // Пользователь активен (true) или заблокирован (false)
-    @Column(name = "enabled", nullable = false)
-    private boolean enabled;
 
     // Список ролей
     @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
@@ -47,9 +43,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private List<Authority> authorities = new ArrayList<>();
 
-    // Дата создания
-    @Column(name = "creation_date")
-    private LocalDate creationDate;
+    // Дата рождения
+    @Column(name = "birthday_date")
+    private LocalDate birthdayDate;
 
     // Имя
     @Column(name = "first_name")
@@ -59,11 +55,25 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    // Адрес электронной почты
-    @Column(name = "email", unique = true)
-    private String email;
+    // Пол
+    @Column(name = "gender")
+    @Enumerated(EnumType.ORDINAL)
+    private Gender gender;
+
+    // Личная информация о пользователе
+    @Column(name = "info")
+    private String info;
 
     // Ссылка на адрес фотографии
     @Column(name = "photo_link")
     private String photoLink;
+
+    // TODO Список видов спорта
+//    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(name = "users_kindsOfSport",
+//            // Внешний ключ для User в в таблице users_authorities
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            // Внешний ключ для другой стороны, User в таблице users_authorities
+//            inverseJoinColumns = @JoinColumn(name = "kindsOfSport_id"))
+//    private Map<KindOfSport, Integer> kindsOfSport = new HashMap<>();
 }

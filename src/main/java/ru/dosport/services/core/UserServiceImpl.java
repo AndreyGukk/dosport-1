@@ -81,9 +81,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User newUser = userMapper.userRequestToUser(userRequest);
-        newUser.setEnabled(true);
         newUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        newUser.setCreationDate(LocalDate.now());
         Authority authority = authorityRepository.findByAuthority(ROLE_USER);
         newUser.getAuthorities().add(authority);
         return userMapper.userToUserDto(userRepository.save(newUser));
