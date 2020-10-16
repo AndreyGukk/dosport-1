@@ -16,7 +16,7 @@ import static ru.dosport.entities.Messages.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserRequest {
 
-    @Size(min=4, max=20, message = INVALID_USERNAME)
+    @Size(min=4, max=50, message = INVALID_USERNAME)
     @NotNull(message = NOT_NULL)
     @NotBlank(message = NOT_BLANK)
 //    @Email(message = EMAIL_FORMAT_ERROR)
@@ -26,7 +26,7 @@ public class UserRequest {
 
     private String lastName;
 
-    @Size(min=4, max=40, message = INVALID_PASSWORD)
+    @Size(min=4, max=20, message = INVALID_PASSWORD)
     @NotNull(message = NOT_NULL)
     @NotBlank(message = NOT_BLANK)
     private String password;

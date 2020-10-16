@@ -1,7 +1,9 @@
-package ru.dosport.entities;
+package ru.dosport.future;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.dosport.entities.SportType;
+import ru.dosport.entities.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -32,7 +34,7 @@ public class Event {
     // Вид спорта
     @ManyToMany
     @JoinColumn(name = "kindOfSport_id")
-    private KindOfSport kindOfSport;
+    private SportType sportType;
 
     //площадка
     @ManyToMany

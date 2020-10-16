@@ -1,5 +1,6 @@
 package ru.dosport.entities;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,8 +18,7 @@ import static javax.persistence.FetchType.EAGER;
  * Сущность Пользователь
  */
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
@@ -49,9 +49,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private List<Authority> authorities = new ArrayList<>();
 
-    // Дата создания
-    @Column(name = "creation_date")
-    private LocalDate creationDate;
 
     // День рождения
     @Column(name = "birthday")
@@ -77,12 +74,12 @@ public class User {
     @Column(name = "photo_link")
     private String photoLink;
 
-    // Список увлечений
-    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "users_kindsOfSport",
-            // Внешний ключ для User в в таблице users_authorities
-            joinColumns = @JoinColumn(name = "user_id"),
-            // Внешний ключ для другой стороны, User в таблице users_authorities
-            inverseJoinColumns = @JoinColumn(name = "kindsOfSport_id"))
-    private Map<KindOfSport, Integer> kindsOfSport = new HashMap<>();
+//    // Список увлечений
+//    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(name = "users_kindsOfSport",
+//            // Внешний ключ для User в в таблице users_authorities
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            // Внешний ключ для другой стороны, User в таблице users_authorities
+//            inverseJoinColumns = @JoinColumn(name = "kindsOfSport_id"))
+//    private Map<KindOfSport, Integer> kindsOfSport = new HashMap<>();
 }

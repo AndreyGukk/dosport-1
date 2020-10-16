@@ -17,12 +17,10 @@ import static ru.dosport.entities.Messages.*;
 public class PasswordRequest {
 
     @Size(min=4, max=20, message = INVALID_PASSWORD)
-    @NotNull(message = NOT_NULL)
     @NotBlank(message = NOT_BLANK)
     private String oldPassword;
 
     @Size(min=4, max=20, message = INVALID_PASSWORD)
-    @NotNull(message = NOT_NULL)
     @NotBlank(message = NOT_BLANK)
     private String newPassword;
 

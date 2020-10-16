@@ -6,27 +6,21 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Сущность площадки
+ * Сущность Виды спорта
  */
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "field")
-public class Field {
+@Table(name = "sportType")
+public class SportType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    // адрес
-    @Column(name = "address", nullable = false, unique = true)
-    private String address;
-
-    // тип площадки
+    // Вид спорта
     @Column(name = "type", nullable = false, unique = true)
     private String type;
 
-
-
-    //todo дописать сущность, решить что в адрес идет
+    //возможные поля: количество человек, продолжительность игры, сезон, классификация (танцы/игры/единоборства/экстрим)
 }

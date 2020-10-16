@@ -18,8 +18,7 @@ public class UserDto {
 
     private Long id;
 
-    @Size(min=4, max=40, message = INVALID_USERNAME)
-    @NotNull(message = NOT_NULL)
+    @Size(min=4, max=50, message = INVALID_USERNAME)
     @NotBlank(message = NOT_BLANK)
 //    @Email(message = EMAIL_FORMAT_ERROR)
     private String username;
@@ -30,7 +29,6 @@ public class UserDto {
 
     private String info;
 
-    @NotNull(message = NOT_NULL)
     @NotBlank(message = NOT_BLANK)
     private String firstName;
 

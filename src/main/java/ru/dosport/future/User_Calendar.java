@@ -1,7 +1,8 @@
-package ru.dosport.entities;
+package ru.dosport.future;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.dosport.entities.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
