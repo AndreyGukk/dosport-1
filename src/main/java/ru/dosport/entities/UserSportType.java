@@ -1,19 +1,17 @@
 package ru.dosport.entities;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 /**
  * Сущность Навыки пользователя
  */
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
+@Setter
 @Table(name = "users_sport_types")
 public class UserSportType {
 
