@@ -1,6 +1,5 @@
 package ru.dosport.entities;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,9 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -37,10 +34,6 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-//    // Пользователь активен (true) или заблокирован (false)
-//    @Column(name = "enabled", nullable = false)
-//    private boolean enabled;
-
     // Список ролей
     @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_authorities",
@@ -50,10 +43,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private List<Authority> authorities = new ArrayList<>();
 
-
-    // День рождения
-    @Column(name = "birthday")
-    private LocalDate birthday;
+    // Дата рождения
+    @Column(name = "birthday_date")
+    private LocalDate birthdayDate;
 
     // Имя
     @Column(name = "first_name")
@@ -68,7 +60,7 @@ public class User {
     @Enumerated(EnumType.ORDINAL)
     private Gender gender;
 
-    // информация "о себе"
+    // Личная информация о пользователе
     @Column(name = "info")
     private String info;
 
