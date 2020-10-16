@@ -1,6 +1,7 @@
 package ru.dosport.entities;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,9 +11,10 @@ import javax.validation.constraints.Size;
  * Сущность Навыки пользователя
  */
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@Table(name = "user_sport_types")
+@Table(name = "users_sport_types")
 public class UserSportType {
 
     @Id
@@ -30,10 +32,6 @@ public class UserSportType {
     @JoinColumn(name = "sport_type_id")
     private SportType sportType;
 
-    @NotBlank
-    @Size(max = 5)
     @Column(name = "level")
     private Byte level;
-
-
 }
