@@ -20,7 +20,6 @@ public class UserDto {
 
     @Size(min=4, max=50, message = INVALID_USERNAME_LENGTH)
     @NotBlank(message = USERNAME_NOT_BLANK)
-//    @Email(message = EMAIL_FORMAT_ERROR)
     private String username;
 
     private String birthday;
