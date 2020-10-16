@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Gender {
-    NOTSELECTED ("Не выбран"),
+    NOT_SELECTED("Не выбран"),
     FEMALE("Женский"),
     MALE("Мужской");
 

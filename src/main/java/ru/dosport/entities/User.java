@@ -26,7 +26,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    // Логин == e-mail
+    // Логин (email)
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -68,7 +68,7 @@ public class User {
     @Column(name = "photo_link")
     private String photoLink;
 
-//    // Список увлечений
+    // TODO Список видов спорта
 //    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
 //    @JoinTable(name = "users_kindsOfSport",
 //            // Внешний ключ для User в в таблице users_authorities

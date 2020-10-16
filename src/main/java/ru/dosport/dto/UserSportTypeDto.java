@@ -3,6 +3,7 @@ package ru.dosport.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 
 /**
@@ -11,9 +12,10 @@ import javax.validation.constraints.Digits;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserSportTypeDto {
-    
-    @Digits(integer = 20, fraction = 0)
-    private Long user_id;
+
+    @DecimalMin(value = "0.0")
+    @Digits(integer = 19, fraction = 0)
+    private Long userId;
 
     private String firstname;
 
