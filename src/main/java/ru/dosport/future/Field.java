@@ -1,32 +1,34 @@
 package ru.dosport.future;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 /**
- * Сущность площадки
+ * Сущность Спортивная площадка
  */
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@Table(name = "field")
+@Table(name = "fields")
 public class Field {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    // адрес
+    // Адрес площадки
     @Column(name = "address", nullable = false, unique = true)
     private String address;
 
-    // тип площадки
+    // Тип площадки
+    // TODO ссылка на таблицу типы площадки
     @Column(name = "type", nullable = false, unique = true)
     private String type;
 
-
-
-    //todo дописать сущность, решить что в адрес идет
+    // TODO дописать сущность
 }
