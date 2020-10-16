@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "user_SportType")
+@Table(name = "user_sport_types")
 public class UserSportType {
 
     @Id
@@ -21,11 +21,13 @@ public class UserSportType {
     private Long id;
 
     @ManyToMany
+    @JoinTable(name = "users")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany
-    @JoinColumn(name = "sportType_id")
+    @JoinTable(name = "sport_types")
+    @JoinColumn(name = "sport_type_id")
     private SportType sportType;
 
     @NotBlank

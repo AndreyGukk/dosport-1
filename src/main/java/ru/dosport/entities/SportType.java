@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @NoArgsConstructor
-@Table(name = "sportType")
+@Table(name = "sport_types")
 public class SportType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

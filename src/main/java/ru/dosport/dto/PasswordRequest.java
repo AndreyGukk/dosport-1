@@ -16,12 +16,12 @@ import static ru.dosport.entities.Messages.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PasswordRequest {
 
-    @Size(min=4, max=20, message = INVALID_PASSWORD)
-    @NotBlank(message = NOT_BLANK)
+    @Size(min=4, max=20, message = INVALID_PASSWORD_LENGTH)
+    @NotBlank(message = PASSWORD_NOT_BLANK)
     private String oldPassword;
 
-    @Size(min=4, max=20, message = INVALID_PASSWORD)
-    @NotBlank(message = NOT_BLANK)
+    @Size(min=4, max=20, message = INVALID_PASSWORD_LENGTH)
+    @NotBlank(message = PASSWORD_NOT_BLANK)
     private String newPassword;
 
     private String newPasswordConfirm;

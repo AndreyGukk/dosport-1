@@ -3,9 +3,9 @@ package ru.dosport.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 
-import static ru.dosport.entities.Messages.NOT_BLANK;
 
 /**
  * DTO представление список навыков пользователя
@@ -13,8 +13,7 @@ import static ru.dosport.entities.Messages.NOT_BLANK;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserSportTypeDto {
-
-    @NotBlank(message = NOT_BLANK)
+    @Digits(integer = 20, fraction = 0)
     private Long user_id;
 
     private String firstname;
