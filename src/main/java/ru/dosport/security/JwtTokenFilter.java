@@ -2,7 +2,6 @@ package ru.dosport.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +18,6 @@ import java.io.IOException;
 /**
  * JWT токен фильтр, перехватывающий все HTTP запросы.
  */
-@Log4j2
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 

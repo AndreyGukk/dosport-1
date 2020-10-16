@@ -3,6 +3,7 @@ package ru.dosport.controllers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,12 +26,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static ru.dosport.entities.Messages.BAD_CREDENTIALS;
-import static ru.dosport.entities.Messages.USER_NOT_FOUND_BY_USERNAME;
+import static ru.dosport.entities.Messages.*;
 
 /**
  * Контроллер аутентификации.
  */
+@Log4j2
 @Api("Контроллер аутентификации")
 @RestController
 @RequestMapping(value = "/api/v1/auth/")
@@ -49,10 +50,12 @@ public class AuthenticationController {
             String username = requestDto.getUsername();
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
-            JwtUser user = userService.getJwtUserByUsername(username);
+            JwtUser user = userService.getJwtByUsername(username);
             if (user == null) {
+                log.debug(String.format(USER_NOT_FOUND_BY_USERNAME, username));
                 throw new UsernameNotFoundException(String.format(USER_NOT_FOUND_BY_USERNAME, username));
             }
+            log.debug(String.format(USER_WAS_FOUND, username));
 
             String token = jwtTokenProvider.createToken(username,
                     user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
@@ -64,6 +67,7 @@ public class AuthenticationController {
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AuthenticationException e) {
+            log.debug(BAD_CREDENTIALS);
             throw new BadCredentialsException(BAD_CREDENTIALS);
         }
     }

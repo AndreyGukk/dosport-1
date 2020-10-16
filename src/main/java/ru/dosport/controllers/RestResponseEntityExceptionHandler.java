@@ -31,8 +31,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(
             TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        log.error(ex.getMessage());
-        String message = String.format(INVALID_VALUE, "value", ex.getValue());
+        log.debug(String.format(INVALID_VALUE, "", ex.getValue()));
+        String message = String.format(INVALID_VALUE, "", ex.getValue());
         return new ResponseEntity<>(new ErrorDto(400, message), HttpStatus.BAD_REQUEST);
     }
 
@@ -42,47 +42,44 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         StringBuilder stringBuilder = new StringBuilder();
         ex.getBindingResult().getAllErrors()
                 .forEach((error) -> stringBuilder.append(error.getDefaultMessage()).append(". "));
-        log.error(stringBuilder.toString());
+        log.debug(stringBuilder.toString());
         return new ResponseEntity<>(new ErrorDto(400, stringBuilder.toString()), HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleBindException(
             BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        log.error(ex.getMessage());
         FieldError fieldError = ex.getFieldError();
-        String message = fieldError != null?
+        String message = fieldError != null ?
             String.format(INVALID_VALUE, fieldError.getField(), fieldError.getRejectedValue()) : BAD_REQUEST;
+        log.debug(message);
         return new ResponseEntity<>(new ErrorDto(400, message), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ IllegalArgumentException.class })
-    public ResponseEntity<ErrorDto> handleIllegalArgumentException(Exception ex, WebRequest request) {
-        log.error(ex.getMessage());
+    public ResponseEntity<ErrorDto> handleIllegalArgument(Exception ex, WebRequest request) {
+        log.debug(ex.getMessage());
         return new ResponseEntity<>(new ErrorDto(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ AccessDeniedException.class })
-    public ResponseEntity<ErrorDto> handleAccessDeniedException(Exception ex, WebRequest request) {
-        log.error(ACCESS_DENIED);
+    public ResponseEntity<ErrorDto> handleAccessDenied(Exception ex, WebRequest request) {
+        log.debug(ACCESS_DENIED);
         return new ResponseEntity<>(new ErrorDto(400, ACCESS_DENIED), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({ UsernameNotFoundException.class, BadCredentialsException.class})
-    public ResponseEntity<ErrorDto> handleUsernameNotFoundException(Exception ex, WebRequest request) {
-        log.error(ex.getMessage());
+    public ResponseEntity<ErrorDto> handleUsernameNotFound(Exception ex, WebRequest request) {
         return new ResponseEntity<>(new ErrorDto(401, ex.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({ EntityNotFoundException.class })
     public ResponseEntity<ErrorDto> handleEntityNotFoundException(Exception ex, WebRequest request) {
-        log.debug(ex.getMessage());
         return new ResponseEntity<>(new ErrorDto(404, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({ EntityBadRequestException.class })
     public ResponseEntity<ErrorDto> handleEntityBadRequestException(Exception ex, WebRequest request) {
-        log.debug(ex.getMessage());
         return new ResponseEntity<>(new ErrorDto(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
