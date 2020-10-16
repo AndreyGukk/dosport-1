@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import static ru.dosport.entities.Messages.INVALID_PASSWORD_LENGTH;
-import static ru.dosport.entities.Messages.PASSWORD_NOT_BLANK;
+import static ru.dosport.entities.Messages.*;
 
 /**
  * Запрос на изменение пароля
