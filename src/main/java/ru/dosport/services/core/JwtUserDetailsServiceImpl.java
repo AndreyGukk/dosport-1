@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import ru.dosport.entities.JwtUser;
 import ru.dosport.services.api.UserService;
 
-import static ru.dosport.entities.Messages.USER_FOUND;
 import static ru.dosport.entities.Messages.USER_NOT_FOUND_BY_USERNAME;
 
 /**
@@ -25,11 +24,11 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        JwtUser user = userService.getJwtUserByUsername(username);
+        JwtUser user = userService.getJwtByUsername(username);
         if (user == null) {
+            log.debug(String.format(USER_NOT_FOUND_BY_USERNAME, username));
             throw new UsernameNotFoundException(String.format(USER_NOT_FOUND_BY_USERNAME, username));
         }
-        log.info(String.format(USER_FOUND, username));
         return user;
     }
 }
