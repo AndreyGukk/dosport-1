@@ -19,7 +19,6 @@ import ru.dosport.repositories.AuthorityRepository;
 import ru.dosport.repositories.UserRepository;
 import ru.dosport.services.api.UserService;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 

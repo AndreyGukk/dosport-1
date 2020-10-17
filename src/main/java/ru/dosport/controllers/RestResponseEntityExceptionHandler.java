@@ -62,24 +62,30 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<>(new ErrorDto(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({ IllegalStateException.class })
+    public ResponseEntity<ErrorDto> handIllegalState(Exception ex, WebRequest request) {
+        log.debug(ex.getMessage());
+        return new ResponseEntity<>(new ErrorDto(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler({ AccessDeniedException.class })
     public ResponseEntity<ErrorDto> handleAccessDenied(Exception ex, WebRequest request) {
         log.debug(ACCESS_DENIED);
-        return new ResponseEntity<>(new ErrorDto(400, ACCESS_DENIED), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(new ErrorDto(403, ACCESS_DENIED), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({ UsernameNotFoundException.class, BadCredentialsException.class})
     public ResponseEntity<ErrorDto> handleUsernameNotFound(Exception ex, WebRequest request) {
-        return new ResponseEntity<>(new ErrorDto(401, ex.getMessage()), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new ErrorDto(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ EntityNotFoundException.class })
-    public ResponseEntity<ErrorDto> handleEntityNotFoundException(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorDto> handleEntityNotFound(Exception ex, WebRequest request) {
         return new ResponseEntity<>(new ErrorDto(404, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({ EntityBadRequestException.class })
-    public ResponseEntity<ErrorDto> handleEntityBadRequestException(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorDto> handleEntityBadRequest(Exception ex, WebRequest request) {
         return new ResponseEntity<>(new ErrorDto(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
