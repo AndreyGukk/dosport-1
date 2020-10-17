@@ -2,7 +2,6 @@ DROP TABLE IF EXISTS user_sports;
 
 CREATE TABLE user_sports
 (
-    id            BIGSERIAL UNIQUE,
     user_id       BIGINT,
     sport_type_id SMALLINT,
     level         SMALLINT NOT NULL,

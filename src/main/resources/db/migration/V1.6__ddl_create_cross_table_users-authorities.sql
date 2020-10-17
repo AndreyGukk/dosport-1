@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS cross_users_authorities;
+DROP TABLE IF EXISTS users_authorities;
 
-CREATE TABLE cross_users_authorities
+CREATE TABLE users_authorities
 (
     user_id      BIGINT,
     authority_id SMALLINT,
