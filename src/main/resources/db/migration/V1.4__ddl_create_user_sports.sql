@@ -1,8 +1,13 @@
-DROP TABLE IF EXISTS sport_types;
+DROP TABLE IF EXISTS user_sports;
 
-CREATE TABLE sport_types
+CREATE TABLE user_sports
 (
-    id        SMALLSERIAL,
-    title VARCHAR(128) NOT NULL,
-    PRIMARY KEY (id)
+    id            BIGSERIAL UNIQUE,
+    user_id       BIGINT,
+    sport_type_id SMALLINT,
+    level         SMALLINT NOT NULL,
+    PRIMARY KEY (user_id, sport_type_id),
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (sport_type_id) REFERENCES sport_types (id),
+    CONSTRAINT valid_level CHECK (level >= 0 AND level <= 5)
 );
