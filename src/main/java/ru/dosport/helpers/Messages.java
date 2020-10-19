@@ -51,5 +51,7 @@ public final class Messages {
 
     public static final String USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE = "Вид спорта c индексом %s для пользователя c индексом %s не найден";
 
+    public static final String DATA_NOT_FOUND_BY_ID = "Данные c индексом %s не найдены";
+
     public static final String DATA_WAS_NOT_SAVED = "Данные не сохранены по запросу ";
 }

@@ -7,6 +7,7 @@ CREATE TABLE users
     password      VARCHAR(128) NOT NULL,
     enabled       BOOLEAN NOT NULL,
     birthday_date TIMESTAMP,
+    hide_birthday_date BOOLEAN NOT NULL,
     first_name    VARCHAR(128),
     last_name     VARCHAR(128),
     gender        SMALLINT,

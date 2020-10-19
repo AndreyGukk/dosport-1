@@ -11,6 +11,7 @@ import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
 import ru.dosport.entities.Authority;
+import ru.dosport.entities.Gender;
 import ru.dosport.entities.User;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
@@ -78,6 +79,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User newUser = userMapper.mapDtoToEntity(userRequest);
         newUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         newUser.setEnabled(true);
+        newUser.setGender(Gender.NOT_SELECTED);
         Authority authority = authorityRepository.findByAuthority(ROLE_USER);
         newUser.getAuthorities().add(authority);
         return userMapper.mapEntityToDto(userRepository.save(newUser));

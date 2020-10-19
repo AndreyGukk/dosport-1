@@ -51,6 +51,10 @@ public class User {
     @Column(name = "birthday_date")
     private LocalDate birthdayDate;
 
+    // Скрыть дату рождения (true - дата не отображается)
+    @Column(name = "hide_birthday_date")
+    private boolean hideBirthdayDate;
+
     // Имя
     @Column(name = "first_name")
     private String firstName;
@@ -60,11 +64,11 @@ public class User {
     private String lastName;
 
     // Пол
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private Gender gender;
 
-    // Личная информация о пользователе
+    // Личная информация
     @Column(name = "info")
     private String info;
 

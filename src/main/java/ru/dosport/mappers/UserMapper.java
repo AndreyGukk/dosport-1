@@ -36,7 +36,8 @@ public interface UserMapper {
             @Mapping(target="password", ignore = true),
             @Mapping(target="enabled", ignore = true),
             @Mapping(target="authorities", ignore = true),
-            @Mapping(target="birthdayDate", source="dto.birthdayDate", dateFormat = "dd-MM-yyyy")
+            @Mapping(target="birthdayDate", source="dto.birthdayDate", dateFormat = "dd-MM-yyyy"),
+            @Mapping(target="hideBirthdayDate", source="dto.hideBirthdayDate")
     })
     User update(@MappingTarget User entity, UserDto dto);
 }

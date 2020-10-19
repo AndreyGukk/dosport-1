@@ -19,7 +19,6 @@ public interface GenderMapper {
         switch (string) {
             case "Не выбран":
             case "0":
-            case "":
                 entity = Gender.NOT_SELECTED;
                 break;
             case "Женский":
