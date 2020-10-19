@@ -20,11 +20,9 @@ public class SportType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Short id;
 
     // Вид спорта
-    @Column(name = "description", nullable = false, unique = true)
-    private String description;
-
-    // Дополнительные поля: количество человек, продолжительность игры, сезон, классификация по разделам
+    @Column(name = "title", nullable = false, unique = true)
+    private String title;
 }

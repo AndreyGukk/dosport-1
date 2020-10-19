@@ -69,6 +69,7 @@ public class User {
     private String photoLink;
 
     // TODO Список видов спорта
+    //Принято решение не добавлять это поле юзему. Данная информация будет пердеана в контроллер другим классом
 //    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
 //    @JoinTable(name = "users_kindsOfSport",
 //            // Внешний ключ для User в в таблице users_authorities

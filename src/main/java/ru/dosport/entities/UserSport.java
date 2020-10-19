@@ -1,9 +1,10 @@
 package ru.dosport.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Сущность Навыки пользователя
@@ -12,24 +13,17 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Setter
-@Table(name = "users_sport_types")
-public class UserSportType {
+@Table(name = "user_sports")
+@IdClass(UserSportKey.class)
+public class UserSport {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "user_id")
+    private long userId;
 
-    @ManyToMany
-    @JoinTable(name = "users")
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Id
+    @Column(name = "sport_type_id")
+    private short sportTypeId;
 
-    @ManyToMany
-    @JoinTable(name = "sport_types")
-    @JoinColumn(name = "sport_type_id")
-    private SportType sportType;
-
-    @Column(name = "level")
-    private Byte level;
+    private short level;
 }

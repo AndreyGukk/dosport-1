@@ -11,5 +11,6 @@ CREATE TABLE users
     gender        SMALLINT,
     info          VARCHAR(4096),
     photo_link    VARCHAR(1024),
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    CONSTRAINT valid_gender CHECK (gender >= 0 AND gender <= 1)
 );
