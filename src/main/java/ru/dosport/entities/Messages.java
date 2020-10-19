@@ -54,4 +54,7 @@ public final class Messages {
     public static final String PASSWORDS_MISMATCH = "Значения полей Пароль и Подтверждение пароля должны совпадать";
 
     public static final String FIRSTNAME_NOT_BLANK = "Поле Имя должно быть не пустым";
+
+    public static final String USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE = "Вид спорта пользователя не найден";
+
 }
