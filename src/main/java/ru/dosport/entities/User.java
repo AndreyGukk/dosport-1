@@ -26,8 +26,8 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    // Логин (email)
-    @Column(name = "username", nullable = false, unique = true)
+    // Логин
+    @Column(name = "user_name", nullable = false, unique = true)
     private String username;
 
     // Пароль
