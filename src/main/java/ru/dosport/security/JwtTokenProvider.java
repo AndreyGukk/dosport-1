@@ -1,7 +1,6 @@
 package ru.dosport.security;
 
 import io.jsonwebtoken.*;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,12 +16,11 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-import static ru.dosport.entities.Messages.JWT_TOKEN_NOT_VALID;
+import static ru.dosport.helpers.Messages.JWT_TOKEN_NOT_VALID;
 
 /**
  * Утилитный класс провайдера JWT токенов, генерирующий и валидирующий JWT токены.
  */
-@Log4j2
 @Component
 public class JwtTokenProvider {
 
@@ -69,7 +67,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
-            return bearerToken.substring(7, bearerToken.length());
+            return bearerToken.substring(7);
         }
         return null;
     }
@@ -79,7 +77,6 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            log.debug(JWT_TOKEN_NOT_VALID);
             throw new JwtAuthenticationException(JWT_TOKEN_NOT_VALID);
         }
     }

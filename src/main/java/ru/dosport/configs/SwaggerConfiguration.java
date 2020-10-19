@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static ru.dosport.entities.Messages.SWAGGER_IS_INITIALIZING;
-import static ru.dosport.entities.Messages.SWAGGER_WAS_STARTED;
+import static ru.dosport.helpers.Messages.SWAGGER_IS_INITIALIZING;
+import static ru.dosport.helpers.Messages.SWAGGER_WAS_STARTED;
 
 /**
  * Класс конфигурации Swagger
@@ -28,7 +28,7 @@ import static ru.dosport.entities.Messages.SWAGGER_WAS_STARTED;
 @Configuration
 @EnableSwagger2
 @Import(springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class)
-public class SwaggerConfig {
+public class SwaggerConfiguration {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String DEFAULT_INCLUDE_PATTERN = "/api/.*";

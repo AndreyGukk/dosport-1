@@ -7,11 +7,11 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 
 /**
- * DTO представление список навыков пользователя
+ * Dto представление сущности Спортивные навыки пользователя
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserSportTypeDto {
+public class UserSportDto {
 
     @DecimalMin(value = "0.0")
     @Digits(integer = 19, fraction = 0)

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dosport.dto.AuthenticationRequest;
-import ru.dosport.entities.JwtUser;
+import ru.dosport.security.JwtUser;
 import ru.dosport.security.JwtTokenProvider;
 import ru.dosport.services.api.UserService;
 
@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static ru.dosport.entities.Messages.*;
+import static ru.dosport.helpers.Messages.*;
 
 /**
  * Контроллер аутентификации.
@@ -45,14 +45,13 @@ public class AuthenticationController {
 
     @ApiOperation(value = "Осуществляет авторизацию пользователя и выдачу токена авторизации")
     @PostMapping("login")
-    public ResponseEntity<Map<Object, Object>> login(@Valid @RequestBody AuthenticationRequest requestDto) {
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody AuthenticationRequest requestDto) {
         try {
             String username = requestDto.getUsername();
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             JwtUser user = userService.getJwtByUsername(username);
             if (user == null) {
-                log.debug(String.format(USER_NOT_FOUND_BY_USERNAME, username));
                 throw new UsernameNotFoundException(String.format(USER_NOT_FOUND_BY_USERNAME, username));
             }
             log.debug(String.format(USER_WAS_FOUND, username));
@@ -60,14 +59,11 @@ public class AuthenticationController {
             String token = jwtTokenProvider.createToken(username,
                     user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
-            Map<Object, Object> response = new HashMap<>();
-            response.put("username", username);
-            response.put("roles", user.getAuthorities());
+            Map<String, String> response = new HashMap<>();
             response.put("token", token);
-
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AuthenticationException e) {
-            log.debug(BAD_CREDENTIALS);
+            log.debug(e);
             throw new BadCredentialsException(BAD_CREDENTIALS);
         }
     }

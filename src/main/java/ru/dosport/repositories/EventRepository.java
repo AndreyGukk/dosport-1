@@ -2,13 +2,13 @@ package ru.dosport.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.dosport.entities.Authority;
+import ru.dosport.entities.Event;
 
 /**
- * Репозиторий ролей пользователей
+ * Репозиторий Мероприятий
  */
-@Repository
-public interface AuthorityRepository extends JpaRepository<Authority, Integer> {
+//@Repository
+public interface EventRepository {//extends JpaRepository<Event, Long> {
 
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ РЕПОЗИТОРИЕВ
@@ -21,9 +21,4 @@ public interface AuthorityRepository extends JpaRepository<Authority, Integer> {
      * Object save(Object object) сохранить объект
      * List<Object> saveAll(List<Object> objects) сохранить список объектов
      */
-
-    /**
-     * Найти роль пользователя по ее имени
-     */
-    Authority findByAuthority(String authority);
 }

@@ -22,13 +22,13 @@ public class Authority implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Short id;
 
     // Роль пользователя, варианты: ROLE_ADMIN - администратор сайта, ROLE_USER - пользователь сайта
     @Column(name = "authority", nullable = false)
     private String authority;
 
-    @ManyToMany // Вариант 2: (mappedBy = "authorities", fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "users_authorities",
             // Внешний ключ для Authority
             joinColumns = @JoinColumn(name = "authority_id"),

@@ -5,7 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-import static ru.dosport.entities.Messages.*;
+import static ru.dosport.helpers.Messages.*;
 
 /**
  * Запрос авторизации
@@ -14,9 +14,9 @@ import static ru.dosport.entities.Messages.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthenticationRequest {
 
-    @NotBlank(message = USERNAME_NOT_BLANK)
+    @NotBlank(message = DATA_NOT_BLANK + "Логин")
     private String username;
 
-    @NotBlank(message = PASSWORD_NOT_BLANK)
+    @NotBlank(message = DATA_NOT_BLANK + "Пароль")
     private String password;
 }

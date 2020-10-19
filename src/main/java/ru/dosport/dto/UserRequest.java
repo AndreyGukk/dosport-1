@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import static ru.dosport.entities.Messages.*;
+import static ru.dosport.helpers.Messages.*;
 
 /**
  * Запрос для регистрации нового Пользователя
@@ -16,7 +16,7 @@ import static ru.dosport.entities.Messages.*;
 public class UserRequest {
 
     @Size(min=4, max=50, message = INVALID_USERNAME_LENGTH)
-    @NotBlank(message = USERNAME_NOT_BLANK)
+    @NotBlank(message = DATA_NOT_BLANK + "Логин")
     private String username;
 
     private String firstName;
@@ -24,7 +24,7 @@ public class UserRequest {
     private String lastName;
 
     @Size(min=4, max=20, message = INVALID_PASSWORD_LENGTH)
-    @NotBlank(message = PASSWORD_NOT_BLANK)
+    @NotBlank(message = DATA_NOT_BLANK + "Пароль")
     private String password;
 
     private String passwordConfirm;
