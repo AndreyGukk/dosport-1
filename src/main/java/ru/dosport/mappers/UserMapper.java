@@ -3,7 +3,7 @@ package ru.dosport.mappers;
 import org.mapstruct.*;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
-import ru.dosport.entities.JwtUser;
+import ru.dosport.security.JwtUser;
 import ru.dosport.entities.User;
 
 import java.util.List;
@@ -17,18 +17,18 @@ public interface UserMapper {
     @Mappings({
             @Mapping(target="birthdayDate", source = "entity.birthdayDate", dateFormat = "dd-MM-yyyy")
     })
-    UserDto userToUserDto(User entity);
+    UserDto mapEntityToDto(User entity);
 
-    List<UserDto> userToUserDto(List<User> entities);
+    List<UserDto> mapEntityToDto(List<User> entities);
 
-    JwtUser userToJwtUser(User entity);
+    JwtUser mapEntityToJwt(User entity);
 
     @Mappings({
             @Mapping(target="birthdayDate", source="dto.birthdayDate", dateFormat = "dd-MM-yyyy")
     })
-    User userDtoToUser(UserDto dto);
+    User mapDtoToEntity(UserDto dto);
 
-    User userRequestToUser(UserRequest dto);
+    User mapDtoToEntity(UserRequest dto);
 
     @Mappings({
             @Mapping(target="id", ignore = true),
@@ -36,5 +36,5 @@ public interface UserMapper {
             @Mapping(target="password", ignore = true),
             @Mapping(target="authorities", ignore = true),
     })
-    User updateUser(@MappingTarget User entity, UserDto dto);
+    User update(@MappingTarget User entity, UserDto dto);
 }

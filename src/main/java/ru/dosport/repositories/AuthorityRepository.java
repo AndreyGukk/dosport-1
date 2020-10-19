@@ -22,5 +22,8 @@ public interface AuthorityRepository extends JpaRepository<Authority, Integer> {
      * List<Object> saveAll(List<Object> objects) сохранить список объектов
      */
 
+    /**
+     * Найти роль пользователя по ее имени
+     */
     Authority findByAuthority(String authority);
 }

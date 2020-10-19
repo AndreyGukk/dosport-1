@@ -3,7 +3,7 @@ package ru.dosport.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import ru.dosport.entities.Authority;
-import ru.dosport.entities.JwtRole;
+import ru.dosport.security.JwtRole;
 
 import java.util.List;
 

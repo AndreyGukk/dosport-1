@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 /**
- * Сущность Навыки пользователя
+ * Сущность Спортивные навыки пользователя
  */
 @Entity
 @Getter

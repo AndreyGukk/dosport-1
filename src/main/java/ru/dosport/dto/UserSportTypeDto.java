@@ -7,7 +7,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 
 /**
- * DTO представление список навыков пользователя
+ * Dto представление сущности Спортивные навыки пользователя
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

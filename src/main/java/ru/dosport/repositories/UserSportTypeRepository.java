@@ -2,15 +2,13 @@ package ru.dosport.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.dosport.entities.User;
-
-import java.util.Optional;
+import ru.dosport.entities.UserSportType;
 
 /**
- * Репозиторий пользователей
+ * Репозиторий Спортивные навыки пользователя
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserSportTypeRepository extends JpaRepository<UserSportType, Long> {
 
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ РЕПОЗИТОРИЕВ
@@ -23,9 +21,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Object save(Object object) сохранить объект
      * List<Object> saveAll(List<Object> objects) сохранить список объектов
      */
-
-    /**
-     * Найти пользователя по его логину
-     */
-    Optional<User> findByUsername(String username);
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import static ru.dosport.entities.Messages.*;
+import static ru.dosport.helpers.Messages.*;
 
 /**
  * Dto представление сущности Пользователь
@@ -18,12 +18,12 @@ public class UserDto {
     private Long id;
 
     @Size(min=4, max=50, message = INVALID_USERNAME_LENGTH)
-    @NotBlank(message = USERNAME_NOT_BLANK)
+    @NotBlank(message = DATA_NOT_BLANK + "Логин")
     private String username;
 
     private String birthdayDate;
 
-    @NotBlank(message = FIRSTNAME_NOT_BLANK)
+    @NotBlank(message = DATA_NOT_BLANK + "Имя")
     private String firstName;
 
     private String lastName;

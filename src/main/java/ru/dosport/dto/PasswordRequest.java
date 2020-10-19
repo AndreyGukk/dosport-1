@@ -6,8 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import static ru.dosport.entities.Messages.INVALID_PASSWORD_LENGTH;
-import static ru.dosport.entities.Messages.PASSWORD_NOT_BLANK;
+import static ru.dosport.helpers.Messages.*;
 
 /**
  * Запрос на изменение пароля
@@ -17,11 +16,11 @@ import static ru.dosport.entities.Messages.PASSWORD_NOT_BLANK;
 public class PasswordRequest {
 
     @Size(min=4, max=20, message = INVALID_PASSWORD_LENGTH)
-    @NotBlank(message = PASSWORD_NOT_BLANK)
+    @NotBlank(message = DATA_NOT_BLANK + "Текущий пароль")
     private String oldPassword;
 
     @Size(min=4, max=20, message = INVALID_PASSWORD_LENGTH)
-    @NotBlank(message = PASSWORD_NOT_BLANK)
+    @NotBlank(message = DATA_NOT_BLANK + "Новый пароль")
     private String newPassword;
 
     private String newPasswordConfirm;

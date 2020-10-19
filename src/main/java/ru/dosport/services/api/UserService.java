@@ -6,7 +6,7 @@ import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
 import ru.dosport.entities.User;
-import ru.dosport.entities.JwtUser;
+import ru.dosport.security.JwtUser;
 
 import java.util.List;
 

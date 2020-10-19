@@ -1,4 +1,4 @@
-package ru.dosport.entities;
+package ru.dosport.helpers;
 
 /**
  * Перечисление различных констант для информационных сообщений
@@ -11,9 +11,7 @@ public final class Messages {
     /**
      * Информационные сообщения
      */
-    public static final String USER_WAS_CREATED = "Пользователь с адресом эл. почты %s создан";
-
-    public static final String USER_WAS_FOUND = "Пользователь с адресом эл. почты %s загружен";
+    public static final String USER_WAS_FOUND = "Пользователь с логином %s загружен";
 
     public static final String SWAGGER_IS_INITIALIZING = "Инициализируется Swagger";
 
@@ -22,15 +20,15 @@ public final class Messages {
     /**
      * Сообщения об ошибках авторизации
      */
-    public static final String USER_HAS_ALREADY_CREATED = "Пользователь с адресом эл. почты %s уже зарегистрирован";
+    public static final String USER_ALREADY_EXIST = "Пользователь с логином %s уже зарегистрирован";
 
-    public static final String USER_NOT_FOUND_BY_USERNAME = "Пользователь с адресом эл. почты %s не найден";
+    public static final String USER_NOT_FOUND_BY_USERNAME = "Пользователь с логином %s не найден";
 
     public static final String USER_NOT_FOUND_BY_ID = "Пользователь с индексом %s не найден";
 
     public static final String JWT_TOKEN_NOT_VALID = "Токен авторизации неверный либо истек его срок";
 
-    public static final String BAD_CREDENTIALS = "Введен неверный адрес эл. почты или пароль";
+    public static final String BAD_CREDENTIALS = "Введен неверный логин или пароль";
 
     public static final String OLD_PASSWORD_INVALID = "Текущий пароль введен неверно";
 
@@ -45,13 +43,9 @@ public final class Messages {
 
     public static final String INVALID_USERNAME_LENGTH = "Поле Адрес эл. почты должно содержать от 4 до 50 символов";
 
-    public static final String USERNAME_NOT_BLANK = "Поле Адрес эл. почты должно быть не пустым";
-
-    public static final String PASSWORD_NOT_BLANK = "Поле Пароль должно быть не пустым";
+    public static final String DATA_NOT_BLANK = "Должно быть не пустым поле ";
 
     public static final String INVALID_PASSWORD_LENGTH = "Поле Пароль должно содержать от 4 до 20 символов";
 
     public static final String PASSWORDS_MISMATCH = "Значения полей Пароль и Подтверждение пароля должны совпадать";
-
-    public static final String FIRSTNAME_NOT_BLANK = "Поле Имя должно быть не пустым";
 }

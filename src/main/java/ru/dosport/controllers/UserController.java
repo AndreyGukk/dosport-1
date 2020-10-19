@@ -14,8 +14,8 @@ import ru.dosport.services.api.UserService;
 
 import javax.validation.Valid;
 
-import static ru.dosport.entities.Roles.ROLE_ADMIN;
-import static ru.dosport.entities.Roles.ROLE_USER;
+import static ru.dosport.helpers.Roles.ROLE_ADMIN;
+import static ru.dosport.helpers.Roles.ROLE_USER;
 
 /**
  * Контроллер профиля пользователя.

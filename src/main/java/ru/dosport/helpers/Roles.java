@@ -1,4 +1,4 @@
-package ru.dosport.entities;
+package ru.dosport.helpers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
