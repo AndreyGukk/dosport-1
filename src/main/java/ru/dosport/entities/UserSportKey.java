@@ -7,7 +7,6 @@ import lombok.Setter;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
-
 @Embeddable
 @NoArgsConstructor
 public class UserSportKey implements Serializable {

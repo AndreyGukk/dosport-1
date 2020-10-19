@@ -1,7 +1,6 @@
 package ru.dosport.services.api;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
@@ -13,7 +12,6 @@ import java.util.List;
 /**
  * Сервис пользователей
  */
-@Service
 public interface UserService {
 
     /*
@@ -93,13 +91,6 @@ public interface UserService {
      * @param id индекс пользователя
      */
     UserDto update(UserDto userDto, Long id);
-
-    /**
-     * Изменить данные пользователя (для внутреннего использования)
-     *
-     * @param userDto пользователь с измененными данными
-     */
-    User update(UserDto userDto);
 
     /**
      * Изменить пароль пользователя

@@ -28,7 +28,7 @@ public class Authority implements GrantedAuthority {
     @Column(name = "authority", nullable = false)
     private String authority;
 
-    @ManyToMany // Вариант 2: (mappedBy = "authorities", fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "users_authorities",
             // Внешний ключ для Authority
             joinColumns = @JoinColumn(name = "authority_id"),

@@ -34,6 +34,10 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    // Пользователь активен (true) или заблокирован (false)
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled;
+
     // Список ролей
     @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_authorities",
@@ -67,14 +71,4 @@ public class User {
     // Ссылка на адрес фотографии
     @Column(name = "photo_link")
     private String photoLink;
-
-    // TODO Список видов спорта
-    //Принято решение не добавлять это поле юзему. Данная информация будет пердеана в контроллер другим классом
-//    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
-//    @JoinTable(name = "users_kindsOfSport",
-//            // Внешний ключ для User в в таблице users_authorities
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            // Внешний ключ для другой стороны, User в таблице users_authorities
-//            inverseJoinColumns = @JoinColumn(name = "kindsOfSport_id"))
-//    private Map<KindOfSport, Integer> kindsOfSport = new HashMap<>();
 }

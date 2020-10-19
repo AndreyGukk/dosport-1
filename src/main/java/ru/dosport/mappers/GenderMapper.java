@@ -10,28 +10,28 @@ import ru.dosport.entities.Gender;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface GenderMapper {
 
-    default String genderToString(Gender entity) {
+    default String mapEntityToString(Gender entity) {
         return entity.getDescription();
     }
 
-    default Gender stringToGender(String string) {
+    default Gender mapStringToEntity(String string) {
         Gender entity;
         switch (string) {
-            case "NOT_SELECTED" :
             case "Не выбран":
+            case "0":
             case "":
                 entity = Gender.NOT_SELECTED;
                 break;
-            case "FEMALE":
             case "Женский":
+            case "1":
                 entity = Gender.FEMALE;
                 break;
-            case "MALE":
             case "Мужской":
+            case "2":
                 entity = Gender.MALE;
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + string);
+                throw new IllegalStateException("Неверное значение поля Пол: " + string);
         }
         return entity;
     }

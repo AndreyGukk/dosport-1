@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AuthorityMapper {
 
-    JwtRole authorityToJwtRole(Authority entity);
+    JwtRole mapEntityToJwt(Authority entity);
 
-    List<JwtRole> authorityToJwtRole(List<Authority> entities);
+    List<JwtRole> mapEntityToJwt(List<Authority> entities);
 }

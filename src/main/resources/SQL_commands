@@ -7,8 +7,8 @@ SET SEARCH_PATH TO dosport;
 CREATE TABLE users (id bigserial not null, username varchar(50) not null UNIQUE, password varchar(20) not null, enabled boolean not null, creation_date timestamp not null, first_name varchar(50), last_name varchar(50), photo_link varchar(50), PRIMARY KEY (id));
 CREATE TABLE authorities (id serial not null, authority varchar(50) not null, PRIMARY KEY (id));
 CREATE TABLE users_authorities (user_id bigint not null, authority_id int not null, FOREIGN KEY (user_id) REFERENCES users (id), FOREIGN KEY (authority_id) REFERENCES authorities (id));
-INSERT INTO users (username, password, enabled, creation_date, first_name, last_name, photo_link) VALUES ('admin', '$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS', true, '2020-08-03', 'Иван', 'Иванов', 'myfoto.png');
-INSERT INTO users (username, password, enabled, creation_date, first_name, last_name, photo_link) VALUES ('user', '$2a$10$7v8.w1xVYIu6TKY3a58CX.xcmSXPpW6mVLTqB11kAn10jezppGdE2', true, '2020-08-30', 'Сергей', 'Сергеев', 'sergey.png');
+INSERT INTO users (user_name, password, enabled, birthday_date, first_name, last_name, gender, info, photo_link) VALUES ('admin', '$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS', true, '2001-02-03', 'Иван', 'Иванов', 2, 'Инфо об админе' ,'myfoto.png');
+INSERT INTO users (user_name, password, enabled, birthday_date, first_name, last_name, gender, info, photo_link) VALUES ('user', '$2a$10$7v8.w1xVYIu6TKY3a58CX.xcmSXPpW6mVLTqB11kAn10jezppGdE2', true, '2003-04-05', 'Катя', 'Петрова', 1, 'Инфо о пользователе', 'katya.png');
 INSERT INTO authorities (authority) VALUES ('ROLE_ADMIN'), ('ROLE_USER');
 INSERT INTO users_authorities (user_id, authority_id) VALUES (1, 1), (2, 2);
 

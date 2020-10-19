@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         User newUser = userMapper.mapDtoToEntity(userRequest);
         newUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        newUser.setEnabled(true);
         Authority authority = authorityRepository.findByAuthority(ROLE_USER);
         newUser.getAuthorities().add(authority);
         return userMapper.mapEntityToDto(userRepository.save(newUser));
@@ -92,12 +93,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDto update(UserDto userDto, Long id) {
         User user = userMapper.update(findById(id), userDto);
         return userMapper.mapEntityToDto(userRepository.save(user));
-    }
-
-    @Override
-    public User update(UserDto userDto) {
-        User user = userMapper.update(findByUsername(userDto.getUsername()), userDto);
-        return userRepository.save(user);
     }
 
     @Override

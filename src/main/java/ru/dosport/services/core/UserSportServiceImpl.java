@@ -1,37 +1,31 @@
 package ru.dosport.services.core;
 
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.dosport.entities.UserSport;
-import ru.dosport.exceptions.EntityBadRequestException;
+import ru.dosport.exceptions.DataNotFoundException;
+import ru.dosport.exceptions.DataNotSavedException;
 import ru.dosport.repositories.UserSportRepository;
 import ru.dosport.services.api.UserSportService;
 
-import static ru.dosport.entities.Messages.*;
+import static ru.dosport.helpers.Messages.DATA_WAS_NOT_SAVED;
+import static ru.dosport.helpers.Messages.USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE;
 
-import java.util.Optional;
-
-@Log4j2
+/**
+ * Реализация сервиса видов спорта пользователя
+ */
 @Service
+@RequiredArgsConstructor
 public class UserSportServiceImpl implements UserSportService {
 
-    private UserSportRepository userSportRepository;
-
-    @Autowired
-    public void setUserSportRepository(UserSportRepository userSportRepository) {
-        this.userSportRepository = userSportRepository;
-    }
+    // Необходимые сервисы и мапперы
+    private final UserSportRepository userSportRepository;
 
     @Override
     public UserSport findByUserIdAndSportTypeId(long userId, short sportTypeId) {
-        Optional<UserSport> userSportOptional = userSportRepository.findByUserIdAndSportTypeId(userId, sportTypeId);
-        if(userSportOptional.isPresent()){
-            return userSportOptional.get();
-        }else{
-            log.debug(USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE + "(userID = " + userId + ", sportTypeId = " + sportTypeId + ")");
-            return null;
-        }
+        return userSportRepository.findByUserIdAndSportTypeId(userId, sportTypeId).orElseThrow(
+                () -> new DataNotFoundException(
+                        String.format(USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE, sportTypeId, userId)));
     }
 
     @Override
@@ -46,19 +40,20 @@ public class UserSportServiceImpl implements UserSportService {
 
     @Override
     public boolean deleteByUserId(long userId) {
-        boolean result = userSportRepository.existsById(userId);
-        if(result) {
-            userSportRepository.deleteById(userId);
-        }
-        return result;
+        userSportRepository.deleteById(userId);
+        return userSportRepository.existsById(userId);
     }
 
+    /**
+     * Сохранить или обновить сущность
+     */
     private UserSport saveOrUpdate(long userId, short sportTypeId, short level){
-        Optional<UserSport> userSportOptional = userSportRepository.findByUserIdAndSportTypeId(userId, sportTypeId);
-        if(userSportOptional.isPresent()){
-            return userSportRepository.update(userId, sportTypeId, level).get();
-        }else{
-            return userSportRepository.save(userId, sportTypeId, level).get();
+        if (userSportRepository.findByUserIdAndSportTypeId(userId, sportTypeId).isPresent()){
+            return userSportRepository.update(userId, sportTypeId, level).orElseThrow(
+                    () -> new DataNotSavedException(DATA_WAS_NOT_SAVED));
+        } else {
+            return userSportRepository.save(userId, sportTypeId, level).orElseThrow(
+                    () -> new DataNotSavedException(DATA_WAS_NOT_SAVED));
         }
     }
 }

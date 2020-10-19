@@ -11,7 +11,7 @@ import javax.validation.constraints.Digits;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserSportTypeDto {
+public class UserSportDto {
 
     @DecimalMin(value = "0.0")
     @Digits(integer = 19, fraction = 0)

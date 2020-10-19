@@ -48,4 +48,8 @@ public final class Messages {
     public static final String INVALID_PASSWORD_LENGTH = "Поле Пароль должно содержать от 4 до 20 символов";
 
     public static final String PASSWORDS_MISMATCH = "Значения полей Пароль и Подтверждение пароля должны совпадать";
+
+    public static final String USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE = "Вид спорта c индексом %s для пользователя c индексом %s не найден";
+
+    public static final String DATA_WAS_NOT_SAVED = "Данные не сохранены по запросу ";
 }

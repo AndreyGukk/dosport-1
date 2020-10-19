@@ -63,6 +63,7 @@ public class AuthenticationController {
             response.put("token", token);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AuthenticationException e) {
+            log.debug(e);
             throw new BadCredentialsException(BAD_CREDENTIALS);
         }
     }

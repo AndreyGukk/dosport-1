@@ -1,11 +1,10 @@
 package ru.dosport.services.api;
 
-import org.springframework.stereotype.Service;
 import ru.dosport.entities.UserSport;
 
-import java.util.Optional;
-
-@Service
+/**
+ * Сервис видов спорта пользователя
+ */
 public interface UserSportService {
 
     /**
