@@ -1,19 +1,17 @@
 package ru.dosport.services.api;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
 import ru.dosport.entities.User;
-import ru.dosport.entities.JwtUser;
+import ru.dosport.security.JwtUser;
 
 import java.util.List;
 
 /**
  * Сервис пользователей
  */
-@Service
 public interface UserService {
 
     /*
@@ -34,10 +32,10 @@ public interface UserService {
     /**
      * Найти пользователя по его идентификатору
      *
-     * @param userId идентификатор пользователя
+     * @param id идентификатор пользователя
      * @return пользователь
      */
-    UserDto getUserDtoById(Long userId);
+    UserDto getDtoById(Long id);
 
     /**
      * Найти пользователя по логину
@@ -45,22 +43,30 @@ public interface UserService {
      * @param username логин пользователя
      * @return пользователь
      */
-    UserDto getUserDtoByUsername(String username);
+    UserDto getDtoByUsername(String username);
+
+    /**
+     * Получить Jwt Пользователя для генерации токенов
+     *
+     * @param username логин пользователя
+     * @return общая сущность Пользователя
+     */
+    JwtUser getJwtByUsername(String username);
+
+    /**
+     * Получить общего Пользователя для межсервисного взаимодействия
+     *
+     * @param username логин пользователя
+     * @return общая сущность Пользователя
+     */
+    User getByUsername(String username);
 
     /**
      * Найти всех пользователей
      *
      * @return список пользователей
      */
-    List<UserDto> getAll();
-
-    /**
-     * Удалить пользователя по его идентификатору
-     *
-     * @param userId идентификатор пользователя
-     * @return удален ли пользователь
-     */
-    boolean deleteById(Long userId);
+    List<UserDto> getAllDto();
 
     /**
      * Создать нового пользователя
@@ -87,29 +93,6 @@ public interface UserService {
     UserDto update(UserDto userDto, Long id);
 
     /**
-     * Изменить данные пользователя (для внутреннего использования)
-     *
-     * @param userDto пользователь с измененными данными
-     */
-    User update(UserDto userDto);
-
-    /**
-     * Получить общего Пользователя для межсервисного взаимодействия
-     *
-     * @param username логин пользователя
-     * @return общая сущность Пользователя
-     */
-    User getUserByUsername(String username);
-
-    /**
-     * Получить Jwt Пользователя для генерации токенов
-     *
-     * @param username логин пользователя
-     * @return общая сущность Пользователя
-     */
-    JwtUser getJwtUserByUsername(String username);
-
-    /**
      * Изменить пароль пользователя
      *
      * @param passwordRequest данные для изменения пароля
@@ -117,4 +100,12 @@ public interface UserService {
      * @return измененен ли пользователь
      */
     boolean updatePassword(PasswordRequest passwordRequest, Authentication authentication);
+
+    /**
+     * Удалить пользователя по его идентификатору
+     *
+     * @param id идентификатор пользователя
+     * @return удален ли пользователь
+     */
+    boolean deleteById(Long id);
 }

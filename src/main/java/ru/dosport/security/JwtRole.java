@@ -1,4 +1,4 @@
-package ru.dosport.entities;
+package ru.dosport.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

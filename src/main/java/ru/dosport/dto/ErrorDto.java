@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * DTO представление класса Информация об ошибке
+ * Dto представление Информации об ошибке
  */
 @AllArgsConstructor
 @Data

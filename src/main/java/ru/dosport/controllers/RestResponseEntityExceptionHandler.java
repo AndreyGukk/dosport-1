@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.dosport.dto.ErrorDto;
-import ru.dosport.exceptions.EntityBadRequestException;
-import ru.dosport.exceptions.EntityNotFoundException;
+import ru.dosport.exceptions.DataBadRequestException;
+import ru.dosport.exceptions.DataNotFoundException;
 
-import static ru.dosport.entities.Messages.*;
+import static ru.dosport.helpers.Messages.*;
 
 /**
  * Контроллер - глобальный обработчик исключений.
@@ -28,61 +28,67 @@ import static ru.dosport.entities.Messages.*;
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-
     @Override
-    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        log.error(ex.getMessage());
-        String message = String.format(INVALID_VALUE, "value", ex.getValue());
+    protected ResponseEntity<Object> handleTypeMismatch(
+            TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String message = String.format(INVALID_VALUE, "", ex.getValue());
+        log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(400, message), HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         StringBuilder stringBuilder = new StringBuilder();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            stringBuilder.append("Параметр ").append(((FieldError) error).getField())
-                    .append(" имеет неверное значение: ").append(error.getDefaultMessage()).append(". ");
-        });
-        log.error(stringBuilder.toString());
+        ex.getBindingResult().getAllErrors()
+                .forEach((error) -> stringBuilder.append(error.getDefaultMessage()).append(". "));
+        log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(400, stringBuilder.toString()), HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        log.error(ex.getMessage());
+    protected ResponseEntity<Object> handleBindException(
+            BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         FieldError fieldError = ex.getFieldError();
-        String message = fieldError != null?
+        String message = fieldError != null ?
             String.format(INVALID_VALUE, fieldError.getField(), fieldError.getRejectedValue()) : BAD_REQUEST;
+        log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(400, message), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ IllegalArgumentException.class })
-    public ResponseEntity<ErrorDto> handleIllegalArgumentException(Exception ex, WebRequest request) {
-        log.error(ex.getMessage());
+    public ResponseEntity<ErrorDto> handleIllegalArgument(Exception ex, WebRequest request) {
+        log.debug(ex);
+        return new ResponseEntity<>(new ErrorDto(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({ IllegalStateException.class })
+    public ResponseEntity<ErrorDto> handIllegalState(Exception ex, WebRequest request) {
+        log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ AccessDeniedException.class })
-    public ResponseEntity<ErrorDto> handleAccessDeniedException(Exception ex, WebRequest request) {
-        log.error(ACCESS_DENIED);
-        return new ResponseEntity<>(new ErrorDto(400, ACCESS_DENIED), HttpStatus.FORBIDDEN);
+    public ResponseEntity<ErrorDto> handleAccessDenied(Exception ex, WebRequest request) {
+        log.debug(ex);
+        return new ResponseEntity<>(new ErrorDto(403, ACCESS_DENIED), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({ UsernameNotFoundException.class, BadCredentialsException.class})
-    public ResponseEntity<ErrorDto> handleUsernameNotFoundException(Exception ex, WebRequest request) {
-        log.error(ex.getMessage());
-        return new ResponseEntity<>(new ErrorDto(401, ex.getMessage()), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<ErrorDto> handleUsernameNotFound(Exception ex, WebRequest request) {
+        log.debug(ex);
+        return new ResponseEntity<>(new ErrorDto(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({ EntityNotFoundException.class })
-    public ResponseEntity<ErrorDto> handleEntityNotFoundException(Exception ex, WebRequest request) {
-        log.debug(ex.getMessage());
+    @ExceptionHandler({ DataNotFoundException.class })
+    public ResponseEntity<ErrorDto> handleDataNotFound(Exception ex, WebRequest request) {
+        log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(404, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({ EntityBadRequestException.class })
-    public ResponseEntity<ErrorDto> handleEntityBadRequestException(Exception ex, WebRequest request) {
-        log.debug(ex.getMessage());
+    @ExceptionHandler({ DataBadRequestException.class })
+    public ResponseEntity<ErrorDto> handleDataBadRequest(Exception ex, WebRequest request) {
+        log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

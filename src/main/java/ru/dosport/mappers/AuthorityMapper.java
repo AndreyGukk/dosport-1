@@ -3,7 +3,7 @@ package ru.dosport.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import ru.dosport.entities.Authority;
-import ru.dosport.entities.JwtRole;
+import ru.dosport.security.JwtRole;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AuthorityMapper {
 
-    JwtRole authorityToJwtRole(Authority entity);
+    JwtRole mapEntityToJwt(Authority entity);
 
-    List<JwtRole> authorityToJwtRole(List<Authority> entities);
+    List<JwtRole> mapEntityToJwt(List<Authority> entities);
 }

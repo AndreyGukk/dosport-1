@@ -27,7 +27,7 @@ public class User {
     private Long id;
 
     // Логин
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "user_name", nullable = false, unique = true)
     private String username;
 
     // Пароль
@@ -47,9 +47,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private List<Authority> authorities = new ArrayList<>();
 
-    // Дата создания
-    @Column(name = "creation_date")
-    private LocalDate creationDate;
+    // Дата рождения
+    @Column(name = "birthday_date")
+    private LocalDate birthdayDate;
+
+    // Скрыть дату рождения (true - дата не отображается)
+    @Column(name = "hide_birthday_date")
+    private boolean hideBirthdayDate;
 
     // Имя
     @Column(name = "first_name")
@@ -59,9 +63,14 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    // Адрес электронной почты
-    @Column(name = "email", unique = true)
-    private String email;
+    // Пол
+    @Column(name = "gender", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private Gender gender;
+
+    // Личная информация
+    @Column(name = "info")
+    private String info;
 
     // Ссылка на адрес фотографии
     @Column(name = "photo_link")

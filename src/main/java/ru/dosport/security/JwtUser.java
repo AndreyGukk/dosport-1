@@ -1,4 +1,4 @@
-package ru.dosport.entities;
+package ru.dosport.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class JwtUser implements UserDetails {
 
     private boolean enabled;
 
-    private List<ru.dosport.entities.JwtRole> authorities;
+    private List<JwtRole> authorities;
 
     @JsonIgnore
     public Long getId() {
