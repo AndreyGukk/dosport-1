@@ -1,12 +1,20 @@
 package ru.dosport.services.core;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import ru.dosport.dto.UserSportTypeDto;
 import ru.dosport.entities.UserSportType;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.exceptions.DataNotSavedException;
+import ru.dosport.mappers.UserSportTypeMapper;
 import ru.dosport.repositories.UserSportTypeRepository;
+import ru.dosport.services.api.UserService;
 import ru.dosport.services.api.UserSportTypeService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.dosport.helpers.Messages.DATA_WAS_NOT_SAVED;
 import static ru.dosport.helpers.Messages.USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE;
@@ -20,7 +28,36 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
 
     // Необходимые сервисы и мапперы
     private final UserSportTypeRepository userSportTypeRepository;
+    private final UserSportTypeMapper userSportTypeMapper;
+    private final UserService userService;
 
+    @Override
+    public List<UserSportTypeDto> getAllDtoByUserId(Long id, Authentication authentication) {
+
+        return userSportTypeRepository.findAll().stream().filter(i -> i.getUserId()==id).map(userSportTypeMapper::mapEntityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserSportTypeDto> createUserSportTypesList(Long id, Authentication authentication) {
+        if (userService.getByUsername(authentication.getName()).getId() == id) {
+            List<UserSportTypeDto> newList = new ArrayList<>();
+            //todo заполнить лист видами спорта и нулевыми значениями навыков
+            return newList;
+        } else return null;
+    }
+
+    @Override
+    public List<UserSportTypeDto> updateByUserId(Long id, List<UserSportTypeDto> dtoList, Authentication authentication) {
+        if (userService.getByUsername(authentication.getName()).getId() == id) {
+            List<UserSportTypeDto> newList = new ArrayList<>();
+
+            //todo написать метод
+            return newList;
+        } else return null;
+    }
+
+
+    //далее писала не я, не знаю, зачем оно
     @Override
     public UserSportType findByUserIdAndSportTypeId(long userId, short sportTypeId) {
         return userSportTypeRepository.findByUserIdAndSportTypeId(userId, sportTypeId).orElseThrow(
@@ -47,8 +84,8 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
     /**
      * Сохранить или обновить сущность
      */
-    private UserSportType saveOrUpdate(long userId, short sportTypeId, short level){
-        if (userSportTypeRepository.findByUserIdAndSportTypeId(userId, sportTypeId).isPresent()){
+    private UserSportType saveOrUpdate(long userId, short sportTypeId, short level) {
+        if (userSportTypeRepository.findByUserIdAndSportTypeId(userId, sportTypeId).isPresent()) {
             return userSportTypeRepository.update(userId, sportTypeId, level).orElseThrow(
                     () -> new DataNotSavedException(DATA_WAS_NOT_SAVED));
         } else {

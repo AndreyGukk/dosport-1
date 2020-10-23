@@ -1,12 +1,45 @@
 package ru.dosport.services.api;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import ru.dosport.dto.SportTypeDto;
+import ru.dosport.dto.UserSportTypeDto;
 import ru.dosport.entities.UserSportType;
+
+import java.util.List;
 
 /**
  * Сервис видов спорта пользователя
  */
+@Service
 public interface UserSportTypeService {
 
+    /**
+     * Выдает список навыков пользователя по id
+     *
+     * @return список навыков пользователя
+     */
+    List<UserSportTypeDto> getAllDtoByUserId(Long id, Authentication authentication);
+
+
+    /**
+     * Создает новый список навыков пользователя по id, если его нет
+     *
+     * @return список навыков пользователя по id
+     */
+    List<UserSportTypeDto> createUserSportTypesList(Long id, Authentication authentication);
+
+    /**
+     * Создает новый список навыков пользователя по id, если его нет
+     *
+     * @return список навыков пользователя по id
+     */
+    List<UserSportTypeDto> updateByUserId(Long id, List<UserSportTypeDto> dtoList, Authentication authentication);
+
+
+
+
+//всё, что дальше, писала не я, так что хз, как это юзать
     /**
      * Найти вид спорта пользователя по идентификатору пользователя и идентификатору вида спорта
      *

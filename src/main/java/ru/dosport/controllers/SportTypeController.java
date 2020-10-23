@@ -39,8 +39,7 @@ public class SportTypeController {
     @ApiOperation("Добавляет вид спорта")
     @Secured(value = ROLE_ADMIN)
     @PostMapping("/add")
-    public ResponseEntity<SportTypeDto> createSportType(
-                                                        @RequestBody SportTypeDto sportTypeDto) {
+    public ResponseEntity<SportTypeDto> createSportType(@RequestBody SportTypeDto sportTypeDto) {
         return new ResponseEntity(sportTypeService.save(sportTypeDto), HttpStatus.OK);
     }
 
