@@ -9,4 +9,8 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SportTypeDto {
+
+    private Short idSportType;
+
+    private String title;
 }
