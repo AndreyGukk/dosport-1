@@ -5,11 +5,18 @@ import org.springframework.stereotype.Service;
 import ru.dosport.dto.EventDto;
 import ru.dosport.dto.EventRequest;
 import ru.dosport.entities.Event;
+import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
+import ru.dosport.helpers.Messages;
 import ru.dosport.mappers.EventMapper;
 import ru.dosport.repositories.EventRepository;
+import ru.dosport.repositories.SportGroundRepository;
+import ru.dosport.repositories.SportTypeRepository;
+import ru.dosport.repositories.UserRepository;
 import ru.dosport.services.api.EventService;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
@@ -17,16 +24,20 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 /**
  * Сервис пользователей
  */
-//@Service
+@Service
 @RequiredArgsConstructor
-public class EventServiceImpl { //implements EventService {
+public class EventServiceImpl implements EventService {
 
-    /*
+
     // Необходимые сервисы и мапперы
     private final EventMapper eventMapper;
 
     // Необходимые репозитории
     private final EventRepository eventRepository;
+    //todo: избавиться от лишних репозиториев
+    private final SportTypeRepository sportTypeRepository;
+    private final SportGroundRepository sportGroundRepository;
+    private final UserRepository userRepository;
 
     @Override
     public EventDto getDtoById(Long id) {
@@ -38,9 +49,24 @@ public class EventServiceImpl { //implements EventService {
         return eventMapper.mapEntityToDto(eventRepository.findAll());
     }
 
+    @Transactional
     @Override
     public EventDto save(EventRequest eventRequest) {
-        return eventMapper.mapEntityToDto(eventRepository.save(eventMapper.mapDtoToEntity(eventRequest)));
+        Event event = Event.builder()
+                .date(eventRequest.getDateEvent())
+                .startTime(LocalDateTime.parse(eventRequest.getStartTimeEvent()))
+                .sportType(sportTypeRepository.findByTitle(eventRequest.getSportTypeTitle())
+                        .orElseThrow(() -> new DataBadRequestException("Вид спорта не найден")))
+                .sportGround(sportGroundRepository.findById(Long.valueOf(eventRequest.getIdSportGround()))
+                        .orElseThrow(() -> new DataBadRequestException("Площадка не найдена")))
+                .organizer(userRepository.findById(Long.valueOf(eventRequest.getIdOrganizer()))
+                        .orElseThrow(() -> new DataBadRequestException("Пользователь не найден")))
+                .build();
+        if (eventRequest.getEndTimeEvent() != null) {
+            event.setEndTime(LocalDateTime.parse(eventRequest.getEndTimeEvent()));
+        }
+
+        return eventMapper.mapEntityToDto(eventRepository.save(event));
     }
 
     @Override
@@ -59,5 +85,4 @@ public class EventServiceImpl { //implements EventService {
         return eventRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
     }
-    */
 }

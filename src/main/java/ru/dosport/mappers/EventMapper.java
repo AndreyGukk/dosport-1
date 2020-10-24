@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Маппер, преобразующий классы Event и EventDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class, MemberMapper.class})
 public interface EventMapper {
 
     @Mappings({
@@ -19,6 +19,7 @@ public interface EventMapper {
             @Mapping(target="startTimeEvent", source = "entity.startTime", dateFormat = "hh:mm"),
             @Mapping(target="endTimeEvent", source = "entity.endTime", dateFormat = "hh:mm"),
             @Mapping(target="idSportGround", source = "entity.sportGround.id"),
+            @Mapping(target="users", source = "entity.members"),
     })
     EventDto mapEntityToDto(Event entity);
 
@@ -32,13 +33,17 @@ public interface EventMapper {
     })
     Event mapDtoToEntity(EventDto dto);
 
-//    @Mappings({
-//            @Mapping(target="sportType", ignore = true),
-//            @Mapping(target="field", ignore = true),
-//            @Mapping(target="id", ignore = true),
-//            @Mapping(target="startDateTime", source="dto.startDateTime", dateFormat = "dd-MM-yyyy hh:mm"),
-//            @Mapping(target="stopDateTime", source="dto.stopDateTime", dateFormat = "dd-MM-yyyy hh:mm")
-//    })
-//    Event update(@MappingTarget Event entity, EventDto dto);
+    @Mappings({
+            @Mapping(target="id", ignore = true),
+            @Mapping(target="sportGround", ignore = true),
+            @Mapping(target="organizer", ignore = true),
+            @Mapping(target="idChat", ignore = true),
+            @Mapping(target="members", ignore = true),
+
+            @Mapping(target = "date", source = "dto.dateEvent", dateFormat = "dd-MM-yyyy"),
+            @Mapping(target="startTime", source = "dto.startTimeEvent", dateFormat = "hh:mm"),
+            @Mapping(target="endTime", source = "dto.endTimeEvent", dateFormat = "hh:mm")
+    })
+    Event update(@MappingTarget Event entity, EventDto dto);
 
 }
