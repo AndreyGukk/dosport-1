@@ -7,13 +7,12 @@ import ru.dosport.dto.EventRequest;
 import ru.dosport.entities.Event;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
-import ru.dosport.helpers.Messages;
 import ru.dosport.mappers.EventMapper;
 import ru.dosport.repositories.EventRepository;
 import ru.dosport.repositories.SportGroundRepository;
-import ru.dosport.repositories.SportTypeRepository;
 import ru.dosport.repositories.UserRepository;
 import ru.dosport.services.api.EventService;
+import ru.dosport.services.api.SportTypeService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -35,9 +34,10 @@ public class EventServiceImpl implements EventService {
     // Необходимые репозитории
     private final EventRepository eventRepository;
     //todo: избавиться от лишних репозиториев
-    private final SportTypeRepository sportTypeRepository;
     private final SportGroundRepository sportGroundRepository;
     private final UserRepository userRepository;
+
+    private final SportTypeService sportTypeService;
 
     @Override
     public EventDto getDtoById(Long id) {
@@ -55,8 +55,7 @@ public class EventServiceImpl implements EventService {
         Event event = Event.builder()
                 .date(eventRequest.getDateEvent())
                 .startTime(LocalDateTime.parse(eventRequest.getStartTimeEvent()))
-                .sportType(sportTypeRepository.findByTitle(eventRequest.getSportTypeTitle())
-                        .orElseThrow(() -> new DataBadRequestException("Вид спорта не найден")))
+                .sportType(sportTypeService.getSportTypeByTitle(eventRequest.getSportTypeTitle()))
                 .sportGround(sportGroundRepository.findById(Long.valueOf(eventRequest.getIdSportGround()))
                         .orElseThrow(() -> new DataBadRequestException("Площадка не найдена")))
                 .organizer(userRepository.findById(Long.valueOf(eventRequest.getIdOrganizer()))
