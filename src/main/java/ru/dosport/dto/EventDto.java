@@ -3,6 +3,7 @@ package ru.dosport.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -12,15 +13,19 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EventDto {
 
-    private Long id;
+    private Long idEvent;
 
-    private String startDateTime;
+    private LocalDate dateEvent;
 
-    private String stopDateTime;
+    private String startTimeEvent;
+
+    private String endTimeEvent;
 
     private SportTypeDto sportType;
 
-    private FieldDto field;
+    private Long idSportGround;
 
     private List<UserDto> users;
+
+    private Long idChat;
 }
