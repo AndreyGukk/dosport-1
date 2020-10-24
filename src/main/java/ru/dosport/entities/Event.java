@@ -1,14 +1,13 @@
 package ru.dosport.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Сущность Мероприятие
@@ -16,7 +15,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "events")
 public class Event {
 
@@ -53,14 +54,13 @@ public class Event {
     private SportGround sportGround;
 
     // Организатор мероприятия
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "organizer_user_id", nullable = false)
     private User organizer;
 
     // Список участников мероприятия
-    @OneToMany
-    @JoinTable(name = "event_member")
-    private List<User> users = new ArrayList<>();
+    @OneToMany(mappedBy = "event")
+    private Set<EventMember> members;
 
     // ID чата
     @Column(name = "chat_id")

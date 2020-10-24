@@ -2,13 +2,15 @@ DROP TABLE IF EXISTS event_member;
 
 create table event_member
 (
-	event_id bigint not null
-		constraint fkef0fc2wj4p4m7dd6h25hpnxkm
-			references events,
-	users_id bigint not null
-		constraint uk_7pq3uhr4meu5l0ll87xrtvnhv
-			unique
-		constraint fkfrv833vdxaa4clyh122liby6h
+	id bigserial not null
+		constraint event_member_pkey
+			primary key,
+	status varchar(255),
+	event_id bigint
+		constraint fke7ttqbdxnpwren6fg3wktsash
+			references event_member,
+	user_id bigint
+		constraint fkoobns1hxage1y1gcnf9ol8y2m
 			references users
 );
 
