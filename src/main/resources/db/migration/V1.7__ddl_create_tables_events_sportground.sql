@@ -14,6 +14,18 @@ create table sportgrounds
 			references sport_types
 );
 
+DROP TABLE IF EXISTS sportgrounds_sport_type;
+
+create table sportgrounds_sport_type
+(
+	sport_ground_id bigint not null
+		constraint fk9tqum2ai20tvt84ax4t2jov6p
+			references sportgrounds,
+	sport_type_id smallint not null
+		constraint fkr7ubsrb22peqtauunliodxc9a
+			references sport_types
+);
+
 DROP TABLE IF EXISTS events;
 
 create table events

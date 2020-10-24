@@ -36,9 +36,9 @@ public class SportGround {
     private String title;
 
     // Вид спорта
-    @ManyToOne
+    @ManyToMany
     @JoinColumn(name = "sport_type_id", nullable = false)
-    private SportType sportType;
+    private List<SportType> sportType;
 
     // Список мероприятий на площадке
     @OneToMany(mappedBy = "sportGround")
