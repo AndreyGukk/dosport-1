@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Dto представление сущности Мероприятие
@@ -25,7 +26,7 @@ public class EventDto {
 
     private Long idSportGround;
 
-    private List<UserDto> users;
+    private Set<UserDto> users;
 
     private Long idChat;
 }

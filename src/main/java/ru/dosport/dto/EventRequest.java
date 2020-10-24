@@ -5,6 +5,8 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
+import java.time.LocalDate;
+
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
 /**
@@ -14,15 +16,20 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EventRequest {
 
-    @NotBlank(message = DATA_NOT_BLANK + "Дата и время начала")
-    private String startDateTime;
+    @NotBlank(message = DATA_NOT_BLANK + "Дата")
+    private LocalDate dateEvent;
 
-    @NotBlank(message = DATA_NOT_BLANK + "Дата и время завершения")
-    private String stopDateTime;
+    @NotBlank(message = DATA_NOT_BLANK + "Время начала")
+    private String startTimeEvent;
+
+    private String endTimeEvent;
 
     @NotBlank(message = DATA_NOT_BLANK + "Вид спорта")
-    private SportTypeDto sportType;
+    private String sportTypeTitle;
 
     @NotBlank(message = DATA_NOT_BLANK + "Игровая площадка")
-    private FieldDto field;
+    private String idSportGround;
+
+    @NotBlank(message = DATA_NOT_BLANK + "Организатор")
+    private String idOrganizer;
 }
