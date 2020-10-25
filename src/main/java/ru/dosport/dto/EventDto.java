@@ -2,6 +2,7 @@ package ru.dosport.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import ru.dosport.entities.EventMember;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,7 +27,9 @@ public class EventDto {
 
     private Long idSportGround;
 
-    private Set<UserDto> users;
+    private Long idOrganizer;
+
+    private Set<MemberDto> members;
 
     private Long idChat;
 }

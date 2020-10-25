@@ -1,6 +1,7 @@
 package ru.dosport.mappers;
 
 import org.mapstruct.*;
+import ru.dosport.dto.MemberDto;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
 import ru.dosport.entities.EventMember;
@@ -16,17 +17,12 @@ import java.util.List;
 public interface MemberMapper {
 
     @Mappings({
-            @Mapping(target = "id", source = "entity.user.id"),
-            @Mapping(target = "username", source = "entity.user.username"),
-            @Mapping(target = "firstName", source = "entity.user.firstName"),
-            @Mapping(target = "lastName", source = "entity.user.lastName"),
-            @Mapping(target = "gender", source = "entity.user.gender"),
-            @Mapping(target = "info", source = "entity.user.info"),
-            @Mapping(target = "photoLink", source = "entity.user.photoLink"),
-            @Mapping(target = "hideBirthdayDate", ignore = true),
-            @Mapping(target="birthdayDate", source = "entity.user.birthdayDate", dateFormat = "dd-MM-yyyy")
+            @Mapping(target = "idEvent", source = "entity.event.id")
     })
-    UserDto mapEntityToDto(EventMember entity);
+    MemberDto mapEntityToDto(EventMember entity);
 
-    List<UserDto> mapEntityToDto(List<EventMember> entities);
+    List<MemberDto> mapEntityToDto(List<EventMember> entities);
+
+    @Mapping(target = "event", ignore = true)
+    EventMember mapDtoToEntity(MemberDto dto);
 }

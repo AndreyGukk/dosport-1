@@ -1,7 +1,9 @@
 package ru.dosport.services.api;
 
+import org.springframework.security.core.Authentication;
 import ru.dosport.dto.EventDto;
 import ru.dosport.dto.EventRequest;
+import ru.dosport.dto.MemberDto;
 
 import java.util.List;
 
@@ -52,15 +54,20 @@ public interface EventService {
      * Изменить данные мероприятия по его id
      *
      * @param eventDto мероприятие с измененными данными
-     * @param id индекс мероприятия
+     * @param idEvent индекс мероприятия
      */
-    EventDto update(EventDto eventDto, Long id);
+    EventDto update(EventDto eventDto, Long idEvent, Authentication authentication);
 
     /**
      * Удалить мероприятие по его идентификатору
      *
      * @param id идентификатор мероприятия
+     * @param authentication
      * @return удалено ли мероприятие
      */
-    boolean deleteById(Long id);
+    boolean deleteById(Long id, Authentication authentication);
+
+    List<MemberDto> getAllMembers(Long idEvent);
+
+    MemberDto createEventMember(Long idEvent, MemberDto memberDto);
 }

@@ -17,7 +17,7 @@ public class SportGroundController {
 
     private final SportGroundService sportGroundService;
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<List<SportGroundDto>> readAllSportGround() {
         return ResponseEntity.ok(sportGroundService.getAllDto());
     }
