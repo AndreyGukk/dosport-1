@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Positive;
 
 /**
  * Dto представление сущности Спортивные навыки пользователя
@@ -13,8 +14,8 @@ import javax.validation.constraints.Digits;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserSportTypeDto {
 
-    @DecimalMin(value = "0.0")
-    @Digits(integer = 19, fraction = 0)
+@Positive
+@Digits(integer = 19, fraction = 0)
     private Long userId;
 
     private String firstname;

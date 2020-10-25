@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class SportTypeService implements ru.dosport.services.api.SportTypeService {
+public class SportTypeServiceImpl implements ru.dosport.services.api.SportTypeService {
     private final SportTypeRepository sportTypeRepository;
     private final SportTypeMapper sportTypeMapper;
 

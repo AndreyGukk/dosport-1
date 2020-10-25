@@ -19,22 +19,28 @@ public interface UserSportTypeService {
      *
      * @return список навыков пользователя
      */
-    List<UserSportTypeDto> getAllDtoByUserId(Long id, Authentication authentication);
+    List<UserSportTypeDto> getAllDtoByUserId(Long id);
 
+    /**
+     * Выдает список навыков пользователя по аутентификации
+     *
+     * @return список навыков пользователя
+     */
+    List<UserSportTypeDto> getAllDtoByUserId(Authentication authentication);
 
     /**
      * Создает новый список навыков пользователя по id, если его нет
      *
      * @return список навыков пользователя по id
      */
-    List<UserSportTypeDto> createUserSportTypesList(Long id, Authentication authentication);
+    List<UserSportTypeDto> createUserSportTypesList(Authentication authentication);
 
     /**
      * Создает новый список навыков пользователя по id, если его нет
      *
      * @return список навыков пользователя по id
      */
-    List<UserSportTypeDto> updateByUserId(Long id, List<UserSportTypeDto> dtoList, Authentication authentication);
+    List<UserSportTypeDto> updateByUserId(List<UserSportTypeDto> dtoList, Authentication authentication);
 
 
 

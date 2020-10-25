@@ -1,7 +1,6 @@
 package ru.dosport.mappers;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
 import ru.dosport.dto.UserSportTypeDto;
 import ru.dosport.entities.UserSportType;
 
@@ -14,8 +13,5 @@ public interface UserSportTypeMapper {
     UserSportTypeDto mapEntityToDto(UserSportType entity);
 
     List<UserSportType> mapDtoToEntity (List<UserSportTypeDto> dtos);
-    List<UserSportType> mapEntityToDto (List<UserSportType> entities);
-
-    Map<UserSportType, Byte> mapDtoToEntity (Map<UserSportTypeDto, Byte> dtos);
-    Map<UserSportType, Byte> mapEntityToDto (Map<UserSportType, Byte> entities);
+    List<UserSportTypeDto> mapEntityToDto (List<UserSportType> entities);
 }

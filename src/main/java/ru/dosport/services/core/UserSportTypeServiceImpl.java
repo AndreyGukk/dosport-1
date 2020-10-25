@@ -32,28 +32,29 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
     private final UserService userService;
 
     @Override
-    public List<UserSportTypeDto> getAllDtoByUserId(Long id, Authentication authentication) {
-
-        return userSportTypeRepository.findAll().stream().filter(i -> i.getUserId()==id).map(userSportTypeMapper::mapEntityToDto).collect(Collectors.toList());
+    public List<UserSportTypeDto> getAllDtoByUserId(Long id) {
+        return userSportTypeMapper.mapEntityToDto(userSportTypeRepository.findAllByUserId(id));
     }
 
     @Override
-    public List<UserSportTypeDto> createUserSportTypesList(Long id, Authentication authentication) {
-        if (userService.getByUsername(authentication.getName()).getId() == id) {
-            List<UserSportTypeDto> newList = new ArrayList<>();
-            //todo заполнить лист видами спорта и нулевыми значениями навыков
-            return newList;
-        } else return null;
+    public List<UserSportTypeDto> getAllDtoByUserId(Authentication authentication) {
+        return userSportTypeMapper.mapEntityToDto(userSportTypeRepository.findAllByUserId(userService.getByUsername(authentication.getName()).getId()));
     }
 
     @Override
-    public List<UserSportTypeDto> updateByUserId(Long id, List<UserSportTypeDto> dtoList, Authentication authentication) {
-        if (userService.getByUsername(authentication.getName()).getId() == id) {
-            List<UserSportTypeDto> newList = new ArrayList<>();
+    public List<UserSportTypeDto> createUserSportTypesList(Authentication authentication) {
+        List<UserSportTypeDto> newList = new ArrayList<>();
 
-            //todo написать метод
-            return newList;
-        } else return null;
+        //todo заполнить лист видами спорта и нулевыми значениями навыков скорее всего перенести в мапу
+        return newList;
+    }
+
+    @Override
+    public List<UserSportTypeDto> updateByUserId(List<UserSportTypeDto> dtoList, Authentication authentication) {
+        List<UserSportTypeDto> newList = new ArrayList<>();
+
+        //todo написать метод
+        return newList;
     }
 
 

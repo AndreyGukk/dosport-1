@@ -34,23 +34,15 @@ public class UserSportTypeController {
     @ApiOperation(value = "Выводит список навыков пользователся по id пользователя")
     @Secured(value = {ROLE_ADMIN, ROLE_USER})
     @GetMapping("/{id}")
-    public ResponseEntity<List<UserSportTypeDto>> readAllSportTypesByUserId(@PathVariable("userId") long id,
-                                                                            Authentication authentication) {
-        List<UserSportTypeDto> userSportTypeDtoList = userSportTypeService.getAllDtoByUserId(id, authentication);
-        return userSportTypeDtoList.size() == 0 ?
-                new ResponseEntity<>(userSportTypeService.createUserSportTypesList(id, authentication), HttpStatus.NO_CONTENT) :
-                new ResponseEntity<>(userSportTypeDtoList, HttpStatus.OK);
+    public ResponseEntity<List<UserSportTypeDto>> readAllSportTypesByUserId(@PathVariable("userId") long id) {
+        return new ResponseEntity<>(userSportTypeService.getAllDtoByUserId(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Изменяет список навыков пользователся по id пользователя")
-    @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @PostMapping("/{id}")
-    public ResponseEntity<List<UserSportTypeDto>> updateUserSportTypesByUserId(@PathVariable("userId") long id,
-                                                                               List<UserSportTypeDto> dtoList,
-                                                                       Authentication authentication) {
-        List<UserSportTypeDto> sportTypeDtosList = userSportTypeService.updateByUserId(id, dtoList, authentication);
-        return sportTypeDtosList.size() == 0 ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) :
-                new ResponseEntity<>(sportTypeDtosList, HttpStatus.OK);
+    @Secured(value = {ROLE_USER})
+    @PostMapping("")
+    public ResponseEntity<List<UserSportTypeDto>> updateUserSportTypesByUserId(List<UserSportTypeDto> dtoList,
+                                                                               Authentication authentication) {
+        return new ResponseEntity<>(userSportTypeService.updateByUserId(dtoList, authentication), HttpStatus.OK);
     }
 }

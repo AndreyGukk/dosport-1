@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import ru.dosport.entities.UserSportType;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -33,6 +34,14 @@ public interface UserSportTypeRepository extends JpaRepository<UserSportType, Lo
      */
     @Query("SELECT s FROM UserSport s WHERE s.userId = ?1 AND s.sportTypeId = ?2")
     Optional<UserSportType> findByUserIdAndSportTypeId(long userId, short sportTypeId);
+
+
+    /**
+     * Поиск списка навыков по userId
+     * @return
+     */
+    @Query("SELECT s FROM UserSport s WHERE s.userId = ?1")
+    List<UserSportType> findAllByUserId(long userId);
 
     /**
      * Добавление уровня владения видом спорта.
