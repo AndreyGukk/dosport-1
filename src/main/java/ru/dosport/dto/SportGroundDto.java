@@ -15,7 +15,6 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SportGroundDto {
-    //todo    Карта указыватеся есть ивент или нет на площадке;
 
     private Long idSportGround;
 

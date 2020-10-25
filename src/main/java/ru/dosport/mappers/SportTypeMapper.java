@@ -30,4 +30,5 @@ public interface SportTypeMapper {
     })
     SportType mapDtoToEntity(SportTypeDto dto);
 
+    List<SportType> mapDtoToEntity(List<SportTypeDto> dtos);
 }
