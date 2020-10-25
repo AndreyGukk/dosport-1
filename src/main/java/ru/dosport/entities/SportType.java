@@ -24,4 +24,8 @@ public class SportType {
     // Вид спорта
     @Column(name = "title", nullable = false, unique = true)
     private String title;
+
+    public SportType(String title) {
+        this.title = title;
+    }
 }
