@@ -20,6 +20,7 @@ public interface EventMapper {
             @Mapping(target="endTimeEvent", source = "entity.endTime", dateFormat = "hh:mm"),
             @Mapping(target="idSportGround", source = "entity.sportGround.id"),
             @Mapping(target="users", source = "entity.members"),
+            @Mapping(target="idOrganizer", source = "entity.organizer.id")
     })
     EventDto mapEntityToDto(Event entity);
 
@@ -29,7 +30,7 @@ public interface EventMapper {
             @Mapping(target = "id", source = "dto.idEvent"),
             @Mapping(target = "date", source = "dto.dateEvent", dateFormat = "dd-MM-yyyy"),
             @Mapping(target="startTime", source = "dto.startTimeEvent", dateFormat = "hh:mm"),
-            @Mapping(target="endTime", source = "dto.endTimeEvent", dateFormat = "hh:mm"),
+            @Mapping(target="endTime", source = "dto.endTimeEvent", dateFormat = "hh:mm")
     })
     Event mapDtoToEntity(EventDto dto);
 
