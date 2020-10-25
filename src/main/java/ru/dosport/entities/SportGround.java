@@ -1,8 +1,6 @@
 package ru.dosport.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,14 +11,14 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "sportgrounds")
 public class SportGround {
 
     //TODO:
-    // 1. раскомментировать и дописать поля сущности
-    // 2. построить правильные соотношения полей сущностей с БД
-    // 3. создать скрипт создания таблицы БД по образу имеющихся в resourses/db.migration
+    // 1. Список избраных площадок
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
