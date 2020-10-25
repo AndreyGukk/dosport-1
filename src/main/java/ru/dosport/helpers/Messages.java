@@ -13,8 +13,6 @@ public final class Messages {
      */
     public static final String USER_WAS_FOUND = "Пользователь с логином %s загружен";
 
-    public static final String SWAGGER_IS_INITIALIZING = "Инициализируется Swagger";
-
     public static final String SWAGGER_WAS_STARTED = "Swagger запущен";
 
     /**
