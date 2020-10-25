@@ -1,5 +1,6 @@
 package ru.dosport.controllers;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +18,19 @@ public class SportGroundController {
 
     private final SportGroundService sportGroundService;
 
-    @GetMapping()
+    @ApiOperation(value = "Отображает данные всех площадок")
+    @GetMapping
     public ResponseEntity<List<SportGroundDto>> readAllSportGround() {
         return ResponseEntity.ok(sportGroundService.getAllDto());
     }
 
+    @ApiOperation(value = "Отображает данные площадки по её индексу")
     @GetMapping("/{id}")
     public ResponseEntity<SportGroundDto> readSportGround(@PathVariable Long id) {
         return ResponseEntity.ok(sportGroundService.getSportGroundDtoById(id));
     }
 
+    @ApiOperation(value = "Создаёт площадку")
     @PostMapping
     public ResponseEntity<?> createSportGround(@RequestBody SportGroundRequest groundRequest) {
         return ResponseEntity.ok(sportGroundService.create(groundRequest));

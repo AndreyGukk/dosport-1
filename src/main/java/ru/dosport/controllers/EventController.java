@@ -33,6 +33,7 @@ public class EventController {
     // Необходимые сервисы
     private final EventService eventService;
 
+    @ApiOperation(value = "Отображает данные всех мероприятий")
     @GetMapping
     public ResponseEntity<List<EventDto>> readAllEvent() {
         return ResponseEntity.ok(eventService.getAllDto());
@@ -59,16 +60,19 @@ public class EventController {
         return ResponseEntity.ok(eventService.update(eventDto, id, authentication));
     }
 
+    @ApiOperation(value = "Удаляет мероприятие по его индексу")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEvent(@PathVariable Long id, Authentication authentication) {
         return eventService.deleteById(id, authentication) ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
     }
 
+    @ApiOperation(value = "Отображает данные всех участников мероприятия")
     @GetMapping("/{id}/members/")
     public ResponseEntity<List<MemberDto>> readEventMember(@PathVariable Long id) {
         return ResponseEntity.ok(eventService.getAllMembers(id));
     }
 
+    @ApiOperation(value = "Добавляет участника в мероприятие")
     @PostMapping("/{id}/members")
     public ResponseEntity<?> addMember(@PathVariable Long id, @RequestBody MemberDto memberDto) {
         return eventService.createEventMember(id, memberDto) != null ?

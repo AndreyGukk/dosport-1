@@ -19,7 +19,7 @@ public interface EventMapper {
             @Mapping(target="startTimeEvent", source = "entity.startTime", dateFormat = "hh:mm"),
             @Mapping(target="endTimeEvent", source = "entity.endTime", dateFormat = "hh:mm"),
             @Mapping(target="idSportGround", source = "entity.sportGround.id"),
-            @Mapping(target="users", source = "entity.members"),
+            @Mapping(target="members", source = "entity.members"),
             @Mapping(target="idOrganizer", source = "entity.organizer.id")
     })
     EventDto mapEntityToDto(Event entity);
