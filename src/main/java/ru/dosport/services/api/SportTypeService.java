@@ -13,4 +13,5 @@ public interface SportTypeService {
 
     SportType getSportTypeByTitle(String title);
 
+    SportTypeDto save(String sportTitle);
 }

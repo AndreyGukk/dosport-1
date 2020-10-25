@@ -9,6 +9,7 @@ import ru.dosport.mappers.SportTypeMapper;
 import ru.dosport.repositories.SportTypeRepository;
 import ru.dosport.services.api.SportTypeService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
@@ -36,6 +37,12 @@ public class SportTypeServiceImpl implements SportTypeService {
         return repository.findByTitle(title).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, title))
         );
+    }
+
+    @Transactional
+    @Override
+    public SportTypeDto save(String sportTitle) {
+        return mapper.mapEntityToDto(repository.save(new SportType(sportTitle)));
     }
 
     private SportType findById(Short id) {
