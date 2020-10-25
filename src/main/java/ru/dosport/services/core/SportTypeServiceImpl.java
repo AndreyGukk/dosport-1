@@ -11,6 +11,7 @@ import ru.dosport.services.api.SportTypeService;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 
@@ -42,7 +43,8 @@ public class SportTypeServiceImpl implements SportTypeService {
     @Transactional
     @Override
     public SportTypeDto save(String sportTitle) {
-        return mapper.mapEntityToDto(repository.save(new SportType(sportTitle)));
+        Optional<SportType> sport = repository.findByTitle(sportTitle);
+        return sport.isPresent() ? mapper.mapEntityToDto(sport.get()) : mapper.mapEntityToDto(repository.save(new SportType(sportTitle)));
     }
 
     private SportType findById(Short id) {
