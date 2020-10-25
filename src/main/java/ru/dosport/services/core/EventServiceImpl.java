@@ -9,9 +9,9 @@ import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.mappers.EventMapper;
 import ru.dosport.repositories.EventRepository;
-import ru.dosport.repositories.SportGroundRepository;
 import ru.dosport.repositories.UserRepository;
 import ru.dosport.services.api.EventService;
+import ru.dosport.services.api.SportGroundService;
 import ru.dosport.services.api.SportTypeService;
 
 import javax.transaction.Transactional;
@@ -27,17 +27,16 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
-
     // Необходимые сервисы и мапперы
     private final EventMapper eventMapper;
 
     // Необходимые репозитории
     private final EventRepository eventRepository;
     //todo: избавиться от лишних репозиториев
-    private final SportGroundRepository sportGroundRepository;
     private final UserRepository userRepository;
 
     private final SportTypeService sportTypeService;
+    private final SportGroundService sportGroundService;
 
     @Override
     public EventDto getDtoById(Long id) {
@@ -56,8 +55,7 @@ public class EventServiceImpl implements EventService {
                 .date(eventRequest.getDateEvent())
                 .startTime(LocalDateTime.parse(eventRequest.getStartTimeEvent()))
                 .sportType(sportTypeService.getSportTypeByTitle(eventRequest.getSportTypeTitle()))
-                .sportGround(sportGroundRepository.findById(Long.valueOf(eventRequest.getIdSportGround()))
-                        .orElseThrow(() -> new DataBadRequestException("Площадка не найдена")))
+                .sportGround(sportGroundService.getSportGroundById(Long.valueOf(eventRequest.getIdSportGround())))
                 .organizer(userRepository.findById(Long.valueOf(eventRequest.getIdOrganizer()))
                         .orElseThrow(() -> new DataBadRequestException("Пользователь не найден")))
                 .build();
