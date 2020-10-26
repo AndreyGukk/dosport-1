@@ -47,13 +47,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getByUsername(String username) {
-        return findByUsername(username);
-    }
-
-    @Override
-    public UserDto getDtoByUsername(String username) {
-        return userMapper.mapEntityToDto(findByUsername(username));
+    public UserDto getDtoByAuthentication(Authentication authentication) {
+        return userMapper.mapEntityToDto(findById(getUserId(authentication)));
     }
 
     @Override
@@ -78,7 +73,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         User newUser = userMapper.mapDtoToEntity(userRequest);
         newUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        newUser.setEnabled(true);
         newUser.setGender(Gender.NOT_SELECTED);
         Authority authority = authorityRepository.findByAuthority(ROLE_USER);
         newUser.getAuthorities().add(authority);
@@ -86,14 +80,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDto update(UserDto userDto, String username) {
-        User user = userMapper.update(findByUsername(username), userDto);
-        return userMapper.mapEntityToDto(userRepository.save(user));
-    }
-
-    @Override
-    public UserDto update(UserDto userDto, Long id) {
-        User user = userMapper.update(findById(id), userDto);
+    public UserDto update(UserDto userDto, Authentication authentication) {
+        User user = userMapper.update(findById(getUserId(authentication)), userDto);
         return userMapper.mapEntityToDto(userRepository.save(user));
     }
 
@@ -139,5 +127,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_BY_USERNAME, username)));
+    }
+
+    /**
+     * Получить id пользователя по аутентификации
+     */
+    private Long getUserId(Authentication authentication) {
+        JwtUser jwtUser = (JwtUser) authentication.getPrincipal();
+        return jwtUser.getId();
     }
 }

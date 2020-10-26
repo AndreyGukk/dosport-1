@@ -36,7 +36,7 @@ public class UserController {
     @ApiOperation(value = "Выводит данные пользователя")
     @GetMapping(value = "", produces = DATA_TYPE)
     public ResponseEntity<UserDto> readUser(Authentication authentication) {
-        return new ResponseEntity<>(userService.getDtoByUsername(authentication.getName()), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getDtoByAuthentication(authentication), HttpStatus.OK);
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
@@ -44,7 +44,7 @@ public class UserController {
     @PatchMapping(value = "", produces = DATA_TYPE)
     public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto,
                                               Authentication authentication) {
-        return new ResponseEntity<>(userService.update(userDto, authentication.getName()), HttpStatus.OK);
+        return new ResponseEntity<>(userService.update(userDto, authentication), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Создает новый профиль пользователя")
