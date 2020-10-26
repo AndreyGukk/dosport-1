@@ -4,7 +4,6 @@ import org.springframework.security.core.Authentication;
 import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
-import ru.dosport.entities.User;
 import ru.dosport.security.JwtUser;
 
 import java.util.List;
@@ -38,28 +37,28 @@ public interface UserService {
     UserDto getDtoById(Long id);
 
     /**
-     * Найти пользователя по логину
+     * Найти пользователя по данным авторизации
      *
-     * @param username логин пользователя
+     * @param authentication данные авторизации
      * @return пользователь
      */
-    UserDto getDtoByUsername(String username);
+    UserDto getDtoByAuthentication(Authentication authentication);
 
     /**
-     * Получить Jwt Пользователя для генерации токенов
+     * Найти Jwt пользователя
      *
      * @param username логин пользователя
-     * @return общая сущность Пользователя
+     * @return Jwt Пользователь
      */
     JwtUser getJwtByUsername(String username);
 
     /**
-     * Получить общего Пользователя для межсервисного взаимодействия
+     * Получить id пользователя по авторизации
      *
-     * @param username логин пользователя
-     * @return общая сущность Пользователя
+     * @param authentication данные авторизации
+     * @return id Пользователя
      */
-    User getByUsername(String username);
+    Long getIdByAuthentication(Authentication authentication);
 
     /**
      * Найти всех пользователей
@@ -71,32 +70,24 @@ public interface UserService {
     /**
      * Создать нового пользователя
      *
-     * @param userRequest отображение данных пользователя
+     * @param userRequest запрос с данными пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
     UserDto save(UserRequest userRequest);
 
     /**
-     * Изменить данные пользователя по его username
+     * Изменить данные пользователя
      *
      * @param userDto пользователь с измененными данными
-     * @param username логин пользователя
+     * @param authentication данные авторизации
      */
-    UserDto update(UserDto userDto, String username);
-
-    /**
-     * Изменить данные пользователя по его id
-     *
-     * @param userDto пользователь с измененными данными
-     * @param id индекс пользователя
-     */
-    UserDto update(UserDto userDto, Long id);
+    UserDto update(UserDto userDto, Authentication authentication);
 
     /**
      * Изменить пароль пользователя
      *
      * @param passwordRequest данные для изменения пароля
-     * @param authentication авторизация
+     * @param authentication данные авторизации
      * @return измененен ли пользователь
      */
     boolean updatePassword(PasswordRequest passwordRequest, Authentication authentication);
