@@ -37,20 +37,28 @@ public interface UserService {
     UserDto getDtoById(Long id);
 
     /**
-     * Найти пользователя по аутентификации
+     * Найти пользователя по данным авторизации
      *
-     * @param authentication данные аутентификации
+     * @param authentication данные авторизации
      * @return пользователь
      */
     UserDto getDtoByAuthentication(Authentication authentication);
 
     /**
-     * Получить Jwt пользователя
+     * Найти Jwt пользователя
      *
      * @param username логин пользователя
-     * @return Jwt обертка Пользователя
+     * @return Jwt Пользователь
      */
     JwtUser getJwtByUsername(String username);
+
+    /**
+     * Получить id пользователя по авторизации
+     *
+     * @param authentication данные авторизации
+     * @return id Пользователя
+     */
+    Long getIdByAuthentication(Authentication authentication);
 
     /**
      * Найти всех пользователей
@@ -68,10 +76,10 @@ public interface UserService {
     UserDto save(UserRequest userRequest);
 
     /**
-     * Изменить данные пользователя по аутентификации
+     * Изменить данные пользователя
      *
      * @param userDto пользователь с измененными данными
-     * @param authentication данные аутентификации
+     * @param authentication данные авторизации
      */
     UserDto update(UserDto userDto, Authentication authentication);
 
@@ -79,7 +87,7 @@ public interface UserService {
      * Изменить пароль пользователя
      *
      * @param passwordRequest данные для изменения пароля
-     * @param authentication данные аутентификации
+     * @param authentication данные авторизации
      * @return измененен ли пользователь
      */
     boolean updatePassword(PasswordRequest passwordRequest, Authentication authentication);

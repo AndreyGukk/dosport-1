@@ -57,6 +57,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public Long getIdByAuthentication(Authentication authentication) {
+        return getUserId(authentication);
+    }
+
+    @Override
     public List<UserDto> getAllDto() {
         return userMapper.mapEntityToDto(userRepository.findAll());
     }
@@ -130,10 +135,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     /**
-     * Получить id пользователя по аутентификации
+     * Получить id пользователя по данным аутентификации
      */
     private Long getUserId(Authentication authentication) {
-        JwtUser jwtUser = (JwtUser) authentication.getPrincipal();
-        return jwtUser.getId();
+        return ((JwtUser) authentication.getPrincipal()).getId();
     }
 }
