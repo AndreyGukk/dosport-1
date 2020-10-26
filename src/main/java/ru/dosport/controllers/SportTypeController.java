@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.SportTypeDto;
 import ru.dosport.services.api.SportTypeService;
@@ -31,6 +32,13 @@ public class SportTypeController {
     @GetMapping
     public ResponseEntity<List<SportTypeDto>> readAllSportTypes() {
         return new ResponseEntity<>(sportTypeService.getAllDto(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Выводит список видов спорта, которых еще нет у пользователя")
+    @Secured(value = ROLE_USER)
+    @GetMapping
+    public ResponseEntity<List<SportTypeDto>> readAllEmptySportTypes(Authentication authentication) {
+        return new ResponseEntity<>(sportTypeService.getAllDto(authentication), HttpStatus.OK);
     }
 
     @ApiOperation("Добавляет вид спорта")

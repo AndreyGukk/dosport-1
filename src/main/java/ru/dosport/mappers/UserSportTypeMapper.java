@@ -17,12 +17,4 @@ public interface UserSportTypeMapper {
 
     List<UserSportType> mapDtoToEntity (List<UserSportTypeDto> dtos);
     List<UserSportTypeDto> mapEntityToDto (List<UserSportType> entities);
-
-    //todo тут надо разобраться
-    @Mapping({
-            @Mapping(target="userId", source = "userId"),
-            @Mapping(target="userId", source = "userId"),
-            @Mapping(target="userId", source = "userId")
-    })
-    List<UserSportType> mapSportTypeToEmptyUserSportType (List<SportType> sportTypes, Long userId);
 }

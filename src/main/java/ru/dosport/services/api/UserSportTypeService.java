@@ -33,13 +33,6 @@ public interface UserSportTypeService {
      *
      * @return список навыков пользователя по id
      */
-    List<UserSportTypeDto> createUserSportTypesList(Authentication authentication);
-
-    /**
-     * Создает новый список навыков пользователя по id, если его нет
-     *
-     * @return список навыков пользователя по id
-     */
     List<UserSportTypeDto> updateByUserId(List<UserSportTypeDto> dtoList, Authentication authentication);
 
 

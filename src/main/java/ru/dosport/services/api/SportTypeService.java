@@ -20,6 +20,12 @@ public interface SportTypeService {
      */
     List<SportTypeDto> getAllDto();
 
+    /**
+     * Выдает список видов спорта, которых еще нет в навыках пользователя
+     *
+     * @return список видов спорта
+     */
+    List<SportTypeDto> getAllDto(Authentication authentication);
 
     /**
      * Добавляет вид спорта

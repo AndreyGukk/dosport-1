@@ -38,7 +38,7 @@ public class UserSportTypeController {
         return new ResponseEntity<>(userSportTypeService.getAllDtoByUserId(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Выводит собственных навыков пользователся")
+    @ApiOperation(value = "Выводит список собственных навыков пользователся")
     @Secured(value = {ROLE_USER})
     @GetMapping("")
     public ResponseEntity<List<UserSportTypeDto>> readAllSportTypes(Authentication authentication) {

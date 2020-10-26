@@ -38,17 +38,7 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
 
     @Override
     public List<UserSportTypeDto> getAllDtoByUserId(Authentication authentication) {
-        if (userSportTypeRepository.existsById(userService.getByUsername(authentication.getName()).getId()))
             return userSportTypeMapper.mapEntityToDto(userSportTypeRepository.findAllByUserId(userService.getByUsername(authentication.getName()).getId()));
-        else return createUserSportTypesList(authentication);
-    }
-
-    @Override
-    public List<UserSportTypeDto> createUserSportTypesList(Authentication authentication) {
-        List<UserSportTypeDto> newList = new ArrayList<>();
-
-        //todo заполнить лист видами спорта и нулевыми значениями навыков скорее всего перенести в мапу
-        return newList;
     }
 
     @Override
