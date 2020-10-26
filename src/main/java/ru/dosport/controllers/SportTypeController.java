@@ -5,15 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.SportTypeDto;
-import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.services.api.SportTypeService;
 
 import java.util.List;
 
-import static ru.dosport.helpers.Messages.*;
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
 import static ru.dosport.helpers.Roles.ROLE_USER;
 

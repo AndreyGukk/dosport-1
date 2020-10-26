@@ -38,7 +38,14 @@ public class UserSportTypeController {
         return new ResponseEntity<>(userSportTypeService.getAllDtoByUserId(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Изменяет список навыков пользователся по id пользователя")
+    @ApiOperation(value = "Выводит собственных навыков пользователся")
+    @Secured(value = {ROLE_USER})
+    @GetMapping("")
+    public ResponseEntity<List<UserSportTypeDto>> readAllSportTypes(Authentication authentication) {
+        return new ResponseEntity<>(userSportTypeService.getAllDtoByUserId(authentication), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Изменяет список навыков пользователся")
     @Secured(value = {ROLE_USER})
     @PostMapping("")
     public ResponseEntity<List<UserSportTypeDto>> updateUserSportTypesByUserId(List<UserSportTypeDto> dtoList,

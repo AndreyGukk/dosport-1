@@ -38,7 +38,9 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
 
     @Override
     public List<UserSportTypeDto> getAllDtoByUserId(Authentication authentication) {
-        return userSportTypeMapper.mapEntityToDto(userSportTypeRepository.findAllByUserId(userService.getByUsername(authentication.getName()).getId()));
+        if (userSportTypeRepository.existsById(userService.getByUsername(authentication.getName()).getId()))
+            return userSportTypeMapper.mapEntityToDto(userSportTypeRepository.findAllByUserId(userService.getByUsername(authentication.getName()).getId()));
+        else return createUserSportTypesList(authentication);
     }
 
     @Override
@@ -51,10 +53,11 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
 
     @Override
     public List<UserSportTypeDto> updateByUserId(List<UserSportTypeDto> dtoList, Authentication authentication) {
-        List<UserSportTypeDto> newList = new ArrayList<>();
-
-        //todo написать метод
-        return newList;
+        for (UserSportType s : userSportTypeMapper.mapDtoToEntity(dtoList)) {
+            findByUserIdAndSportTypeId(userService.getByUsername(authentication.getName()).getId(), s.getSportTypeId()).setLevel(s.getLevel());
+        }
+        //todo переписать красиво
+        return getAllDtoByUserId(authentication);
     }
 
 
@@ -95,5 +98,4 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
         }
     }
 
-    //todo добавить методы получения списков и изменения
 }

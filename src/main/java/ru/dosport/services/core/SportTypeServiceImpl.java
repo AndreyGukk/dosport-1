@@ -21,7 +21,7 @@ public class SportTypeServiceImpl implements ru.dosport.services.api.SportTypeSe
 
     @Override
     public List<SportTypeDto> getAllDto() {
-        return sportTypeRepository.findAll().stream().map(sportTypeMapper :: mapEntityToDto).collect(Collectors.toList());
+        return sportTypeMapper.mapEntityToDto(sportTypeRepository.findAll());
     }
 
     @Override
