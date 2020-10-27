@@ -41,5 +41,5 @@ public interface SportTypeService {
      * @param id запрос на добавление вида спорта
      * @return вид спорта, сохраненный в репозитории
      */
-    Boolean deleteById(Long id);
+    Boolean deleteById(Short id);
 }

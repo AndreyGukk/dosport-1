@@ -9,6 +9,7 @@ import ru.dosport.dto.UserSportTypeDto;
 import ru.dosport.entities.SportType;
 import ru.dosport.entities.UserSportType;
 import ru.dosport.mappers.SportTypeMapper;
+import ru.dosport.mappers.UserSportTypeMapper;
 import ru.dosport.repositories.SportTypeRepository;
 import ru.dosport.repositories.UserSportTypeRepository;
 import ru.dosport.services.api.UserService;
@@ -18,13 +19,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Log4j2
 @RequiredArgsConstructor
 public class SportTypeServiceImpl implements ru.dosport.services.api.SportTypeService {
     private final SportTypeRepository sportTypeRepository;
-    private final UserSportTypeRepository userSportTypeRepository;
     private final SportTypeMapper sportTypeMapper;
     private final UserSportTypeService userSportTypeService;
+    private final UserSportTypeMapper userSportTypeMapper;
     private final UserService userService;
 
     @Override
@@ -35,7 +35,7 @@ public class SportTypeServiceImpl implements ru.dosport.services.api.SportTypeSe
     @Override
     public List<SportTypeDto> getAllDto(Authentication authentication) {
         List<SportTypeDto> listAll = getAllDto(); //список всех видов спорта
-        List<UserSportType> list =userSportTypeRepository.findAllByUserId(userService.getIdByAuthentication(authentication));//список навыков юзера
+        List<UserSportType> list = userSportTypeMapper.mapDtoToEntity(userSportTypeService.getAllDtoByUserId(userService.getIdByAuthentication(authentication))); //список навыков юзера
         list.forEach(s -> listAll.remove(s.getSportTypeId()));
         return getAllDto();
     }
@@ -47,7 +47,7 @@ public class SportTypeServiceImpl implements ru.dosport.services.api.SportTypeSe
     }
 
     @Override
-    public Boolean deleteById(Long id) {
+    public Boolean deleteById(Short id) {
         sportTypeRepository.deleteById(id);
         return sportTypeRepository.existsById(id);
     }

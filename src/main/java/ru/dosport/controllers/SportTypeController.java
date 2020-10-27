@@ -51,7 +51,7 @@ public class SportTypeController {
     @ApiOperation("Удаляет вид спорта")
     @Secured(value = ROLE_ADMIN)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteSportTypeById(@PathVariable("id") long id) {
+    public ResponseEntity<Boolean> deleteSportTypeById(@PathVariable("id") Short id) {
         return new ResponseEntity(sportTypeService.deleteById(id), HttpStatus.OK);
     }
 }

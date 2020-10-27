@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
 /**
- * Список видов спорта
+ * Сущность вида спорта
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

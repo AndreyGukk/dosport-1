@@ -47,7 +47,7 @@ public class UserSportTypeController {
 
     @ApiOperation(value = "Изменяет список навыков пользователся")
     @Secured(value = {ROLE_USER})
-    @PostMapping("")
+    @PutMapping("")
     public ResponseEntity<List<UserSportTypeDto>> updateUserSportTypesByUserId(List<UserSportTypeDto> dtoList,
                                                                                Authentication authentication) {
         return new ResponseEntity<>(userSportTypeService.updateByUserId(dtoList, authentication), HttpStatus.OK);
