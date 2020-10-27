@@ -47,7 +47,7 @@ public class AuthenticationController {
     @PostMapping("login")
     public ResponseEntity<Map<String, String>> login(@Valid @RequestBody AuthenticationRequest requestDto) {
         try {
-            String username = requestDto.getUsername();
+            String username = requestDto.getEmail();
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             JwtUser user = userService.getJwtByUsername(username);
@@ -56,7 +56,7 @@ public class AuthenticationController {
             }
             log.debug(String.format(USER_WAS_FOUND, username));
 
-            String token = jwtTokenProvider.createToken(username,
+            String token = jwtTokenProvider.createToken(username, user.getId(),
                     user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
             Map<String, String> response = new HashMap<>();

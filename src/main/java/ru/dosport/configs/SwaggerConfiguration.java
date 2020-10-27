@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static ru.dosport.helpers.Messages.SWAGGER_IS_INITIALIZING;
 import static ru.dosport.helpers.Messages.SWAGGER_WAS_STARTED;
 
 /**
@@ -35,12 +34,10 @@ public class SwaggerConfiguration {
 
     @Bean
     public Docket api() {
-        log.debug(SWAGGER_IS_INITIALIZING);
-
         ApiInfo apiInfo = new ApiInfo(
                 "Dosport backend API",
-                "Описание API для подключения внешних клиентов Dosport",
-                "0.1",
+                "API для подключения внешних клиентов Dosport",
+                "1.0",
                 "",
                 new Contact("Nikolay Gavrilov", "", ""),
                 "",
@@ -50,7 +47,6 @@ public class SwaggerConfiguration {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo)
                 .pathMapping("/")
-                .apiInfo(ApiInfo.DEFAULT)
                 .produces(Collections.singleton("application/json"))
                 .consumes(Collections.singleton("application/json"))
                 .ignoredParameterTypes(Authentication.class)
@@ -63,7 +59,6 @@ public class SwaggerConfiguration {
                 .build();
 
         log.debug(SWAGGER_WAS_STARTED);
-
         return docket;
     }
 

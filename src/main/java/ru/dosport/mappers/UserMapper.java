@@ -24,10 +24,8 @@ public interface UserMapper {
     JwtUser mapEntityToJwt(User entity);
 
     @Mappings({
-            @Mapping(target="birthdayDate", source="dto.birthdayDate", dateFormat = "dd-MM-yyyy")
+            @Mapping(target="enabled", constant = "true")
     })
-    User mapDtoToEntity(UserDto dto);
-
     User mapDtoToEntity(UserRequest dto);
 
     @Mappings({
