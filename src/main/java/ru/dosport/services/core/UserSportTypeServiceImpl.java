@@ -38,20 +38,15 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
 
     @Override
     public List<UserSportTypeDto> getAllDtoByUserId(Authentication authentication) {
-            return userSportTypeMapper.mapEntityToDto(userSportTypeRepository.findAllByUserId(userService.getByUsername(authentication.getName()).getId()));
+        return userSportTypeMapper.mapEntityToDto(userSportTypeRepository.findAllByUserId(userService.getIdByAuthentication(authentication)));
     }
 
     @Override
     public List<UserSportTypeDto> updateByUserId(List<UserSportTypeDto> dtoList, Authentication authentication) {
-        for (UserSportType s : userSportTypeMapper.mapDtoToEntity(dtoList)) {
-            findByUserIdAndSportTypeId(userService.getByUsername(authentication.getName()).getId(), s.getSportTypeId()).setLevel(s.getLevel());
-        }
-        //todo переписать красиво
+        userSportTypeMapper.mapDtoToEntity(dtoList).forEach(s -> saveOrUpdate(userService.getIdByAuthentication(authentication), s.getSportTypeId(), s.getLevel()));
         return getAllDtoByUserId(authentication);
     }
 
-
-    //далее писала не я, не знаю, зачем оно
     @Override
     public UserSportType findByUserIdAndSportTypeId(long userId, short sportTypeId) {
         return userSportTypeRepository.findByUserIdAndSportTypeId(userId, sportTypeId).orElseThrow(

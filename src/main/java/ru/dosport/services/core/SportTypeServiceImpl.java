@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 import ru.dosport.dto.SportTypeDto;
 import ru.dosport.dto.UserSportTypeDto;
 import ru.dosport.entities.SportType;
+import ru.dosport.entities.UserSportType;
 import ru.dosport.mappers.SportTypeMapper;
 import ru.dosport.repositories.SportTypeRepository;
+import ru.dosport.repositories.UserSportTypeRepository;
+import ru.dosport.services.api.UserService;
 import ru.dosport.services.api.UserSportTypeService;
 
 import java.util.List;
@@ -19,8 +22,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SportTypeServiceImpl implements ru.dosport.services.api.SportTypeService {
     private final SportTypeRepository sportTypeRepository;
+    private final UserSportTypeRepository userSportTypeRepository;
     private final SportTypeMapper sportTypeMapper;
     private final UserSportTypeService userSportTypeService;
+    private final UserService userService;
 
     @Override
     public List<SportTypeDto> getAllDto() {
@@ -29,13 +34,10 @@ public class SportTypeServiceImpl implements ru.dosport.services.api.SportTypeSe
 
     @Override
     public List<SportTypeDto> getAllDto(Authentication authentication) {
-        List<SportTypeDto> listAll = getAllDto();
-        List<UserSportTypeDto> list = userSportTypeService.getAllDtoByUserId(authentication);
-        for (SportTypeDto s : listAll) {
-            if (list.contains(s.getTitle())) listAll.remove(s);
-        }
-        return listAll;
-        //todo переписать это пока никто не увидел
+        List<SportTypeDto> listAll = getAllDto(); //список всех видов спорта
+        List<UserSportType> list =userSportTypeRepository.findAllByUserId(userService.getIdByAuthentication(authentication));//список навыков юзера
+        list.forEach(s -> listAll.remove(s.getSportTypeId()));
+        return getAllDto();
     }
 
     @Override
