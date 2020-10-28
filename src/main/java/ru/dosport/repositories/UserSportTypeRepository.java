@@ -32,15 +32,15 @@ public interface UserSportTypeRepository extends JpaRepository<UserSportType, Sh
     /**
      * Поиск по составному первичному ключу userId + sportTypeId
      */
-    @Query("SELECT s FROM UserSport s WHERE s.userId = ?1 AND s.sportTypeId = ?2")
+    @Query("SELECT s FROM user_sports s WHERE s.user_id = ?1 AND s.sport_type_id = ?2")
     Optional<UserSportType> findByUserIdAndSportTypeId(long userId, short sportTypeId);
 
 
     /**
      * Поиск списка навыков по userId
-     * @return
+     *
      */
-    @Query("SELECT s FROM UserSport s WHERE s.userId = ?1")
+    @Query("SELECT s FROM user_sports s WHERE s.user_id = ?1")
     List<UserSportType> findAllByUserId(long userId);
 
     /**
@@ -63,7 +63,7 @@ public interface UserSportTypeRepository extends JpaRepository<UserSportType, Sh
      * Удаление вида спорта у пользователя.
      */
     @Modifying
-    @Query(value = "DELETE s FROM UserSport s WHERE s.userId = ?1 AND s.sportTypeId = ?2", nativeQuery = true)
+    @Query(value = "DELETE s FROM user_sports s WHERE s.user_id = ?1 AND s.sport_type_id = ?2", nativeQuery = true)
     @Transactional
     void deleteBySportTypeId(Long idByAuthentication, Short sportTypeId);
 

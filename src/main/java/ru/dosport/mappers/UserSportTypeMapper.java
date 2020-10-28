@@ -16,6 +16,6 @@ public interface UserSportTypeMapper {
     UserSportType mapDtoToEntity (UserSportTypeDto dto);
     UserSportTypeDto mapEntityToDto(UserSportType entity);
 
-    List<UserSportType> mapDtoToEntity (List<UserSportTypeDto> dtos);
+    List<UserSportType> mapDtoToEntity (List<UserSportTypeDto> dto);
     List<UserSportTypeDto> mapEntityToDto (List<UserSportType> entities);
 }
