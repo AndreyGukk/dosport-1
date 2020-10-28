@@ -71,8 +71,8 @@ public interface UserSportTypeService {
     /**
      * Удаление из репозитория видов спорта пользователя
      *
-     * @param userId логин пользователя
+     * @param sportTypeId - вид спорта
      * @return false, если строк по userId не найдено
      */
-    boolean deleteByUserId(long userId);
+    boolean deleteBySportTypeId(Authentication authentication, Short sportTypeId);
 }

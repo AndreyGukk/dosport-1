@@ -29,29 +29,30 @@ public class SportTypeController {
 
     @ApiOperation(value = "Выводит список видов спорта")
     @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<List<SportTypeDto>> readAllSportTypes() {
         return new ResponseEntity<>(sportTypeService.getAllDto(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Выводит список видов спорта, которых еще нет у пользователя")
     @Secured(value = ROLE_USER)
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<List<SportTypeDto>> readAllEmptySportTypes(Authentication authentication) {
         return new ResponseEntity<>(sportTypeService.getAllDto(authentication), HttpStatus.OK);
     }
 
+//todo исправить этот метод
     @ApiOperation("Добавляет вид спорта")
     @Secured(value = ROLE_ADMIN)
     @PostMapping("")
     public ResponseEntity<SportTypeDto> createSportType(@RequestBody SportTypeDto sportTypeDto) {
-        return new ResponseEntity(sportTypeService.save(sportTypeDto), HttpStatus.OK);
+        return new ResponseEntity<>(sportTypeService.save(sportTypeDto), HttpStatus.OK);
     }
 
     @ApiOperation("Удаляет вид спорта")
     @Secured(value = ROLE_ADMIN)
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteSportTypeById(@PathVariable("id") Short id) {
-        return new ResponseEntity(sportTypeService.deleteById(id), HttpStatus.OK);
+        return new ResponseEntity<>(sportTypeService.deleteById(id), HttpStatus.OK);
     }
 }

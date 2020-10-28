@@ -15,7 +15,7 @@ import java.util.Optional;
  * Репозиторий видов спорта юзера
  */
 @Repository
-public interface UserSportTypeRepository extends JpaRepository<UserSportType, Long> {
+public interface UserSportTypeRepository extends JpaRepository<UserSportType, Short> {
 
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ РЕПОЗИТОРИЕВ
@@ -58,4 +58,13 @@ public interface UserSportTypeRepository extends JpaRepository<UserSportType, Lo
     @Query(value = "UPDATE user_sports SET level = :level WHERE user_id = :userId AND sport_type_id = :sportTypeId", nativeQuery = true)
     @Transactional
     Optional<UserSportType> update(@Param("userId")long userId, @Param("sportTypeId") short sportTypeId, @Param("level") short level);
+
+    /**
+     * Удаление вида спорта у пользователя.
+     */
+    @Modifying
+    @Query(value = "DELETE s FROM UserSport s WHERE s.userId = ?1 AND s.sportTypeId = ?2", nativeQuery = true)
+    @Transactional
+    void deleteBySportTypeId(Long idByAuthentication, Short sportTypeId);
+
 }

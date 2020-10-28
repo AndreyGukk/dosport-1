@@ -65,9 +65,9 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
     }
 
     @Override
-    public boolean deleteByUserId(long userId) {
-        userSportTypeRepository.deleteById(userId);
-        return userSportTypeRepository.existsById(userId);
+    public boolean deleteBySportTypeId(Authentication authentication, Short sportTypeId) {
+        userSportTypeRepository.deleteBySportTypeId(userService.getIdByAuthentication(authentication), sportTypeId);
+        return userSportTypeRepository.findByUserIdAndSportTypeId(userService.getIdByAuthentication(authentication), sportTypeId) == null;
     }
 
     /**

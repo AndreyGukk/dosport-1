@@ -15,6 +15,7 @@ import ru.dosport.repositories.UserSportTypeRepository;
 import ru.dosport.services.api.UserService;
 import ru.dosport.services.api.UserSportTypeService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ public class SportTypeServiceImpl implements ru.dosport.services.api.SportTypeSe
     private final SportTypeRepository sportTypeRepository;
     private final SportTypeMapper sportTypeMapper;
     private final UserSportTypeService userSportTypeService;
-    private final UserSportTypeMapper userSportTypeMapper;
+    //private final UserSportTypeMapper userSportTypeMapper;
     private final UserService userService;
 
     @Override
@@ -34,10 +35,9 @@ public class SportTypeServiceImpl implements ru.dosport.services.api.SportTypeSe
 
     @Override
     public List<SportTypeDto> getAllDto(Authentication authentication) {
-        List<SportTypeDto> listAll = getAllDto(); //список всех видов спорта
-        List<UserSportType> list = userSportTypeMapper.mapDtoToEntity(userSportTypeService.getAllDtoByUserId(userService.getIdByAuthentication(authentication))); //список навыков юзера
-        list.forEach(s -> listAll.remove(s.getSportTypeId()));
-        return getAllDto();
+        List<String> list = new ArrayList();
+        userSportTypeService.getAllDtoByUserId(userService.getIdByAuthentication(authentication)).forEach(s -> list.add(s.getSportType()));
+        return getAllDto().stream().filter((str) -> list.contains(str.getTitle())).collect(Collectors.toList());
     }
 
     @Override
