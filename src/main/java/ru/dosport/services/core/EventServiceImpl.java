@@ -22,7 +22,6 @@ import ru.dosport.services.api.SportGroundService;
 import ru.dosport.services.api.SportTypeService;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;

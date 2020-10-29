@@ -18,9 +18,9 @@ import java.util.List;
 public interface CommentSportGroundMapper {
 
     @Mappings({
-            @Mapping(target = "idComment", source = "entity.id"),
-            @Mapping(target = "idUser", source = "entity.user.id"),
-            @Mapping(target = "idSportGround", source = "entity.sportGround.id"),
+            @Mapping(target = "commentId", source = "entity.id"),
+            @Mapping(target = "userId", source = "entity.user.id"),
+            @Mapping(target = "sportGroundId", source = "entity.sportGround.id"),
             @Mapping(target = "userName", source = "entity.user", qualifiedByName = "formName"),
             @Mapping(target = "date", source = "entity.date", dateFormat = "dd-MM-yyyy")
     })

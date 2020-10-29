@@ -8,13 +8,13 @@ import java.time.LocalDate;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentSportGroundDto {
 
-    private Long idComment;
+    private Long commentId;
 
-    private Long idUser;
+    private Long userId;
 
     private String userName;
 
-    private Long idSportGround;
+    private Long sportGroundId;
 
     private LocalDate date;
 
