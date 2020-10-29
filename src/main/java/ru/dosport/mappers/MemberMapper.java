@@ -11,13 +11,13 @@ import ru.dosport.security.JwtUser;
 import java.util.List;
 
 /**
- * Маппер, преобразующий классы User и UserDto друг в друга
+ * Маппер, преобразующий классы EventMember и MemberDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {UserMapper.class, GenderMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {UserMapper.class})
 public interface MemberMapper {
 
     @Mappings({
-            @Mapping(target = "idEvent", source = "entity.event.id")
+            @Mapping(target = "eventId", source = "entity.event.id")
     })
     MemberDto mapEntityToDto(EventMember entity);
 

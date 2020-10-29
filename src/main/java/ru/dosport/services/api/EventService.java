@@ -54,9 +54,9 @@ public interface EventService {
      * Изменить данные мероприятия по его id
      *
      * @param eventDto мероприятие с измененными данными
-     * @param idEvent индекс мероприятия
+     * @param eventId индекс мероприятия
      */
-    EventDto update(EventDto eventDto, Long idEvent, Authentication authentication);
+    EventDto update(EventDto eventDto, Long eventId, Authentication authentication);
 
     /**
      * Удалить мероприятие по его идентификатору
@@ -67,7 +67,7 @@ public interface EventService {
      */
     boolean deleteById(Long id, Authentication authentication);
 
-    List<MemberDto> getAllMembers(Long idEvent);
+    List<MemberDto> getAllMembers(Long eventId);
 
-    MemberDto createEventMember(Long idEvent, MemberDto memberDto);
+    MemberDto createEventMember(Long eventId, MemberDto memberDto);
 }

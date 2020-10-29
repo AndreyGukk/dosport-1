@@ -62,29 +62,29 @@ public class EventServiceImpl implements EventService {
     public EventDto save(EventRequest eventRequest) {
         Event event = Event.builder()
                 .date(eventRequest.getDateEvent())
-                .startTime(LocalDateTime.parse(eventRequest.getStartTimeEvent()))
+                .startTime(eventRequest.getStartTimeEvent())
                 .sportType(sportTypeService.getSportTypeByTitle(eventRequest.getSportTypeTitle()))
-                .sportGround(sportGroundService.getSportGroundById(Long.valueOf(eventRequest.getIdSportGround())))
-                .organizer(userRepository.findById(Long.valueOf(eventRequest.getIdOrganizer()))
+                .sportGround(sportGroundService.getSportGroundById(Long.valueOf(eventRequest.getSportGroundId())))
+                .organizer(userRepository.findById(Long.valueOf(eventRequest.getOrganizerId()))
                         .orElseThrow(() -> new DataBadRequestException("Пользователь не найден")))
                 .build();
         if (eventRequest.getEndTimeEvent() != null) {
-            event.setEndTime(LocalDateTime.parse(eventRequest.getEndTimeEvent()));
+            event.setEndTime(eventRequest.getEndTimeEvent());
         }
 
         return eventMapper.mapEntityToDto(eventRepository.save(event));
     }
 
     @Override
-    public EventDto update(EventDto eventDto, Long idEvent, Authentication authentication) {
+    public EventDto update(EventDto eventDto, Long eventId, Authentication authentication) {
         if (authentication != null) {
-            Event event = findById(idEvent);
+            Event event = findById(eventId);
             //TODO: проверка организатора по authentication
-            if (!event.getOrganizer().getId().equals(eventDto.getIdOrganizer())) {
+            if (!event.getOrganizer().getId().equals(eventDto.getOrganizerId())) {
                 throw new AccessDeniedException("Пользователь не является организатором мероприятия");
             }
 
-            return eventMapper.mapEntityToDto(eventRepository.save(eventMapper.update(findById(idEvent), eventDto)));
+            return eventMapper.mapEntityToDto(eventRepository.save(eventMapper.update(findById(eventId), eventDto)));
         } else {
             throw new AccessDeniedException(Messages.ACCESS_DENIED);
         }
@@ -100,17 +100,17 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<MemberDto> getAllMembers(Long idEvent) {
-        return memberMapper.mapEntityToDto(memberRepository.findAllByEventId(idEvent));
+    public List<MemberDto> getAllMembers(Long eventId) {
+        return memberMapper.mapEntityToDto(memberRepository.findAllByEventId(eventId));
     }
 
     @Override
-    public MemberDto createEventMember(Long idEvent, MemberDto memberDto) {
-        if (memberDto.getIdEvent().equals(idEvent)) {
+    public MemberDto createEventMember(Long eventId, MemberDto memberDto) {
+        if (memberDto.getEventId().equals(eventId)) {
             throw new DataBadRequestException("Не правильно указано мероприятие");
         }
 
-        Event event = findById(idEvent);
+        Event event = findById(eventId);
         EventMember member = memberMapper.mapDtoToEntity(memberDto);
         member.setEvent(event);
 

@@ -7,7 +7,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MemberDto {
 
-    private Long idEvent;
+    private Long eventId;
     private UserDto user;
     private String statusUser;
 }

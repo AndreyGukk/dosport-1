@@ -19,21 +19,21 @@ public class CommentSportGround {
     @Column(name = "id")
     private Long id;
 
-    // Автор отзова
+    // Автор отзыва
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Площадка отзова
+    // Площадка отзыва
     @ManyToOne
-    @JoinColumn(name = "id_sportground", nullable = false)
+    @JoinColumn(name = "sportground_id", nullable = false)
     private SportGround sportGround;
 
-    // Дата отзова
+    // Дата отзыва
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    // Текст отзова
+    // Текст отзыва
     @Column(name = "text", nullable = false)
     private String text;
 }

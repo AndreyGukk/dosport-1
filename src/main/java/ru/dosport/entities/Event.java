@@ -64,5 +64,5 @@ public class Event {
 
     // ID чата
     @Column(name = "chat_id")
-    private Long idChat;
+    private Long chatId;
 }

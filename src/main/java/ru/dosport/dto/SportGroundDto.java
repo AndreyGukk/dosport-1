@@ -16,7 +16,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SportGroundDto {
 
-    private Long idSportGround;
+    private Long sportGroundId;
 
     private String address;
 

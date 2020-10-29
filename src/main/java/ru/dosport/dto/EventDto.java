@@ -5,6 +5,7 @@ import lombok.Data;
 import ru.dosport.entities.EventMember;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -15,21 +16,21 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EventDto {
 
-    private Long idEvent;
+    private Long eventId;
 
     private LocalDate dateEvent;
 
-    private String startTimeEvent;
+    private LocalDateTime startTimeEvent;
 
-    private String endTimeEvent;
+    private LocalDateTime endTimeEvent;
 
     private SportTypeDto sportType;
 
-    private Long idSportGround;
+    private Long sportGroundId;
 
-    private Long idOrganizer;
+    private Long organizerId;
 
     private Set<MemberDto> members;
 
-    private Long idChat;
+    private Long chatId;
 }

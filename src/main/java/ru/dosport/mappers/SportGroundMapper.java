@@ -12,13 +12,13 @@ import ru.dosport.entities.SportType;
 import java.util.List;
 
 /**
- * Маппер, преобразующий классы Event и EventDto друг в друга
+ * Маппер, преобразующий классы SportGround и SportGroundDto друг в друга
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class, EventMapper.class, CommentSportGroundMapper.class})
 public interface SportGroundMapper {
 
     @Mappings({
-            @Mapping(target = "idSportGround", source = "entity.id"),
+            @Mapping(target = "sportGroundId", source = "entity.id"),
             @Mapping(target = "sportTypes", source = "entity.sportType")
     })
     SportGroundDto mapEntityToDto(SportGround entity);
@@ -26,7 +26,7 @@ public interface SportGroundMapper {
     List<SportGroundDto> mapEntityToDto(List<SportGround> entities);
 
     @Mappings({
-            @Mapping(target = "id", source = "dto.idSportGround"),
+            @Mapping(target = "id", source = "dto.sportGroundId"),
     })
     SportGround mapDtoToEntity(SportGroundDto dto);
 
