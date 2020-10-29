@@ -6,5 +6,5 @@ import ru.dosport.entities.EventMember;
 import java.util.List;
 
 public interface MemberRepository extends JpaRepository<EventMember, Long> {
-    List<EventMember> findAllByEventId(Long idEvent);
+    List<EventMember> findAllByEventId(Long eventId);
 }
