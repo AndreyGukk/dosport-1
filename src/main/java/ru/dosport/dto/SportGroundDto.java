@@ -2,11 +2,6 @@ package ru.dosport.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import ru.dosport.entities.CommentSportGround;
-import ru.dosport.entities.Event;
-import ru.dosport.entities.SportType;
-
-import javax.persistence.*;
 import java.util.List;
 
 /**

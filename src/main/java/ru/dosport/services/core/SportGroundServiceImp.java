@@ -11,7 +11,6 @@ import ru.dosport.mappers.SportGroundMapper;
 import ru.dosport.mappers.SportTypeMapper;
 import ru.dosport.repositories.SportGroundRepository;
 import ru.dosport.services.api.SportGroundService;
-import ru.dosport.services.api.SportTypeService;
 
 import java.util.List;
 

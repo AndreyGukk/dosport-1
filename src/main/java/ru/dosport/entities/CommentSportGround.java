@@ -20,9 +20,12 @@ public class CommentSportGround {
     private Long id;
 
     // Автор отзыва
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
+    //Полное имя автора
+    @Column(name = "user_full_name", nullable = false)
+    private String userFullName;
 
     // Площадка отзыва
     @ManyToOne

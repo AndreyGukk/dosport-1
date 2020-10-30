@@ -13,10 +13,7 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommentSportGroundDto {
-
-    @NotNull(message = DATA_NOT_BLANK + "Индентификатор отзыва")
-    private Long commentId;
+public class CommentSportGroundRequest {
 
     @NotNull(message = DATA_NOT_BLANK + "Индентификатор пользователя")
     private Long userId;

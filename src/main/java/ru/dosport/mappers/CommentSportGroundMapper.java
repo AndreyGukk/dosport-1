@@ -2,12 +2,8 @@ package ru.dosport.mappers;
 
 import org.mapstruct.*;
 import ru.dosport.dto.CommentSportGroundDto;
-import ru.dosport.dto.EventDto;
-import ru.dosport.dto.SportTypeDto;
+import ru.dosport.dto.CommentSportGroundRequest;
 import ru.dosport.entities.CommentSportGround;
-import ru.dosport.entities.Event;
-import ru.dosport.entities.SportType;
-import ru.dosport.entities.User;
 
 import java.util.List;
 
@@ -19,20 +15,30 @@ public interface CommentSportGroundMapper {
 
     @Mappings({
             @Mapping(target = "commentId", source = "entity.id"),
-            @Mapping(target = "userId", source = "entity.user.id"),
+            @Mapping(target = "userId", source = "entity.userId"),
             @Mapping(target = "sportGroundId", source = "entity.sportGround.id"),
-            @Mapping(target = "userName", source = "entity.user", qualifiedByName = "formName"),
+            @Mapping(target = "userFullName", source = "entity.userFullName"),
             @Mapping(target = "date", source = "entity.date", dateFormat = "dd-MM-yyyy")
     })
     CommentSportGroundDto mapEntityToDto(CommentSportGround entity);
 
     List<CommentSportGroundDto> mapEntityToDto(List<CommentSportGround> entities);
 
+    @Mappings({
+            @Mapping(target = "id", source = "dto.commentId"),
+            @Mapping(target = "userId", source = "dto.userId"),
+            @Mapping(target = "sportGround", ignore = true),
+            @Mapping(target = "userFullName", source = "dto.userFullName"),
+            @Mapping(target = "date", source = "dto.date", dateFormat = "dd-MM-yyyy")
+    })
     CommentSportGround mapDtoToEntity(CommentSportGroundDto dto);
 
-    @Named("formName")
-    default String formatNameUser(User user) {
-        return user.getFirstName() + " " + user.getLastName();
-    }
+    @Mappings({
+            @Mapping(target = "userId", source = "dto.userId"),
+            @Mapping(target = "sportGround", ignore = true),
+            @Mapping(target = "userFullName", source = "dto.userFullName"),
+            @Mapping(target = "date", source = "dto.date", dateFormat = "dd-MM-yyyy")
+    })
+    CommentSportGround mapRequestToEntity(CommentSportGroundRequest dto);
 
 }
