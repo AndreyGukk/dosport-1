@@ -8,22 +8,20 @@ create table sportgrounds
 	address varchar(255) not null
 		constraint uk_kvtbkuiwnrkn35yqkyi5fqn42
 			unique,
-	title varchar(255) not null,
-	sport_type_id smallint not null
-		constraint fkf1jnc63363fuk2fek3ycc5d6x
-			references sport_types
+	location point not null,
+	title varchar(255) not null
 );
 
 DROP TABLE IF EXISTS sportgrounds_sport_type;
 
-create table sportgrounds_sport_type
+create table sportground_sport_type
 (
-	sport_ground_id bigint not null
-		constraint fk9tqum2ai20tvt84ax4t2jov6p
-			references sportgrounds,
 	sport_type_id smallint not null
-		constraint fkr7ubsrb22peqtauunliodxc9a
-			references sport_types
+		constraint fkgsbbap0fjt33b89b4b6cp6rd5
+			references sport_types,
+	sportground_id bigint not null
+		constraint fk96cds45cx49j3wyh4dginho21
+			references sportgrounds
 );
 
 DROP TABLE IF EXISTS events;
@@ -33,13 +31,11 @@ create table events
 	id bigserial not null
 		constraint events_pkey
 			primary key,
+	chat_id bigint,
 	date date not null,
 	end_time timestamp,
-	chat_id bigint,
+	organizer_user_id bigint not null,
 	start_time timestamp not null,
-	organizer_user_id bigint
-		constraint fk400ta890a9egd9lgnplapfm0m
-			references users,
 	sportground_id bigint not null
 		constraint fk6966vhtxb5471hh2ij5lgfuk
 			references sportgrounds,

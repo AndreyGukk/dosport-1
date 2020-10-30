@@ -6,12 +6,10 @@ create table event_member
 		constraint event_member_pkey
 			primary key,
 	status varchar(255),
+	user_id bigint,
 	event_id bigint
-		constraint fke7ttqbdxnpwren6fg3wktsash
-			references event_member,
-	user_id bigint
-		constraint fkoobns1hxage1y1gcnf9ol8y2m
-			references users
+		constraint fkef0fc2wj4p4m7dd6h25hpnxkm
+			references events
 );
 
 DROP TABLE IF EXISTS comments_sportground;
@@ -23,10 +21,9 @@ create table comments_sportground
 			primary key,
 	date date not null,
 	text varchar(255) not null,
-	id_sportground bigint not null
-		constraint fkqfh1cd10s9tm56hos97e5l630
-			references sportgrounds,
-	id_user bigint not null
-		constraint fkn1pmgagnamc008wh5mpoy87n6
-			references users
+	user_full_name varchar(255) not null,
+	user_id bigint not null,
+	sportground_id bigint not null
+		constraint fkgodi1v6dukh2ktmfsgnx83m5y
+			references sportgrounds
 );
