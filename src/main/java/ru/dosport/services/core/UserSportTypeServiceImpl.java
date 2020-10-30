@@ -14,6 +14,7 @@ import ru.dosport.services.api.UserSportTypeService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.dosport.helpers.Messages.DATA_WAS_NOT_SAVED;
@@ -49,6 +50,8 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
 
     @Override
     public UserSportType findByUserIdAndSportTypeId(long userId, short sportTypeId) {
+//        Optional<UserSportType> u = userSportTypeRepository.findByUserIdAndSportTypeId(userId,sportTypeId);
+//        return u.get();
         return userSportTypeRepository.findByUserIdAndSportTypeId(userId, sportTypeId).orElseThrow(
                 () -> new DataNotFoundException(
                         String.format(USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE, sportTypeId, userId)));
@@ -65,9 +68,9 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
     }
 
     @Override
-    public boolean deleteBySportTypeId(Authentication authentication, Short sportTypeId) {
+    public boolean deleteBySportTypeId(Authentication authentication, short sportTypeId) {
         userSportTypeRepository.deleteBySportTypeId(userService.getIdByAuthentication(authentication), sportTypeId);
-        return userSportTypeRepository.findByUserIdAndSportTypeId(userService.getIdByAuthentication(authentication), sportTypeId) == null;
+        return findByUserIdAndSportTypeId(userService.getIdByAuthentication(authentication), sportTypeId) == null;
     }
 
     /**

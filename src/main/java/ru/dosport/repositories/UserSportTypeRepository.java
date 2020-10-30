@@ -32,7 +32,7 @@ public interface UserSportTypeRepository extends JpaRepository<UserSportType, Sh
     /**
      * Поиск по составному первичному ключу userId + sportTypeId
      */
-    @Query("SELECT s FROM user_sports s WHERE s.user_id = ?1 AND s.sport_type_id = ?2")
+    @Query(value = "SELECT s FROM user_sports s WHERE s.user_id = :userId AND s.sport_type_id = :sportTypeId", nativeQuery = true)
     Optional<UserSportType> findByUserIdAndSportTypeId(long userId, short sportTypeId);
 
 
@@ -40,7 +40,7 @@ public interface UserSportTypeRepository extends JpaRepository<UserSportType, Sh
      * Поиск списка навыков по userId
      *
      */
-    @Query("SELECT s FROM user_sports s WHERE s.user_id = ?1")
+    @Query(value = "SELECT s FROM user_sports s WHERE s.user_id = :userId", nativeQuery = true)
     List<UserSportType> findAllByUserId(long userId);
 
     /**

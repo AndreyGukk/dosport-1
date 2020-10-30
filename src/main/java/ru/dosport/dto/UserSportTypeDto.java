@@ -24,5 +24,5 @@ public class UserSportTypeDto {
 
     private String SportType;
 
-    private byte level;
+    private short level;
 }

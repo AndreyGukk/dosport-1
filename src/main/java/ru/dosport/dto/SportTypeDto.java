@@ -13,7 +13,7 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SportTypeDto {
-    private Long id;
+    private short id;
 
     @NotBlank(message = DATA_NOT_BLANK + "вид спорта")
     private String title;
