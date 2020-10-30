@@ -54,9 +54,8 @@ public class Event {
     private SportGround sportGround;
 
     // Организатор мероприятия
-    @OneToOne
-    @JoinColumn(name = "organizer_user_id", nullable = false)
-    private User organizer;
+    @Column(name = "organizer_user_id", nullable = false)
+    private Long organizerId;
 
     // Список участников мероприятия
     @OneToMany(mappedBy = "event")

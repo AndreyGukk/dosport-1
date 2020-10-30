@@ -4,25 +4,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.dosport.dto.EventDto;
-import ru.dosport.dto.EventRequest;
-import ru.dosport.dto.MemberDto;
+import ru.dosport.dto.*;
 import ru.dosport.entities.Event;
 import ru.dosport.entities.EventMember;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Messages;
 import ru.dosport.mappers.EventMapper;
-import ru.dosport.mappers.MemberMapper;
+import ru.dosport.mappers.EventMemberMapper;
 import ru.dosport.repositories.EventRepository;
 import ru.dosport.repositories.MemberRepository;
-import ru.dosport.repositories.UserRepository;
 import ru.dosport.services.api.EventService;
 import ru.dosport.services.api.SportGroundService;
 import ru.dosport.services.api.SportTypeService;
+import ru.dosport.services.api.UserService;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 
@@ -35,14 +34,13 @@ public class EventServiceImpl implements EventService {
 
     // Необходимые сервисы и мапперы
     private final EventMapper eventMapper;
-    private final MemberMapper memberMapper;
+    private final EventMemberMapper memberMapper;
 
     // Необходимые репозитории
     private final EventRepository eventRepository;
     private final MemberRepository memberRepository;
-    //todo: избавиться от лишних репозиториев
-    private final UserRepository userRepository;
 
+    private final UserService userService;
     private final SportTypeService sportTypeService;
     private final SportGroundService sportGroundService;
 
@@ -58,14 +56,13 @@ public class EventServiceImpl implements EventService {
 
     @Transactional
     @Override
-    public EventDto save(EventRequest eventRequest) {
+    public EventDto save(EventRequest eventRequest, Authentication authentication) {
         Event event = Event.builder()
                 .date(eventRequest.getDateEvent())
                 .startTime(eventRequest.getStartTimeEvent())
                 .sportType(sportTypeService.getSportTypeByTitle(eventRequest.getSportTypeTitle()))
                 .sportGround(sportGroundService.getSportGroundById(Long.valueOf(eventRequest.getSportGroundId())))
-                .organizer(userRepository.findById(Long.valueOf(eventRequest.getOrganizerId()))
-                        .orElseThrow(() -> new DataBadRequestException("Пользователь не найден")))
+                .organizerId(userService.getIdByAuthentication(authentication))
                 .build();
         if (eventRequest.getEndTimeEvent() != null) {
             event.setEndTime(eventRequest.getEndTimeEvent());
@@ -78,8 +75,8 @@ public class EventServiceImpl implements EventService {
     public EventDto update(EventDto eventDto, Long eventId, Authentication authentication) {
         if (authentication != null) {
             Event event = findById(eventId);
-            //TODO: проверка организатора по authentication
-            if (!event.getOrganizer().getId().equals(eventDto.getOrganizerId())) {
+
+            if (!event.getOrganizerId().equals(userService.getIdByAuthentication(authentication))) {
                 throw new AccessDeniedException("Пользователь не является организатором мероприятия");
             }
 
@@ -92,31 +89,43 @@ public class EventServiceImpl implements EventService {
     @Override
     public boolean deleteById(Long id, Authentication authentication) {
         Event event = findById(id);
-        //TODO: проверка организатора по authentication
-//        if (event.getOrganizer().getId().equals(authentication))
+        //TODO: нужна проверка authentication на роль админа (через сервис user)
+        if (!event.getOrganizerId().equals(userService.getIdByAuthentication(authentication))) {
+            throw new AccessDeniedException("Пользователь не является организатором мероприятия");
+        }
         eventRepository.deleteById(id);
         return eventRepository.existsById(id);
     }
 
     @Override
     public List<MemberDto> getAllMembers(Long eventId) {
-        return memberMapper.mapEntityToDto(memberRepository.findAllByEventId(eventId));
+        //TODO: метод получение определённых пользователей ( getUserDtos(List<Long> idList) )
+        List<MemberDto> memberDtoList;
+        List<EventMember> members = memberRepository.findAllByEventId(eventId);
+
+        memberDtoList = members.stream()
+                .map(m -> memberMapper.mapEntityToDto(m, userService.getDtoById(m.getUserId())))
+                .collect(Collectors.toList());
+
+        return memberDtoList;
     }
 
     @Override
-    public MemberDto createEventMember(Long eventId, MemberDto memberDto) {
-        if (memberDto.getEventId().equals(eventId)) {
+    public MemberDto createEventMember(Long eventId, MemberRequest request) {
+        if (eventId.equals(request.getEvenId())) {
             throw new DataBadRequestException("Не правильно указано мероприятие");
         }
-
+        //TODO: метод проверки существования пользователя по id (user service)
+        UserDto user = userService.getDtoById(request.getUserId());
         Event event = findById(eventId);
-        EventMember member = memberMapper.mapDtoToEntity(memberDto);
-        member.setEvent(event);
-
-        return memberMapper.mapEntityToDto(memberRepository.save(member));
+        EventMember member = EventMember.builder()
+                .event(event)
+                .userId(request.getUserId())
+                .status(request.getUserStatus())
+                .build();
+        return memberMapper.mapEntityToDto(memberRepository.save(member), user);
     }
 
-    // Найти пользователя по id
     private Event findById(Long id) {
         return eventRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));

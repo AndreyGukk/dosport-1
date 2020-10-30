@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.EventDto;
 import ru.dosport.dto.EventRequest;
 import ru.dosport.dto.MemberDto;
+import ru.dosport.dto.MemberRequest;
 import ru.dosport.services.api.EventService;
 
 import javax.validation.Valid;
@@ -48,8 +49,8 @@ public class EventController {
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @ApiOperation(value = "Создает новое мероприятие")
     @PostMapping(produces = DATA_TYPE)
-    public ResponseEntity<EventDto> createEvent(@Valid @RequestBody EventRequest eventRequest) {
-        return ResponseEntity.ok(eventService.save(eventRequest));
+    public ResponseEntity<EventDto> createEvent(@Valid @RequestBody EventRequest eventRequest, Authentication authentication) {
+        return ResponseEntity.ok(eventService.save(eventRequest, authentication));
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
@@ -74,8 +75,8 @@ public class EventController {
 
     @ApiOperation(value = "Добавляет участника в мероприятие")
     @PostMapping("/{id}/members")
-    public ResponseEntity<?> addMember(@PathVariable Long id, @RequestBody MemberDto memberDto) {
-        return eventService.createEventMember(id, memberDto) != null ?
+    public ResponseEntity<?> addMember(@PathVariable Long id, @RequestBody MemberRequest request) {
+        return eventService.createEventMember(id, request) != null ?
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 }

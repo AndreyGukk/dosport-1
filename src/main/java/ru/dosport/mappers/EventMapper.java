@@ -2,7 +2,6 @@ package ru.dosport.mappers;
 
 import org.mapstruct.*;
 import ru.dosport.dto.EventDto;
-import ru.dosport.dto.EventRequest;
 import ru.dosport.entities.Event;
 
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * Маппер, преобразующий классы Event и EventDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class, MemberMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class, EventMemberMapper.class})
 public interface EventMapper {
 
     @Mappings({
@@ -20,7 +19,7 @@ public interface EventMapper {
             @Mapping(target="endTimeEvent", source = "entity.endTime", dateFormat = "hh:mm"),
             @Mapping(target="sportGroundId", source = "entity.sportGround.id"),
             @Mapping(target="members", source = "entity.members"),
-            @Mapping(target="organizerId", source = "entity.organizer.id")
+            @Mapping(target="organizerId", source = "entity.organizerId")
     })
     EventDto mapEntityToDto(Event entity);
 
@@ -37,7 +36,7 @@ public interface EventMapper {
     @Mappings({
             @Mapping(target="id", ignore = true),
             @Mapping(target="sportGround", ignore = true),
-            @Mapping(target="organizer", ignore = true),
+            @Mapping(target="organizerId", ignore = true),
             @Mapping(target="chatId", ignore = true),
             @Mapping(target="members", ignore = true),
 
