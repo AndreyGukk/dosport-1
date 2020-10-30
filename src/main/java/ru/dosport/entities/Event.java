@@ -21,11 +21,6 @@ import java.util.Set;
 @Table(name = "events")
 public class Event {
 
-    //TODO:
-    // 1. раскомментировать и дописать поля сущности
-    // 2. построить правильные соотношения полей сущностей с БД
-    // 3. создать скрипт создания таблицы БД по образу имеющихся в resourses/db.migration
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
