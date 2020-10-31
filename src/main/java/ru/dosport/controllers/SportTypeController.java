@@ -34,17 +34,17 @@ public class SportTypeController {
         return new ResponseEntity<>(sportTypeService.getAllDto(), HttpStatus.OK);
     }
 
-//    @ApiOperation(value = "Выводит список видов спорта, которых еще нет у пользователя")
-//    @Secured(value = ROLE_USER)
-//    @GetMapping("")
-//    public ResponseEntity<List<SportTypeDto>> readAllEmptySportTypes(Authentication authentication) {
-//        return new ResponseEntity<>(sportTypeService.getAllDto(authentication), HttpStatus.OK);
-//    }
+    @ApiOperation(value = "Выводит список видов спорта, которых еще нет у пользователя")
+    @Secured(value = ROLE_USER)
+    @GetMapping("/add")
+    public ResponseEntity<List<SportTypeDto>> readAllEmptySportTypes(Authentication authentication) {
+        return new ResponseEntity<>(sportTypeService.getAllDto(authentication), HttpStatus.OK);
+    }
 
 
     @ApiOperation("Добавляет вид спорта")
     @Secured(value = ROLE_ADMIN)
-    @PostMapping("")
+    @PostMapping("/add")
     public ResponseEntity<SportTypeDto> createSportType(@RequestBody SportTypeDto sportTypeDto) {
         return new ResponseEntity<>(sportTypeService.save(sportTypeDto), HttpStatus.OK);
     }
