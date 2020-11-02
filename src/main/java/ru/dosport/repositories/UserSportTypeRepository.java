@@ -5,16 +5,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import ru.dosport.entities.UserSport;
+import ru.dosport.entities.UserSportType;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Репозиторий видов спорта юзера
  */
 @Repository
-public interface UserSportRepository extends JpaRepository<UserSport, Long> {
+public interface UserSportTypeRepository extends JpaRepository<UserSportType, Short> {
 
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ РЕПОЗИТОРИЕВ
@@ -31,8 +32,16 @@ public interface UserSportRepository extends JpaRepository<UserSport, Long> {
     /**
      * Поиск по составному первичному ключу userId + sportTypeId
      */
-    @Query("SELECT s FROM UserSport s WHERE s.userId = ?1 AND s.sportTypeId = ?2")
-    Optional<UserSport> findByUserIdAndSportTypeId(long userId, short sportTypeId);
+    @Query(value = "SELECT s FROM user_sports s WHERE s.user_id = :userId AND s.sport_type_id = :sportTypeId", nativeQuery = true)
+    Optional<UserSportType> findByUserIdAndSportTypeId(long userId, short sportTypeId);
+
+
+    /**
+     * Поиск списка навыков по userId
+     *
+     */
+    @Query(value = "SELECT s FROM user_sports s WHERE s.user_id = :userId", nativeQuery = true)
+    List<UserSportType> findAllByUserId(long userId);
 
     /**
      * Добавление уровня владения видом спорта.
@@ -40,7 +49,7 @@ public interface UserSportRepository extends JpaRepository<UserSport, Long> {
     @Modifying
     @Query(value = "INSERT INTO user_sports (user_id, sport_type_id, level) VALUES (:userId, :sportTypeId,:level)", nativeQuery = true)
     @Transactional
-    Optional<UserSport> save(@Param("userId") long userId, @Param("sportTypeId") short sportTypeId, @Param("level") short level);
+    Optional<UserSportType> save(@Param("userId") long userId, @Param("sportTypeId") short sportTypeId, @Param("level") short level);
 
     /**
      * Изменение уровня владения видом спорта .
@@ -48,5 +57,14 @@ public interface UserSportRepository extends JpaRepository<UserSport, Long> {
     @Modifying
     @Query(value = "UPDATE user_sports SET level = :level WHERE user_id = :userId AND sport_type_id = :sportTypeId", nativeQuery = true)
     @Transactional
-    Optional<UserSport> update(@Param("userId")long userId, @Param("sportTypeId") short sportTypeId,@Param("level") short level);
+    Optional<UserSportType> update(@Param("userId")long userId, @Param("sportTypeId") short sportTypeId, @Param("level") short level);
+
+    /**
+     * Удаление вида спорта у пользователя.
+     */
+    @Modifying
+    @Query(value = "DELETE s FROM user_sports s WHERE s.user_id = ?1 AND s.sport_type_id = ?2", nativeQuery = true)
+    @Transactional
+    void deleteBySportTypeId(Long idByAuthentication, Short sportTypeId);
+
 }
