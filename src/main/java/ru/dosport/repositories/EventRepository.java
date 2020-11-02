@@ -7,8 +7,8 @@ import ru.dosport.entities.Event;
 /**
  * Репозиторий Мероприятий
  */
-//@Repository
-public interface EventRepository {//extends JpaRepository<Event, Long> {
+@Repository
+public interface EventRepository extends JpaRepository<Event, Long> {
 
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ РЕПОЗИТОРИЕВ

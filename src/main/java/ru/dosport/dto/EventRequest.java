@@ -3,7 +3,10 @@ package ru.dosport.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
@@ -14,15 +17,21 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EventRequest {
 
-    @NotBlank(message = DATA_NOT_BLANK + "Дата и время начала")
-    private String startDateTime;
+    @FutureOrPresent
+    @NotBlank(message = DATA_NOT_BLANK + "Дата")
+    private LocalDate dateEvent;
 
-    @NotBlank(message = DATA_NOT_BLANK + "Дата и время завершения")
-    private String stopDateTime;
+    @NotBlank(message = DATA_NOT_BLANK + "Время начала")
+    private LocalTime startTimeEvent;
+
+    private LocalTime endTimeEvent;
 
     @NotBlank(message = DATA_NOT_BLANK + "Вид спорта")
-    private SportTypeDto sportType;
+    private String sportTypeTitle;
 
     @NotBlank(message = DATA_NOT_BLANK + "Игровая площадка")
-    private FieldDto field;
+    private String sportGroundId;
+
+    @NotBlank(message = DATA_NOT_BLANK + "Организатор")
+    private String organizerId;
 }

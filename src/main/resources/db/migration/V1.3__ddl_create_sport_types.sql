@@ -1,8 +1,11 @@
 DROP TABLE IF EXISTS sport_types;
 
-CREATE TABLE sport_types
+create table sport_types
 (
-    id    SMALLSERIAL,
-    title VARCHAR(128) NOT NULL,
-    PRIMARY KEY (id)
+	id serial not null
+		constraint sport_types_pkey
+			primary key,
+	title varchar(255) not null
+		constraint uk_fdrclpm25ykaj8cgy59dxxauc
+			unique
 );
