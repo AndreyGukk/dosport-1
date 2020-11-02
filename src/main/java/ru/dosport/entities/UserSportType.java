@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Setter
 @Table(name = "user_sports")
 @IdClass(UserSportKey.class)
-public class UserSport {
+public class UserSportType {
 
     @Id
     @Column(name = "user_id")
