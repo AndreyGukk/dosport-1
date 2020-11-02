@@ -1,7 +1,6 @@
 package ru.dosport.entities;
 
 import lombok.*;
-import org.hibernate.annotations.Type;
 import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
@@ -51,7 +50,7 @@ public class SportGround {
     @OneToMany(mappedBy = "sportGround")
     private List<Event> events;
 
-    // Список отзовов
+    // Список отзывов
     @OneToMany(mappedBy = "sportGround")
     private List<CommentSportGround> commentSportGrounds;
 }

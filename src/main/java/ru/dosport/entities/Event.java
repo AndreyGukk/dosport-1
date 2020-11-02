@@ -4,9 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalTime;
 import java.util.Set;
 
 /**
@@ -30,13 +28,13 @@ public class Event {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    // Дата и время начала мероприятия
+    // Время начала мероприятия
     @Column(name = "start_time", nullable = false)
-    private LocalDateTime startTime;
+    private LocalTime startTime;
 
-    // Дата и время завершения мероприятия
+    // Время завершения мероприятия
     @Column(name = "end_time")
-    private LocalDateTime endTime;
+    private LocalTime endTime;
 
     // Вид спорта
     @ManyToOne

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserSportTypeMapper {
+
     UserSportType mapDtoToEntity(UserSportTypeDto dto);
 
     UserSportTypeDto mapEntityToDto(UserSportType entity);

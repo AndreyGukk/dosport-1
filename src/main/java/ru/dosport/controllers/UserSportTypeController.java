@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.dosport.dto.SportTypeDto;
 import ru.dosport.dto.UserSportTypeDto;
 import ru.dosport.services.api.UserSportTypeService;
 
@@ -17,14 +16,15 @@ import static ru.dosport.helpers.Roles.ROLE_ADMIN;
 import static ru.dosport.helpers.Roles.ROLE_USER;
 
 /**
- * Контроллер списка навыков Пользователя
+ * Контроллер Спортивных навыков пользователя.
  */
-@ApiOperation("Контроллер навыков пользователя")
+@ApiOperation("Контроллер спортивных навыков Пользователя")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/profile/sporttype")
 @RequiredArgsConstructor
 public class UserSportTypeController {
+
     // Тип данных
     private final String DATA_TYPE = "application/json";
 
@@ -39,7 +39,7 @@ public class UserSportTypeController {
     }
 
     @ApiOperation(value = "Выводит список собственных навыков пользователся")
-    @Secured(value = {ROLE_USER})
+    @Secured(value = {ROLE_ADMIN, ROLE_USER})
     @GetMapping("")
     public ResponseEntity<List<UserSportTypeDto>> readAllSportTypes(Authentication authentication) {
         return new ResponseEntity<>(userSportTypeService.getAllDtoByUserId(authentication), HttpStatus.OK);

@@ -5,6 +5,9 @@ import ru.dosport.entities.SportType;
 
 import java.util.List;
 
+/**
+ * Сервис Видов спорта.
+ */
 public interface SportTypeService {
 
     /**

@@ -9,7 +9,7 @@ import java.util.List;
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
 /**
- * Запрос для регистрации новой Площадки
+ * Запрос для регистрации новой Спортивной площадки
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

@@ -49,7 +49,8 @@ public class EventController {
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @ApiOperation(value = "Создает новое мероприятие")
     @PostMapping(produces = DATA_TYPE)
-    public ResponseEntity<EventDto> createEvent(@Valid @RequestBody EventRequest eventRequest, Authentication authentication) {
+    public ResponseEntity<EventDto> createEvent(@Valid @RequestBody EventRequest eventRequest,
+                                                Authentication authentication) {
         return ResponseEntity.ok(eventService.save(eventRequest, authentication));
     }
 
@@ -61,21 +62,23 @@ public class EventController {
         return ResponseEntity.ok(eventService.update(eventDto, id, authentication));
     }
 
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @ApiOperation(value = "Удаляет мероприятие по его индексу")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEvent(@PathVariable Long id, Authentication authentication) {
-        return eventService.deleteById(id, authentication) ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
+        return eventService.deleteById(id, authentication) ?
+                ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
     }
 
     @ApiOperation(value = "Отображает данные всех участников мероприятия")
-    @GetMapping("/{id}/members/")
+    @GetMapping("/{id}/members")
     public ResponseEntity<List<MemberDto>> readEventMember(@PathVariable Long id) {
         return ResponseEntity.ok(eventService.getAllMembers(id));
     }
 
     @ApiOperation(value = "Добавляет участника в мероприятие")
     @PostMapping("/{id}/members")
-    public ResponseEntity<?> addMember(@PathVariable Long id, @RequestBody MemberRequest request) {
+    public ResponseEntity<?> addEventMember(@PathVariable Long id, @RequestBody MemberRequest request) {
         return eventService.createEventMember(id, request) != null ?
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }

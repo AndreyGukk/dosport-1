@@ -5,9 +5,8 @@ import lombok.Data;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
@@ -23,9 +22,9 @@ public class EventRequest {
     private LocalDate dateEvent;
 
     @NotBlank(message = DATA_NOT_BLANK + "Время начала")
-    private LocalDateTime startTimeEvent;
+    private LocalTime startTimeEvent;
 
-    private LocalDateTime endTimeEvent;
+    private LocalTime endTimeEvent;
 
     @NotBlank(message = DATA_NOT_BLANK + "Вид спорта")
     private String sportTypeTitle;

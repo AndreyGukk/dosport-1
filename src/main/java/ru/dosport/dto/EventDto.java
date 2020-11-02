@@ -2,11 +2,9 @@ package ru.dosport.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import ru.dosport.entities.EventMember;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalTime;
 import java.util.Set;
 
 /**
@@ -20,9 +18,9 @@ public class EventDto {
 
     private LocalDate dateEvent;
 
-    private LocalDateTime startTimeEvent;
+    private LocalTime startTimeEvent;
 
-    private LocalDateTime endTimeEvent;
+    private LocalTime endTimeEvent;
 
     private SportTypeDto sportType;
 

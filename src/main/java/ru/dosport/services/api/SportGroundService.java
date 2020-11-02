@@ -6,13 +6,16 @@ import ru.dosport.entities.SportGround;
 
 import java.util.List;
 
+/**
+ * Сервис Спортивных площадок.
+ */
 public interface SportGroundService {
 
-    SportGroundDto getSportGroundDtoById(Long id);
+    SportGroundDto getDtoById(Long id);
 
     List<SportGroundDto> getAllDto();
 
-    SportGround getSportGroundById(Long id);
+    SportGround getById(Long id);
 
     SportGroundDto create(SportGroundRequest request);
 }

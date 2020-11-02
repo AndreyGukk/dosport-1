@@ -11,6 +11,9 @@ import java.time.LocalDate;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
+/**
+ * Dto представление сущности Отзыв о площадке
+ */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentSportGroundDto {

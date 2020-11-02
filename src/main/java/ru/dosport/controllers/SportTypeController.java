@@ -9,17 +9,21 @@ import ru.dosport.services.api.SportTypeService;
 
 import java.util.List;
 
+/**
+ * Контроллер Видов спорта.
+ */
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/sporttype")
 public class SportTypeController {
 
+    // Необходимые сервисы
     private final SportTypeService typeService;
 
     @ApiOperation(value = "Отображает данные видов спорта")
     @GetMapping
-    public ResponseEntity<List<SportTypeDto>> readAllSportType() {
+    public ResponseEntity<List<SportTypeDto>> readAllSportTypes() {
         return ResponseEntity.ok(typeService.getAllSportTypeDto());
     }
 

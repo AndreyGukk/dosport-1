@@ -7,6 +7,9 @@ import javax.validation.constraints.NotBlank;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
+/**
+ * Запрос на создание новой сущности Участник мероприятия
+ */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MemberRequest {

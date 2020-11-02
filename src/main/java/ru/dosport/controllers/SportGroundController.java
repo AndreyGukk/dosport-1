@@ -10,6 +10,9 @@ import ru.dosport.services.api.SportGroundService;
 
 import java.util.List;
 
+/**
+ * Контроллер Спортивных площадок.
+ */
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
@@ -20,14 +23,14 @@ public class SportGroundController {
 
     @ApiOperation(value = "Отображает данные всех площадок")
     @GetMapping
-    public ResponseEntity<List<SportGroundDto>> readAllSportGround() {
+    public ResponseEntity<List<SportGroundDto>> readAllSportGrounds() {
         return ResponseEntity.ok(sportGroundService.getAllDto());
     }
 
     @ApiOperation(value = "Отображает данные площадки по её индексу")
     @GetMapping("/{id}")
     public ResponseEntity<SportGroundDto> readSportGround(@PathVariable Long id) {
-        return ResponseEntity.ok(sportGroundService.getSportGroundDtoById(id));
+        return ResponseEntity.ok(sportGroundService.getDtoById(id));
     }
 
     @ApiOperation(value = "Создаёт площадку")

@@ -7,11 +7,14 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Сущность Отзыв о спортивной площадке
+ */
 @Entity
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Table(name = "comments_sportground")
+@Table(name = "sportground_comments")
 public class CommentSportGround {
 
     @Id

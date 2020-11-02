@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Сущность Виды спорта
+ * Сущность Вид спорта
  */
 @Entity
 @Setter

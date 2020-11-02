@@ -8,10 +8,8 @@ create table sportgrounds
 	address varchar(255) not null
 		constraint uk_kvtbkuiwnrkn35yqkyi5fqn42
 			unique,
-	title varchar(255) not null,
-	sport_type_id smallint not null
-		constraint fkf1jnc63363fuk2fek3ycc5d6x
-			references sport_types
+	location point not null,
+	title varchar(255) not null
 );
 
 DROP TABLE IF EXISTS sportgrounds_sport_type;
@@ -34,9 +32,9 @@ create table events
 		constraint events_pkey
 			primary key,
 	date date not null,
-	end_time timestamp,
+	start_time time not null,
+	end_time time,
 	chat_id bigint,
-	start_time timestamp not null,
 	organizer_user_id bigint
 		constraint fk400ta890a9egd9lgnplapfm0m
 			references users,

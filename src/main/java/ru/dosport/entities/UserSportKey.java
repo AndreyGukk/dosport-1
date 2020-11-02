@@ -7,6 +7,9 @@ import lombok.Setter;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+/**
+ * Составной ключ для сущности Спортивные навыки пользователя
+ */
 @Embeddable
 @NoArgsConstructor
 public class UserSportKey implements Serializable {

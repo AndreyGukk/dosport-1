@@ -39,11 +39,9 @@ public interface EventMapper {
             @Mapping(target="organizerId", ignore = true),
             @Mapping(target="chatId", ignore = true),
             @Mapping(target="members", ignore = true),
-
             @Mapping(target = "date", source = "dto.dateEvent", dateFormat = "dd-MM-yyyy"),
             @Mapping(target="startTime", source = "dto.startTimeEvent", dateFormat = "hh:mm"),
             @Mapping(target="endTime", source = "dto.endTimeEvent", dateFormat = "hh:mm")
     })
     Event update(@MappingTarget Event entity, EventDto dto);
-
 }

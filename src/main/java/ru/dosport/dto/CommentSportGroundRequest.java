@@ -11,6 +11,9 @@ import java.time.LocalDate;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
+/**
+ * Запрос на создание сущности Отзывв о спортивной площадке
+ */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentSportGroundRequest {

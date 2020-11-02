@@ -61,7 +61,7 @@ public class EventServiceImpl implements EventService {
                 .date(eventRequest.getDateEvent())
                 .startTime(eventRequest.getStartTimeEvent())
                 .sportType(sportTypeService.getSportTypeByTitle(eventRequest.getSportTypeTitle()))
-                .sportGround(sportGroundService.getSportGroundById(Long.valueOf(eventRequest.getSportGroundId())))
+                .sportGround(sportGroundService.getById(Long.valueOf(eventRequest.getSportGroundId())))
                 .organizerId(userService.getIdByAuthentication(authentication))
                 .build();
         if (eventRequest.getEndTimeEvent() != null) {

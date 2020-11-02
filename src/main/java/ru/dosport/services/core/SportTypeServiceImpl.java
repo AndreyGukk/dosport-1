@@ -1,7 +1,6 @@
 package ru.dosport.services.core;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportType;
@@ -11,19 +10,20 @@ import ru.dosport.repositories.SportTypeRepository;
 import ru.dosport.services.api.SportTypeService;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 
+/**
+ * Реализация сервиса Видов спорта.
+ */
 @Service
 @RequiredArgsConstructor
 public class SportTypeServiceImpl implements SportTypeService {
 
+    // Необходимые мапперы и репозитории
     private final SportTypeMapper mapper;
-
     private final SportTypeRepository repository;
 
     @Override
@@ -39,15 +39,15 @@ public class SportTypeServiceImpl implements SportTypeService {
     @Override
     public SportType getSportTypeByTitle(String title) {
         return repository.findByTitle(title).orElseThrow(
-                () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, title))
-        );
+                () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, title)));
     }
 
     @Transactional
     @Override
     public SportTypeDto save(String sportTitle) {
         Optional<SportType> sport = repository.findByTitle(sportTitle);
-        return sport.isPresent() ? mapper.mapEntityToDto(sport.get()) : mapper.mapEntityToDto(repository.save(new SportType(sportTitle)));
+        return sport.isPresent() ?
+                mapper.mapEntityToDto(sport.get()) : mapper.mapEntityToDto(repository.save(new SportType(sportTitle)));
     }
 
     @Override
@@ -56,6 +56,9 @@ public class SportTypeServiceImpl implements SportTypeService {
         return repository.existsById(id);
     }
 
+    /**
+     * Найти по идентификатору
+     */
     private SportType findById(Short id) {
         return repository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));

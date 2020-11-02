@@ -29,5 +29,4 @@ public interface SportGroundMapper {
             @Mapping(target = "id", source = "dto.sportGroundId"),
     })
     SportGround mapDtoToEntity(SportGroundDto dto);
-
 }
