@@ -8,12 +8,13 @@ import javax.validation.constraints.NotBlank;
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
 /**
- * Сущность вида спорта
+ * Dto представление сущности Вид спорта
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SportTypeDto {
-    private short id;
+
+    private Short sportTypeId;
 
     @NotBlank(message = DATA_NOT_BLANK + "вид спорта")
     private String title;

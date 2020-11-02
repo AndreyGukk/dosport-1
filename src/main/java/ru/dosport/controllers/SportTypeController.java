@@ -2,57 +2,37 @@ package ru.dosport.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.SportTypeDto;
 import ru.dosport.services.api.SportTypeService;
 
 import java.util.List;
 
-import static ru.dosport.helpers.Roles.ROLE_ADMIN;
-import static ru.dosport.helpers.Roles.ROLE_USER;
-
-/**
- * Контроллер списка навыков Пользователя
- */
-@ApiOperation("Контроллер видов спорта")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/sporttype")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/sporttype")
 public class SportTypeController {
-    //Список необходимых сервисов
-    private final SportTypeService sportTypeService;
 
-    @ApiOperation(value = "Выводит список видов спорта")
-    @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @GetMapping("")
-    public ResponseEntity<List<SportTypeDto>> readAllSportTypes() {
-        return new ResponseEntity<>(sportTypeService.getAllDto(), HttpStatus.OK);
+    private final SportTypeService typeService;
+
+    @ApiOperation(value = "Отображает данные видов спорта")
+    @GetMapping
+    public ResponseEntity<List<SportTypeDto>> readAllSportType() {
+        return ResponseEntity.ok(typeService.getAllSportTypeDto());
     }
 
-    @ApiOperation(value = "Выводит список видов спорта, которых еще нет у пользователя")
-    @Secured(value = ROLE_USER)
-    @GetMapping("/add")
-    public ResponseEntity<List<SportTypeDto>> readAllEmptySportTypes(Authentication authentication) {
-        return new ResponseEntity<>(sportTypeService.getAllDto(authentication), HttpStatus.OK);
+    @ApiOperation(value = "Отображает данные вида спорта по его индексу")
+    @GetMapping("/{id}")
+    public ResponseEntity<SportTypeDto> readSportType(@PathVariable Short id) {
+        return ResponseEntity.ok(typeService.getSportTypeDtoById(id));
     }
 
-
-    @ApiOperation("Добавляет вид спорта")
-    @Secured(value = ROLE_ADMIN)
-    @PostMapping("/add")
-    public ResponseEntity<SportTypeDto> createSportType(@RequestBody SportTypeDto sportTypeDto) {
-        return new ResponseEntity<>(sportTypeService.save(sportTypeDto), HttpStatus.OK);
-    }
-
-    @ApiOperation("Удаляет вид спорта")
-    @Secured(value = ROLE_ADMIN)
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteSportTypeById(@PathVariable("id") Short id) {
-        return new ResponseEntity<>(sportTypeService.deleteById(id), HttpStatus.OK);
+    @ApiOperation(value = "Создаёт вид спорта")
+    @PostMapping
+    public ResponseEntity<?> createSportType(@RequestBody String sportTitle) {
+        return typeService.save(sportTitle)  != null ?
+                ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 }

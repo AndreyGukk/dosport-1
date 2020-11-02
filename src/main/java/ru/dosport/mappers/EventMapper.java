@@ -2,7 +2,6 @@ package ru.dosport.mappers;
 
 import org.mapstruct.*;
 import ru.dosport.dto.EventDto;
-import ru.dosport.dto.EventRequest;
 import ru.dosport.entities.Event;
 
 import java.util.List;
@@ -10,43 +9,41 @@ import java.util.List;
 /**
  * Маппер, преобразующий классы Event и EventDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class, EventMemberMapper.class})
 public interface EventMapper {
 
-    // TODO:
-    // 1. Дописать сущности Event и Field
-    // 2. Создать FieldMapper и SportTypeMapper,
-    // 3. Добавить их использование: uses = {FieldMapper.class, SportTypeMapper.class}
-    // 4. Убрать игнорирование полей sportType и field в настройках маппинга
-
-    /*
     @Mappings({
-            @Mapping(target="sportType", ignore = true),
-            @Mapping(target="field", ignore = true),
-            @Mapping(target="startDateTime", source = "entity.startDateTime", dateFormat = "dd-MM-yyyy hh:mm"),
-            @Mapping(target="stopDateTime", source = "entity.stopDateTime", dateFormat = "dd-MM-yyyy hh:mm")
+            @Mapping(target = "eventId", source = "entity.id"),
+            @Mapping(target = "dateEvent", source = "entity.date", dateFormat = "dd-MM-yyyy"),
+            @Mapping(target="startTimeEvent", source = "entity.startTime", dateFormat = "hh:mm"),
+            @Mapping(target="endTimeEvent", source = "entity.endTime", dateFormat = "hh:mm"),
+            @Mapping(target="sportGroundId", source = "entity.sportGround.id"),
+            @Mapping(target="members", source = "entity.members"),
+            @Mapping(target="organizerId", source = "entity.organizerId")
     })
     EventDto mapEntityToDto(Event entity);
 
     List<EventDto> mapEntityToDto(List<Event> entities);
 
     @Mappings({
-            @Mapping(target="sportType", ignore = true),
-            @Mapping(target="field", ignore = true),
-            @Mapping(target="startDateTime", source="dto.startDateTime", dateFormat = "dd-MM-yyyy hh:mm"),
-            @Mapping(target="stopDateTime", source="dto.stopDateTime", dateFormat = "dd-MM-yyyy hh:mm")
+            @Mapping(target = "id", source = "dto.eventId"),
+            @Mapping(target = "date", source = "dto.dateEvent", dateFormat = "dd-MM-yyyy"),
+            @Mapping(target="startTime", source = "dto.startTimeEvent", dateFormat = "hh:mm"),
+            @Mapping(target="endTime", source = "dto.endTimeEvent", dateFormat = "hh:mm")
     })
     Event mapDtoToEntity(EventDto dto);
 
-    Event mapDtoToEntity(EventRequest dto);
-
     @Mappings({
-            @Mapping(target="sportType", ignore = true),
-            @Mapping(target="field", ignore = true),
             @Mapping(target="id", ignore = true),
-            @Mapping(target="startDateTime", source="dto.startDateTime", dateFormat = "dd-MM-yyyy hh:mm"),
-            @Mapping(target="stopDateTime", source="dto.stopDateTime", dateFormat = "dd-MM-yyyy hh:mm")
+            @Mapping(target="sportGround", ignore = true),
+            @Mapping(target="organizerId", ignore = true),
+            @Mapping(target="chatId", ignore = true),
+            @Mapping(target="members", ignore = true),
+
+            @Mapping(target = "date", source = "dto.dateEvent", dateFormat = "dd-MM-yyyy"),
+            @Mapping(target="startTime", source = "dto.startTimeEvent", dateFormat = "hh:mm"),
+            @Mapping(target="endTime", source = "dto.endTimeEvent", dateFormat = "hh:mm")
     })
     Event update(@MappingTarget Event entity, EventDto dto);
-    */
+
 }

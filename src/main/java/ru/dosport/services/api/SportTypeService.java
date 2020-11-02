@@ -1,39 +1,42 @@
 package ru.dosport.services.api;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 import ru.dosport.dto.SportTypeDto;
+import ru.dosport.entities.SportType;
 
 import java.util.List;
 
-/**
- * Интерфейс сервиса видов спорта
- */
-
-@Service
 public interface SportTypeService {
+
+    /**
+     * Выдаёт вид спорта по его id
+     *
+     * @param id вида спорта
+     * @return dto вид спорта
+     */
+    SportTypeDto getSportTypeDtoById(Short id);
+
     /**
      * Выдает список всех видов спорта
      *
      * @return список видов спорта
      */
-    List<SportTypeDto> getAllDto();
+    List<SportTypeDto> getAllSportTypeDto();
 
     /**
-     * Выдает список видов спорта, которых еще нет в навыках пользователя
+     * Выдаёт вид спорта по его названию
      *
-     * @return список видов спорта
+     * @param title название вида спорта
+     * @return dto вид спорта
      */
-    List<SportTypeDto> getAllDto(Authentication authentication);
+    SportType getSportTypeByTitle(String title);
 
     /**
      * Добавляет вид спорта
      *
-     * @param sportTypeDto запрос на добавление вида спорта
+     * @param sportTitle название нового вида спорта на добавление
      * @return вид спорта, сохраненный в репозитории
      */
-    SportTypeDto save(SportTypeDto sportTypeDto);
+    SportTypeDto save(String sportTitle);
 
     /**
      * Удаляет вид спорта по id

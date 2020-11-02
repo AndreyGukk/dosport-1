@@ -12,6 +12,9 @@ import java.util.List;
  * Сервис пользователей
  */
 public interface UserService {
+    //TODO: нужна проверка authentication на роль админа (через сервис user)
+    //TODO: метод проверки существования пользователя по id (user service)
+    //TODO: метод получение определённых пользователей ( getUserDtos(List<Long> idList) )
 
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ

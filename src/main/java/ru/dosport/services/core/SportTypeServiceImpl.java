@@ -4,44 +4,60 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.dosport.dto.SportTypeDto;
+import ru.dosport.entities.SportType;
+import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.mappers.SportTypeMapper;
 import ru.dosport.repositories.SportTypeRepository;
-import ru.dosport.services.api.UserService;
-import ru.dosport.services.api.UserSportTypeService;
+import ru.dosport.services.api.SportTypeService;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 
 @Service
 @RequiredArgsConstructor
-public class SportTypeServiceImpl implements ru.dosport.services.api.SportTypeService {
-    private final SportTypeRepository sportTypeRepository;
-    private final SportTypeMapper sportTypeMapper;
-    private final UserSportTypeService userSportTypeService;
-    private final UserService userService;
+public class SportTypeServiceImpl implements SportTypeService {
+
+    private final SportTypeMapper mapper;
+
+    private final SportTypeRepository repository;
 
     @Override
-    public List<SportTypeDto> getAllDto() {
-        return sportTypeMapper.mapEntityToDto(sportTypeRepository.findAll());
+    public SportTypeDto getSportTypeDtoById(Short id) {
+        return mapper.mapEntityToDto(findById(id));
     }
 
     @Override
-    public List<SportTypeDto> getAllDto(Authentication authentication) {
-        List<String> list = new ArrayList();
-        userSportTypeService.getAllDtoByUserId(userService.getIdByAuthentication(authentication)).forEach(s -> list.add(s.getSportType()));
-        return getAllDto().stream().filter((str) -> !list.contains(str.getTitle())).collect(Collectors.toList());
+    public List<SportTypeDto> getAllSportTypeDto() {
+        return mapper.mapEntityToDto(repository.findAll());
     }
 
     @Override
-    public SportTypeDto save(SportTypeDto sportTypeDto) {
-        sportTypeRepository.save(sportTypeMapper.mapDtoToEntity(sportTypeDto));
-        return sportTypeDto;
+    public SportType getSportTypeByTitle(String title) {
+        return repository.findByTitle(title).orElseThrow(
+                () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, title))
+        );
+    }
+
+    @Transactional
+    @Override
+    public SportTypeDto save(String sportTitle) {
+        Optional<SportType> sport = repository.findByTitle(sportTitle);
+        return sport.isPresent() ? mapper.mapEntityToDto(sport.get()) : mapper.mapEntityToDto(repository.save(new SportType(sportTitle)));
     }
 
     @Override
     public Boolean deleteById(Short id) {
-        sportTypeRepository.deleteById(id);
-        return sportTypeRepository.existsById(id);
+        repository.deleteById(id);
+        return repository.existsById(id);
+    }
+
+    private SportType findById(Short id) {
+        return repository.findById(id).orElseThrow(
+                () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
     }
 }
