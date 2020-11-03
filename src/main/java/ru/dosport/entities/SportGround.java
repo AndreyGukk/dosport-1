@@ -41,7 +41,7 @@ public class SportGround {
     // Вид спорта
     @ManyToMany
     @JoinTable(
-            name = "sportground_sport_type",
+            name = "sportgrounds_sport_type",
             joinColumns = @JoinColumn(name = "sportground_id"),
             inverseJoinColumns = @JoinColumn(name = "sport_type_id"))
     private List<SportType> sportType;
