@@ -28,7 +28,7 @@ public class SportType {
 
     @ManyToMany
     @JoinTable(
-            name = "sportground_sport_type",
+            name = "sportgrounds_sport_type",
             joinColumns = @JoinColumn(name = "sport_type_id"),
             inverseJoinColumns = @JoinColumn(name = "sportground_id"))
     private List<SportGround> sportGrounds;
