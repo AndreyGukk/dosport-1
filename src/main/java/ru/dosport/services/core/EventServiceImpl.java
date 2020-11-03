@@ -32,7 +32,7 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
-    // Необходимые сервисы и мапперы
+    // Необходимые мапперы
     private final EventMapper eventMapper;
     private final EventMemberMapper memberMapper;
 
@@ -40,6 +40,7 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final MemberRepository memberRepository;
 
+    // Сервисы
     private final UserService userService;
     private final SportTypeService sportTypeService;
     private final SportGroundService sportGroundService;

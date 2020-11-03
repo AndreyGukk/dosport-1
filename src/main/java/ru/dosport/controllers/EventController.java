@@ -67,7 +67,7 @@ public class EventController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEvent(@PathVariable Long id, Authentication authentication) {
         return eventService.deleteById(id, authentication) ?
-                ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
+                ResponseEntity.badRequest().build() : ResponseEntity.noContent().build();
     }
 
     @ApiOperation(value = "Отображает данные всех участников мероприятия")
