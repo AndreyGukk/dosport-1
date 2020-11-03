@@ -1,6 +1,7 @@
 package ru.dosport.services.core;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
@@ -55,6 +56,7 @@ public class SportGroundServiceImp implements SportGroundService {
                 .address(request.getAddress())
                 .sportType(typeMapper.mapDtoToEntity(request.getSportTypes()))
                 .title(request.getTitle())
+                .location(new Point(request.getLatitude(), request.getLongitude()))
                 .build();
 
         return groundMapper.mapEntityToDto(groundRepository.save(ground));

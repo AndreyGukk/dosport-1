@@ -17,7 +17,9 @@ public interface SportGroundMapper {
 
     @Mappings({
             @Mapping(target = "sportGroundId", source = "entity.id"),
-            @Mapping(target = "sportTypes", source = "entity.sportType")
+            @Mapping(target = "sportTypes", source = "entity.sportType"),
+            @Mapping(target = "latitude", source = "entity.location.x"),
+            @Mapping(target = "longitude", source = "entity.location.y")
     })
     SportGroundDto mapEntityToDto(SportGround entity);
 
