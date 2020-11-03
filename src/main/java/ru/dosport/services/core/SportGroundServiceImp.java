@@ -22,8 +22,10 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 @RequiredArgsConstructor
 public class SportGroundServiceImp implements SportGroundService {
 
-    // Необходимые репозитории и мапперы
+    // Репозитории
     private final SportGroundRepository groundRepository;
+
+    // Мапперы
     private final SportGroundMapper groundMapper;
     private final SportTypeMapper typeMapper;
 
@@ -35,6 +37,11 @@ public class SportGroundServiceImp implements SportGroundService {
     @Override
     public List<SportGroundDto> getAllDto() {
         return groundMapper.mapEntityToDto(groundRepository.findAll());
+    }
+
+    @Override
+    public List<SportGroundDto> getAllDto(String city) {
+        return city == null ? getAllDto() : groundMapper.mapEntityToDto(groundRepository.findAllByCity(city));
     }
 
     @Override

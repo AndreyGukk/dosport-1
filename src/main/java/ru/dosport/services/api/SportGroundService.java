@@ -15,6 +15,8 @@ public interface SportGroundService {
 
     List<SportGroundDto> getAllDto();
 
+    List<SportGroundDto> getAllDto(String city);
+
     SportGround getById(Long id);
 
     SportGroundDto create(SportGroundRequest request);
