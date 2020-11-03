@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS sportgrounds_sport_type;
 
 create table sportgrounds_sport_type
 (
-	sport_ground_id bigint not null
+	sportground_id bigint not null
 		constraint fk9tqum2ai20tvt84ax4t2jov6p
 			references sportgrounds,
 	sport_type_id smallint not null
