@@ -15,6 +15,8 @@ public class SportGroundDto {
 
     private String address;
 
+    private String city;
+
     private String title;
 
     private List<SportTypeDto> sportTypes;

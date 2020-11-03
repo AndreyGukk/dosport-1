@@ -30,6 +30,9 @@ public class SportGround {
     @Column(name = "address", nullable = false, unique = true)
     private String address;
 
+    @Column(name = "city", nullable = false)
+    private String city;
+
     //Широта и Долгота (x, y)
     @Column(name = "location", nullable = false, columnDefinition = "point")
     private Point location;

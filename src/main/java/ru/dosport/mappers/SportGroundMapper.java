@@ -5,9 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 import ru.dosport.dto.SportGroundDto;
-import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportGround;
-import ru.dosport.entities.SportType;
 
 import java.util.List;
 

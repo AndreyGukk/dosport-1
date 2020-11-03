@@ -5,6 +5,7 @@ create table sportgrounds
 	id bigserial not null
 		constraint sportgrounds_pkey
 			primary key,
+	city varchar(255) not null,
 	address varchar(255) not null
 		constraint uk_kvtbkuiwnrkn35yqkyi5fqn42
 			unique,
