@@ -32,6 +32,13 @@ public interface SportGroundService {
     List<SportGroundDto> getAllDto(String city);
 
     /**
+     * Возращает площадки из списка индетификаторов
+     * @param idList список идентификаторов площадок
+     * @return список dto площадок
+     */
+    List<SportGroundDto> getAllDtoById(List<Long> idList);
+
+    /**
      * Возвращает площадку по идентификатору
      * @param id идентификатор площадки
      * @return сущность площадки

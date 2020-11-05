@@ -46,6 +46,11 @@ public class SportGroundServiceImp implements SportGroundService {
     }
 
     @Override
+    public List<SportGroundDto> getAllDtoById(List<Long> idList) {
+        return groundMapper.mapEntityToDto(groundRepository.findAllById(idList));
+    }
+
+    @Override
     public SportGround getById(Long id) {
         return findById(id);
     }
