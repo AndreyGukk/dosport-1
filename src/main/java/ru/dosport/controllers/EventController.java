@@ -76,6 +76,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.getAllMembers(id));
     }
 
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @ApiOperation(value = "Добавляет участника в мероприятие")
     @PostMapping("/{id}/members")
     public ResponseEntity<?> addEventMember(@PathVariable Long id, @RequestBody MemberRequest request) {
