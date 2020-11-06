@@ -31,3 +31,18 @@ create table sportground_comments
 	date date not null,
 	text varchar(255) not null
 );
+
+DROP TABLE IF EXISTS message_event;
+
+create table message_event
+(
+	id bigserial not null
+		constraint message_event_pkey
+			primary key,
+	text varchar(255),
+	user_id bigint,
+	user_name varchar(255),
+	event_id bigint not null
+		constraint fklhhl7j0qe0wkj7i2e687ygymh
+			references events
+);
