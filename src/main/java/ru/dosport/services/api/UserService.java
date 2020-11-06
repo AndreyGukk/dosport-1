@@ -12,10 +12,6 @@ import java.util.List;
  * Сервис пользователей
  */
 public interface UserService {
-    //TODO: нужна проверка authentication на роль админа (через сервис user)
-    //TODO: метод проверки существования пользователя по id (user service)
-    //TODO: метод получение определённых пользователей ( getUserDtos(List<Long> idList) )
-
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
      * User getById(Long id) найти объект по параметру
@@ -38,6 +34,14 @@ public interface UserService {
      * @return пользователь
      */
     UserDto getDtoById(Long id);
+
+    /**
+     * Найти пользователей по их идентификаторам
+     *
+     * @param idList список идентификаторов пользователей
+     * @return список пользователей
+     */
+    List<UserDto> getAllDtoById(List<Long> idList);
 
     /**
      * Найти пользователя по данным авторизации
@@ -69,6 +73,12 @@ public interface UserService {
      * @return список пользователей
      */
     List<UserDto> getAllDto();
+
+    /**
+     * Проверить существование пользователя
+     * @return true и false, существует, не существует
+     */
+    boolean existsById(Long id);
 
     /**
      * Создать нового пользователя

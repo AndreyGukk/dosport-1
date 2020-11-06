@@ -10,6 +10,7 @@ import ru.dosport.entities.EventMember;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Messages;
+import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.EventMapper;
 import ru.dosport.mappers.EventMemberMapper;
 import ru.dosport.repositories.EventRepository;
@@ -20,6 +21,7 @@ import ru.dosport.services.api.SportTypeService;
 import ru.dosport.services.api.UserService;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +34,7 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
-    // Необходимые сервисы и мапперы
+    // Необходимые мапперы
     private final EventMapper eventMapper;
     private final EventMemberMapper memberMapper;
 
@@ -40,6 +42,7 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final MemberRepository memberRepository;
 
+    // Сервисы
     private final UserService userService;
     private final SportTypeService sportTypeService;
     private final SportGroundService sportGroundService;
@@ -89,9 +92,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public boolean deleteById(Long id, Authentication authentication) {
         Event event = findById(id);
-        //TODO: нужна проверка authentication на роль админа (через сервис user)
         if (!event.getOrganizerId().equals(userService.getIdByAuthentication(authentication))) {
-            throw new AccessDeniedException("Пользователь не является организатором мероприятия");
+            if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
+                throw new AccessDeniedException("Пользователь не является организатором мероприятия");
+            }
         }
         eventRepository.deleteById(id);
         return eventRepository.existsById(id);
@@ -99,23 +103,39 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<MemberDto> getAllMembers(Long eventId) {
-        //TODO: метод получение определённых пользователей ( getUserDtos(List<Long> idList) )
-        List<MemberDto> memberDtoList;
+        //TODO: проверить всё это
         List<EventMember> members = memberRepository.findAllByEventId(eventId);
+        List<UserDto> userDtoList = userService.getAllDtoById(members.stream().map(EventMember::getUserId)
+                .collect(Collectors.toList()));
+        List<MemberDto> memberDtoList = new ArrayList<>();
 
-        memberDtoList = members.stream()
-                .map(m -> memberMapper.mapEntityToDto(m, userService.getDtoById(m.getUserId())))
-                .collect(Collectors.toList());
+        //Мапить через запланированных участников
+        members.forEach(m -> userDtoList.stream()
+                .filter(u -> m.getUserId().equals(u.getId()))
+                .map(u -> memberMapper.mapEntityToDto(m, u))
+                .forEach(memberDtoList::add));
+
+
+        //Мапить через найденых пользователей
+//        userDtoList.forEach(d -> members.stream()
+//                .filter(member -> member.getUserId().equals(d.getId()))
+//                .map(member -> memberMapper.mapEntityToDto(member, d))
+//                .forEach(memberDtoList::add));
+
+        //Придётся обращаться каждый раз к сервису -> может прерваться
+//        memberDtoList = members.stream()
+//                .map(m -> memberMapper.mapEntityToDto(m, userService.getDtoById(m.getUserId())))
+//                .collect(Collectors.toList());
 
         return memberDtoList;
     }
 
+    @Transactional
     @Override
     public MemberDto createEventMember(Long eventId, MemberRequest request) {
         if (eventId.equals(request.getEvenId())) {
             throw new DataBadRequestException("Не правильно указано мероприятие");
         }
-        //TODO: метод проверки существования пользователя по id (user service)
         UserDto user = userService.getDtoById(request.getUserId());
         Event event = findById(eventId);
         EventMember member = EventMember.builder()

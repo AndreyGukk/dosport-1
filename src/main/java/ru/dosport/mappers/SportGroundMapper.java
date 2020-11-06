@@ -5,9 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 import ru.dosport.dto.SportGroundDto;
-import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportGround;
-import ru.dosport.entities.SportType;
 
 import java.util.List;
 
@@ -19,7 +17,9 @@ public interface SportGroundMapper {
 
     @Mappings({
             @Mapping(target = "sportGroundId", source = "entity.id"),
-            @Mapping(target = "sportTypes", source = "entity.sportType")
+            @Mapping(target = "sportTypes", source = "entity.sportType"),
+            @Mapping(target = "latitude", source = "entity.location.x"),
+            @Mapping(target = "longitude", source = "entity.location.y")
     })
     SportGroundDto mapEntityToDto(SportGround entity);
 

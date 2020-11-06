@@ -23,8 +23,8 @@ public class SportGroundController {
 
     @ApiOperation(value = "Отображает данные всех площадок")
     @GetMapping
-    public ResponseEntity<List<SportGroundDto>> readAllSportGrounds() {
-        return ResponseEntity.ok(sportGroundService.getAllDto());
+    public ResponseEntity<List<SportGroundDto>> readAllSportGrounds(@RequestParam(required = false) String city) {
+        return ResponseEntity.ok(sportGroundService.getAllDto(city));
     }
 
     @ApiOperation(value = "Отображает данные площадки по её индексу")

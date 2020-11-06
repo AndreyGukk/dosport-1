@@ -29,17 +29,17 @@ public interface EventService {
      */
 
     /**
-     * Найти мероприятие по его идентификатору
+     * Возвращает мероприятие по его идентификатору
      *
      * @param id идентификатор мероприятия
-     * @return мероприятие
+     * @return dto мероприятия
      */
     EventDto getDtoById(Long id);
 
     /**
-     * Найти все мероприятия
+     * Возвращает все мероприятия
      *
-     * @return список мероприятий
+     * @return список dto мероприятий
      */
     List<EventDto> getAllDto();
 
@@ -68,7 +68,18 @@ public interface EventService {
      */
     boolean deleteById(Long id, Authentication authentication);
 
+    /**
+     * Получить всех участников мероприятия.
+     * @param eventId идентификатор мероприятия
+     * @return список dto участников
+     */
     List<MemberDto> getAllMembers(Long eventId);
 
+    /**
+     * Добавить участника мероприятия
+     * @param eventId идентификатор мероприятия
+     * @param request запрос, содержищий участника, идентификатор мероприятия, статус участника
+     * @return dto участника
+     */
     MemberDto createEventMember(Long eventId, MemberRequest request);
 }

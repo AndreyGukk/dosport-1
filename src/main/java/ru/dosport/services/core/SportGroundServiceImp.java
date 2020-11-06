@@ -1,6 +1,7 @@
 package ru.dosport.services.core;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
@@ -22,8 +23,10 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 @RequiredArgsConstructor
 public class SportGroundServiceImp implements SportGroundService {
 
-    // Необходимые репозитории и мапперы
+    // Репозитории
     private final SportGroundRepository groundRepository;
+
+    // Мапперы
     private final SportGroundMapper groundMapper;
     private final SportTypeMapper typeMapper;
 
@@ -38,6 +41,16 @@ public class SportGroundServiceImp implements SportGroundService {
     }
 
     @Override
+    public List<SportGroundDto> getAllDto(String city) {
+        return city == null ? getAllDto() : groundMapper.mapEntityToDto(groundRepository.findAllByCity(city));
+    }
+
+    @Override
+    public List<SportGroundDto> getAllDtoById(List<Long> idList) {
+        return groundMapper.mapEntityToDto(groundRepository.findAllById(idList));
+    }
+
+    @Override
     public SportGround getById(Long id) {
         return findById(id);
     }
@@ -48,6 +61,7 @@ public class SportGroundServiceImp implements SportGroundService {
                 .address(request.getAddress())
                 .sportType(typeMapper.mapDtoToEntity(request.getSportTypes()))
                 .title(request.getTitle())
+                .location(new Point(request.getLatitude(), request.getLongitude()))
                 .build();
 
         return groundMapper.mapEntityToDto(groundRepository.save(ground));
