@@ -47,6 +47,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public List<UserDto> getAllDtoById(List<Long> idList) {
+        return userMapper.mapEntityToDto(userRepository.findAllById(idList));
+    }
+
+    @Override
     public UserDto getDtoByAuthentication(Authentication authentication) {
         return userMapper.mapEntityToDto(findById(getUserId(authentication)));
     }
@@ -64,6 +69,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<UserDto> getAllDto() {
         return userMapper.mapEntityToDto(userRepository.findAll());
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
     }
 
     @Override
