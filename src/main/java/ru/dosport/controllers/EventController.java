@@ -6,11 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.dosport.dto.EventDto;
-import ru.dosport.dto.EventRequest;
-import ru.dosport.dto.MemberDto;
-import ru.dosport.dto.MemberRequest;
+import ru.dosport.dto.*;
 import ru.dosport.services.api.EventService;
+import ru.dosport.services.api.MessageEventService;
 
 import javax.validation.Valid;
 
@@ -33,6 +31,7 @@ public class EventController {
 
     // Необходимые сервисы
     private final EventService eventService;
+    private final MessageEventService messageEventService;
 
     @ApiOperation(value = "Отображает данные всех мероприятий")
     @GetMapping
@@ -82,5 +81,34 @@ public class EventController {
     public ResponseEntity<?> addEventMember(@PathVariable Long id, @RequestBody MemberRequest request) {
         return eventService.createEventMember(id, request) != null ?
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping("/{id}/messages")
+    public ResponseEntity<List<MessageEventDto>> readBoard(@PathVariable Long id) {
+        return ResponseEntity.ok(messageEventService.getAllDto(id));
+    }
+
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @PostMapping("/{id}/messages")
+    public ResponseEntity<MessageEventDto> createMessage(@PathVariable Long id,
+                                                         @RequestBody MessageEventRequest request,
+                                                         Authentication authentication) {
+        return ResponseEntity.ok(messageEventService.save(id, request, authentication));
+    }
+
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @PutMapping("/{id}/message/{messageId}")
+    public ResponseEntity<MessageEventDto> updateMessage(@PathVariable Long id, @PathVariable Long messageId,
+                                                         MessageEventRequest request, Authentication authentication) {
+        return ResponseEntity.ok(messageEventService.update(messageId, id, request, authentication));
+    }
+
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @DeleteMapping("/{id}/message/{messageId}")
+    public ResponseEntity<MessageEventDto> deleteMessage(@PathVariable Long id, @PathVariable Long messageId,
+                                                         Authentication authentication) {
+        return messageEventService.deleteById(id, authentication) ?
+                ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 }
