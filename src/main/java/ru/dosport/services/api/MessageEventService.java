@@ -8,35 +8,43 @@ import java.util.List;
 public interface MessageEventService {
 
     /**
-     * Найти мероприятие по его идентификатору
+     * Вернутть сообщение к мероприятию по его идентификатору
      *
      * @param id идентификатор мероприятия
-     * @return мероприятие
+     * @return сообщение к мероприятию
      */
     MessageEventDto getDtoById(Long id);
 
     /**
-     * Найти все мероприятия
+     * Вернуть все сообщения мероприятия
      *
-     * @return список мероприятий
+     * @return список сообщений мероприятия
      */
     List<MessageEventDto> getAllDto(Long eventId);
 
     /**
-     * Создать новое мероприятие
+     * Создать новое сообщение к мероприятию
      *
-     * @return новое мероприятие, сохраненное в репозитории
+     * @return новое сообщение к мероприятию, сохраненное в репозитории
      */
     MessageEventDto save(Long eventId, MessageEventRequest request, Authentication authentication);
 
+    /**
+     * Обновить сообщение к мероприятию
+     * @param messageId id сообщения
+     * @param eventId id мероприятия
+     * @param request запрос с новым текстом
+     * @param authentication
+     * @return новое сообщение к мероприятию, сохраненное в репозитории
+     */
     MessageEventDto update(Long messageId, Long eventId, MessageEventRequest request, Authentication authentication);
 
     /**
-     * Удалить мероприятие по его идентификатору
+     * Удалить сообщение к мероприятию по его идентификатору
      *
-     * @param id идентификатор мероприятия
+     * @param id идентификатор сообщение
      * @param authentication
-     * @return удалено ли мероприятие
+     * @return удалено ли сообщение
      */
     boolean deleteById(Long id, Authentication authentication);
 }
