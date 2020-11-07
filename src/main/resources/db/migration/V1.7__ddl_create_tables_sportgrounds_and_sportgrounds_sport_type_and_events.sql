@@ -13,9 +13,9 @@ create table sportgrounds
 	title varchar(255) not null
 );
 
-DROP TABLE IF EXISTS sportgrounds_sport_type;
+DROP TABLE IF EXISTS sportground_sport_types;
 
-create table sportgrounds_sport_type
+create table sportground_sport_types
 (
 	sportground_id bigint not null
 		constraint fk9tqum2ai20tvt84ax4t2jov6p
