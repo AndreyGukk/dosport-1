@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "event_message")
+@Table(name = "event_messages")
 public class EventMessage {
 
     @Id

@@ -27,7 +27,7 @@ public interface EventMessageService {
      *
      * @return новое сообщение к мероприятию, сохраненное в репозитории
      */
-    EventMessageDto save(Long eventId, MessageEventRequest request, Authentication authentication);
+    EventMessageDto save(Long eventId, EventMessageRequest request, Authentication authentication);
 
     /**
      * Обновить сообщение к мероприятию
@@ -37,7 +37,7 @@ public interface EventMessageService {
      * @param authentication
      * @return новое сообщение к мероприятию, сохраненное в репозитории
      */
-    EventMessageDto update(Long messageId, Long eventId, MessageEventRequest request, Authentication authentication);
+    EventMessageDto update(Long messageId, Long eventId, EventMessageRequest request, Authentication authentication);
 
     /**
      * Удалить сообщение к мероприятию по его идентификатору

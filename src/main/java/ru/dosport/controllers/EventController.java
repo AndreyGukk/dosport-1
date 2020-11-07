@@ -92,7 +92,7 @@ public class EventController {
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PostMapping("/{id}/messages")
     public ResponseEntity<EventMessageDto> createMessage(@PathVariable Long id,
-                                                         @RequestBody MessageEventRequest request,
+                                                         @RequestBody EventMessageRequest request,
                                                          Authentication authentication) {
         return ResponseEntity.ok(eventMessageService.save(id, request, authentication));
     }
@@ -100,7 +100,7 @@ public class EventController {
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PutMapping("/{id}/message/{messageId}")
     public ResponseEntity<EventMessageDto> updateMessage(@PathVariable Long id, @PathVariable Long messageId,
-                                                         MessageEventRequest request, Authentication authentication) {
+                                                         EventMessageRequest request, Authentication authentication) {
         return ResponseEntity.ok(eventMessageService.update(messageId, id, request, authentication));
     }
 

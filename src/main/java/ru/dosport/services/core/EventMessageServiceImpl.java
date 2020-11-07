@@ -6,11 +6,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.dosport.dto.EventDto;
 import ru.dosport.dto.EventMessageDto;
-import ru.dosport.dto.MessageEventRequest;
+import ru.dosport.dto.EventMessageRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.entities.Event;
 import ru.dosport.entities.EventMessage;
-import ru.dosport.entities.User;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Roles;
@@ -50,7 +49,7 @@ public class EventMessageServiceImpl implements EventMessageService {
 
     @Transactional
     @Override
-    public EventMessageDto save(Long idEvent, MessageEventRequest request, Authentication authentication) {
+    public EventMessageDto save(Long idEvent, EventMessageRequest request, Authentication authentication) {
         Event event = eventMapper.mapDtoToEntity(eventService.getDtoById(idEvent));
         UserDto user = userService.getDtoByAuthentication(authentication);
         EventMessage message = EventMessage.builder()
@@ -63,7 +62,7 @@ public class EventMessageServiceImpl implements EventMessageService {
     }
 
     @Override
-    public EventMessageDto update(Long messageId , Long eventId, MessageEventRequest request, Authentication authentication) {
+    public EventMessageDto update(Long messageId , Long eventId, EventMessageRequest request, Authentication authentication) {
         EventDto event = eventService.getDtoById(eventId);
         EventMessage message = findById(messageId);
 

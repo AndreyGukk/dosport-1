@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS event_member;
+DROP TABLE IF EXISTS event_members;
 
-create table event_member
+create table event_members
 (
 	id bigserial not null
 		constraint event_member_pkey
@@ -8,7 +8,7 @@ create table event_member
 	status varchar(255),
 	event_id bigint
 		constraint fke7ttqbdxnpwren6fg3wktsash
-			references event_member,
+			references events,
 	user_id bigint
 		constraint fkoobns1hxage1y1gcnf9ol8y2m
 			references users
@@ -32,15 +32,17 @@ create table sportground_comments
 	text varchar(255) not null
 );
 
-DROP TABLE IF EXISTS message_event;
+DROP TABLE IF EXISTS event_messages;
 
-create table event_message
+create table event_messages
 (
 	id bigserial not null
 		constraint event_message_pkey
 			primary key,
 	text varchar(255) not null,
-	user_id bigint not null,
+	user_id bigint not null
+	    constraint fkn1pmgagnamc008wh5myoy87n6
+            references users,
 	user_name varchar(255),
 	event_id bigint not null
 		constraint fkd36re9dyewxsuy0kp0om139t4
