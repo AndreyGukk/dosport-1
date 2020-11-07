@@ -34,15 +34,16 @@ create table sportground_comments
 
 DROP TABLE IF EXISTS message_event;
 
-create table message_event
+create table event_message
 (
 	id bigserial not null
-		constraint message_event_pkey
+		constraint event_message_pkey
 			primary key,
-	text varchar(255),
-	user_id bigint,
+	text varchar(255) not null,
+	user_id bigint not null,
 	user_name varchar(255),
 	event_id bigint not null
-		constraint fklhhl7j0qe0wkj7i2e687ygymh
+		constraint fkd36re9dyewxsuy0kp0om139t4
 			references events
+				on delete cascade
 );
