@@ -5,7 +5,7 @@ import ru.dosport.dto.*;
 
 import java.util.List;
 
-public interface MessageEventService {
+public interface EventMessageService {
 
     /**
      * Вернутть сообщение к мероприятию по его идентификатору
@@ -13,7 +13,7 @@ public interface MessageEventService {
      * @param id идентификатор мероприятия
      * @return сообщение к мероприятию
      */
-    MessageEventDto getDtoById(Long id);
+    EventMessageDto getDtoById(Long id);
 
     /**
      * Вернуть все сообщения мероприятия
@@ -27,7 +27,7 @@ public interface MessageEventService {
      *
      * @return новое сообщение к мероприятию, сохраненное в репозитории
      */
-    MessageEventDto save(Long eventId, MessageEventRequest request, Authentication authentication);
+    EventMessageDto save(Long eventId, MessageEventRequest request, Authentication authentication);
 
     /**
      * Обновить сообщение к мероприятию
@@ -37,7 +37,7 @@ public interface MessageEventService {
      * @param authentication
      * @return новое сообщение к мероприятию, сохраненное в репозитории
      */
-    MessageEventDto update(Long messageId, Long eventId, MessageEventRequest request, Authentication authentication);
+    EventMessageDto update(Long messageId, Long eventId, MessageEventRequest request, Authentication authentication);
 
     /**
      * Удалить сообщение к мероприятию по его идентификатору

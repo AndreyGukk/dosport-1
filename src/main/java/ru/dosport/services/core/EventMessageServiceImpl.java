@@ -5,7 +5,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.dosport.dto.EventDto;
-import ru.dosport.dto.MessageEventDto;
+import ru.dosport.dto.EventMessageDto;
 import ru.dosport.dto.MessageEventRequest;
 import ru.dosport.entities.Event;
 import ru.dosport.entities.MessageEvent;
@@ -13,9 +13,9 @@ import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.EventMapper;
-import ru.dosport.mappers.MessageEventMapper;
-import ru.dosport.repositories.MessageEventRepository;
-import ru.dosport.services.api.MessageEventService;
+import ru.dosport.mappers.EventMessageMapper;
+import ru.dosport.repositories.EventMessageRepository;
+import ru.dosport.services.api.EventMessageService;
 import ru.dosport.services.api.EventService;
 import ru.dosport.services.api.UserService;
 
@@ -26,18 +26,18 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 
 @Service
 @RequiredArgsConstructor
-public class MessageEventServiceImpl implements MessageEventService {
+public class EventMessageServiceImpl implements EventMessageService {
 
-    private final MessageEventRepository messageRepository;
+    private final EventMessageRepository messageRepository;
 
     private final EventMapper eventMapper;
-    private final MessageEventMapper messageMapper;
+    private final EventMessageMapper messageMapper;
 
     private final EventService eventService;
     private final UserService userService;
 
     @Override
-    public MessageEventDto getDtoById(Long id) {
+    public EventMessageDto getDtoById(Long id) {
         return messageMapper.mapEntityToDto(findById(id));
     }
 
@@ -48,7 +48,7 @@ public class MessageEventServiceImpl implements MessageEventService {
 
     @Transactional
     @Override
-    public MessageEventDto save(Long idEvent, MessageEventRequest request, Authentication authentication) {
+    public EventMessageDto save(Long idEvent, MessageEventRequest request, Authentication authentication) {
         Event event = eventMapper.mapDtoToEntity(eventService.getDtoById(idEvent));
         MessageEvent message = MessageEvent.builder()
                 .event(event)
@@ -60,9 +60,9 @@ public class MessageEventServiceImpl implements MessageEventService {
     }
 
     @Override
-    public MessageEventDto update(Long messageId ,Long eventId, MessageEventRequest request, Authentication authentication) {
+    public EventMessageDto update(Long messageId , Long eventId, MessageEventRequest request, Authentication authentication) {
         EventDto event = eventService.getDtoById(eventId);
-        MessageEvent message = findById(messageId);
+        EventMessage message = findById(messageId);
 
         if (message.getEvent().getId().equals(event.getEventId())) {
             message.setText(request.getText());
@@ -75,7 +75,7 @@ public class MessageEventServiceImpl implements MessageEventService {
     @Transactional
     @Override
     public boolean deleteById(Long id, Authentication authentication) {
-        MessageEvent message = findById(id);
+        EventMessage message = findById(id);
 
         if (!message.getUserId().equals(userService.getIdByAuthentication(authentication))) {
             if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
@@ -87,7 +87,7 @@ public class MessageEventServiceImpl implements MessageEventService {
         return messageRepository.existsById(id);
     }
 
-    private MessageEvent findById(Long id) {
+    private EventMessage findById(Long id) {
         return messageRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id))
         );

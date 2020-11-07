@@ -3,16 +3,16 @@ package ru.dosport.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-import ru.dosport.dto.MessageEventDto;
-import ru.dosport.entities.MessageEvent;
+import ru.dosport.dto.EventMessageDto;
+import ru.dosport.entities.EventMessage;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface MessageEventMapper {
+public interface EventMessageMapper {
 
     @Mapping(target = "eventId", source = "entity.event.id")
-    MessageEventDto mapEntityToDto(MessageEvent entity);
+    EventMessageDto mapEntityToDto(EventMessage entity);
 
-    List<MessageEventDto> mapEntityToDto(List<MessageEvent> entities);
+    List<EventMessageDto> mapEntityToDto(List<EventMessage> entities);
 }

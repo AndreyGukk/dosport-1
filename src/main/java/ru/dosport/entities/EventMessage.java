@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "message_event")
-public class MessageEvent {
+@Table(name = "event_message")
+public class EventMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
