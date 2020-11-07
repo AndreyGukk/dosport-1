@@ -22,12 +22,12 @@ public class EventMessage {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "text")
+    @Column(name = "text", nullable = false)
     private String text;
 }

@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import ru.dosport.dto.EventDto;
 import ru.dosport.dto.EventMessageDto;
 import ru.dosport.dto.MessageEventRequest;
+import ru.dosport.dto.UserDto;
 import ru.dosport.entities.Event;
-import ru.dosport.entities.MessageEvent;
+import ru.dosport.entities.EventMessage;
+import ru.dosport.entities.User;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Roles;
@@ -42,7 +44,7 @@ public class EventMessageServiceImpl implements EventMessageService {
     }
 
     @Override
-    public List<MessageEventDto> getAllDto(Long id) {
+    public List<EventMessageDto> getAllDtoByEventId(Long id) {
         return messageMapper.mapEntityToDto(messageRepository.findAllByEventId(id));
     }
 
@@ -50,10 +52,11 @@ public class EventMessageServiceImpl implements EventMessageService {
     @Override
     public EventMessageDto save(Long idEvent, MessageEventRequest request, Authentication authentication) {
         Event event = eventMapper.mapDtoToEntity(eventService.getDtoById(idEvent));
-        MessageEvent message = MessageEvent.builder()
+        UserDto user = userService.getDtoByAuthentication(authentication);
+        EventMessage message = EventMessage.builder()
                 .event(event)
-                .userId(userService.getIdByAuthentication(authentication))
-                .userName(request.getUserName())
+                .userId(user.getId())
+                .userName(String.format("%s %s", user.getFirstName(), user.getLastName()))
                 .text(request.getText())
                 .build();
         return messageMapper.mapEntityToDto(messageRepository.save(message));

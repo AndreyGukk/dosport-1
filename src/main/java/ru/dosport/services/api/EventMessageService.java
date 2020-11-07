@@ -20,7 +20,7 @@ public interface EventMessageService {
      *
      * @return список сообщений мероприятия
      */
-    List<MessageEventDto> getAllDto(Long eventId);
+    List<EventMessageDto> getAllDtoByEventId(Long eventId);
 
     /**
      * Создать новое сообщение к мероприятию
