@@ -14,7 +14,7 @@ import static ru.dosport.helpers.Messages.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthenticationRequest {
 
-    @NotBlank(message = DATA_NOT_BLANK + "Адрес эл почты")
+    @NotBlank(message = DATA_NOT_BLANK + "Адрес эл. почты")
     private String email;
 
     @NotBlank(message = DATA_NOT_BLANK + "Пароль")

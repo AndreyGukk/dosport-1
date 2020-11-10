@@ -2,7 +2,6 @@ package ru.dosport.services.api;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.dosport.dto.SportTypeDto;
 import ru.dosport.dto.UserSportTypeDto;
 import ru.dosport.entities.UserSportType;
 
@@ -26,19 +25,8 @@ public interface UserSportTypeService {
      *
      * @return список навыков пользователя
      */
-    List<UserSportTypeDto> getAllDtoByUserId(Authentication authentication);
+    List<UserSportTypeDto> getAllDtoByUserAuthentication(Authentication authentication);
 
-    /**
-     * Создает новый список навыков пользователя по id, если его нет
-     *
-     * @return список навыков пользователя по id
-     */
-    List<UserSportTypeDto> updateByUserId(List<UserSportTypeDto> dtoList, Authentication authentication);
-
-
-
-
-//всё, что дальше, писала не я, так что хз, как это юзать
     /**
      * Найти вид спорта пользователя по идентификатору пользователя и идентификатору вида спорта
      *
@@ -46,7 +34,14 @@ public interface UserSportTypeService {
      * @param sportTypeId идентификатор вида спорта
      * @return спорт пользователя или null, если репозиторий не сожержит такую запись
      */
-    UserSportType findByUserIdAndSportTypeId(long userId, short sportTypeId);
+    UserSportType getByUserIdAndSportTypeId(long userId, short sportTypeId);
+
+    /**
+     * Создает новый список навыков пользователя по id, если его нет
+     *
+     * @return список навыков пользователя по id
+     */
+    List<UserSportTypeDto> update(List<UserSportTypeDto> dtoList, Authentication authentication);
 
     /**
      * Создать вид спорта пользователя
@@ -74,5 +69,5 @@ public interface UserSportTypeService {
      * @param sportTypeId - вид спорта
      * @return false, если строк по userId не найдено
      */
-    boolean deleteBySportTypeId(Authentication authentication, short sportTypeId);
+    boolean delete(Authentication authentication, short sportTypeId);
 }

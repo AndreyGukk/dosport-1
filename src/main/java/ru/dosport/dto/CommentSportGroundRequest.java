@@ -18,21 +18,10 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentSportGroundRequest {
 
-    @NotNull(message = DATA_NOT_BLANK + "Индентификатор пользователя")
-    private Long userId;
-
-    @Size(min = 2, max = 50)
-    @NotBlank(message = DATA_NOT_BLANK + "Полное имя пользователя")
-    private String userFullName;
-
     @NotNull(message = DATA_NOT_BLANK + "Индентификатор площадки")
     private Long sportGroundId;
 
-    @FutureOrPresent
-    @NotBlank(message = DATA_NOT_BLANK + "Дата")
-    private LocalDate date;
-
     @Size(min = 5, max = 300)
-    @NotBlank(message = DATA_NOT_BLANK + "Текст отзова")
+    @NotBlank(message = DATA_NOT_BLANK + "Текст отзыва")
     private String text;
 }

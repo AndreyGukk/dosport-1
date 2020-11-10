@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.UserSportTypeDto;
 import ru.dosport.services.api.UserSportTypeService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
@@ -42,14 +43,14 @@ public class UserSportTypeController {
     @Secured(value = {ROLE_ADMIN, ROLE_USER})
     @GetMapping("")
     public ResponseEntity<List<UserSportTypeDto>> readAllSportTypes(Authentication authentication) {
-        return new ResponseEntity<>(userSportTypeService.getAllDtoByUserId(authentication), HttpStatus.OK);
+        return new ResponseEntity<>(userSportTypeService.getAllDtoByUserAuthentication(authentication), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Изменяет список навыков пользователся")
     @Secured(value = {ROLE_USER})
     @PutMapping("")
-    public ResponseEntity<List<UserSportTypeDto>> updateUserSportTypesByUserId(List<UserSportTypeDto> dtoList,
+    public ResponseEntity<List<UserSportTypeDto>> updateUserSportTypesByUserId(@Valid List<UserSportTypeDto> dtoList,
                                                                                Authentication authentication) {
-        return new ResponseEntity<>(userSportTypeService.updateByUserId(dtoList, authentication), HttpStatus.OK);
+        return new ResponseEntity<>(userSportTypeService.update(dtoList, authentication), HttpStatus.OK);
     }
 }

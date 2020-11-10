@@ -12,10 +12,7 @@ import ru.dosport.repositories.UserSportTypeRepository;
 import ru.dosport.services.api.UserService;
 import ru.dosport.services.api.UserSportTypeService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static ru.dosport.helpers.Messages.DATA_WAS_NOT_SAVED;
 import static ru.dosport.helpers.Messages.USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE;
@@ -38,20 +35,18 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
     }
 
     @Override
-    public List<UserSportTypeDto> getAllDtoByUserId(Authentication authentication) {
+    public List<UserSportTypeDto> getAllDtoByUserAuthentication(Authentication authentication) {
         return userSportTypeMapper.mapEntityToDto(userSportTypeRepository.findAllByUserId(userService.getIdByAuthentication(authentication)));
     }
 
     @Override
-    public List<UserSportTypeDto> updateByUserId(List<UserSportTypeDto> dtoList, Authentication authentication) {
+    public List<UserSportTypeDto> update(List<UserSportTypeDto> dtoList, Authentication authentication) {
         userSportTypeMapper.mapDtoToEntity(dtoList).forEach(s -> saveOrUpdate(userService.getIdByAuthentication(authentication), s.getSportTypeId(), s.getLevel()));
-        return getAllDtoByUserId(authentication);
+        return getAllDtoByUserAuthentication(authentication);
     }
 
     @Override
-    public UserSportType findByUserIdAndSportTypeId(long userId, short sportTypeId) {
-//        Optional<UserSportType> u = userSportTypeRepository.findByUserIdAndSportTypeId(userId,sportTypeId);
-//        return u.get();
+    public UserSportType getByUserIdAndSportTypeId(long userId, short sportTypeId) {
         return userSportTypeRepository.findByUserIdAndSportTypeId(userId, sportTypeId).orElseThrow(
                 () -> new DataNotFoundException(
                         String.format(USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE, sportTypeId, userId)));
@@ -68,9 +63,9 @@ public class UserSportTypeServiceImpl implements UserSportTypeService {
     }
 
     @Override
-    public boolean deleteBySportTypeId(Authentication authentication, short sportTypeId) {
+    public boolean delete(Authentication authentication, short sportTypeId) {
         userSportTypeRepository.deleteBySportTypeId(userService.getIdByAuthentication(authentication), sportTypeId);
-        return findByUserIdAndSportTypeId(userService.getIdByAuthentication(authentication), sportTypeId) == null;
+        return getByUserIdAndSportTypeId(userService.getIdByAuthentication(authentication), sportTypeId) == null;
     }
 
     /**

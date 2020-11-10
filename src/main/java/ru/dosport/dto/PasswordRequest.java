@@ -16,7 +16,7 @@ import static ru.dosport.helpers.Messages.*;
 public class PasswordRequest {
 
     @Size(min=4, max=20, message = INVALID_PASSWORD_LENGTH)
-    @NotBlank(message = DATA_NOT_BLANK + "Текущий пароль")
+    @NotBlank(message = DATA_NOT_BLANK + "Старый пароль")
     private String oldPassword;
 
     @Size(min=4, max=20, message = INVALID_PASSWORD_LENGTH)
