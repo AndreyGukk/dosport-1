@@ -16,9 +16,10 @@ import static ru.dosport.helpers.Messages.*;
 public class UserRequest {
 
     @Size(min=4, max=50, message = INVALID_USERNAME_LENGTH)
-    @NotBlank(message = DATA_NOT_BLANK + "Логин")
+    @NotBlank(message = DATA_NOT_BLANK + "Адрес эл. почты")
     private String username;
 
+    @NotBlank(message = DATA_NOT_BLANK + "Имя")
     private String firstName;
 
     private String lastName;
