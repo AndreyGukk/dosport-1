@@ -3,11 +3,15 @@ package ru.dosport.controllers;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.SportTypeDto;
+import ru.dosport.helpers.Roles;
 import ru.dosport.services.api.SportTypeService;
 
 import java.util.List;
+
+import static ru.dosport.helpers.Roles.ROLE_ADMIN;
 
 /**
  * Контроллер Видов спорта.
@@ -39,4 +43,18 @@ public class SportTypeController {
         return typeService.save(sportTitle)  != null ?
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
+
+    @Secured(value = {ROLE_ADMIN})
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSportType(@PathVariable Short id) {
+        return typeService.deleteById(id) ?
+                ResponseEntity.badRequest().build() : ResponseEntity.notFound().build();
+    }
+
+    @Secured(value = {ROLE_ADMIN})
+    @DeleteMapping("/{id}")
+    public ResponseEntity<SportTypeDto> updateSportType(@PathVariable Short id, @RequestBody String tittle) {
+        return ResponseEntity.ok(typeService.update(id, tittle));
+    }
+
 }
