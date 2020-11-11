@@ -44,6 +44,7 @@ public class SportTypeController {
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
+    @ApiOperation(value = "Удаляет вид спорта")
     @Secured(value = {ROLE_ADMIN})
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSportType(@PathVariable Short id) {
@@ -51,8 +52,9 @@ public class SportTypeController {
                 ResponseEntity.badRequest().build() : ResponseEntity.notFound().build();
     }
 
+    @ApiOperation(value = "Обновляет вид спорта")
     @Secured(value = {ROLE_ADMIN})
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<SportTypeDto> updateSportType(@PathVariable Short id, @RequestBody String tittle) {
         return ResponseEntity.ok(typeService.update(id, tittle));
     }
