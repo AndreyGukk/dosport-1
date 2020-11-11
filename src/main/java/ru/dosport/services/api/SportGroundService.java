@@ -53,7 +53,20 @@ public interface SportGroundService {
      */
     SportGroundDto create(SportGroundRequest request);
 
+    /**
+     * Обновляет данные о площадке
+     * @param id индентификатор площадки
+     * @param sportGroundDto dto с новыми данными
+     * @param authentication
+     * @return dto с новыми данными
+     */
     SportGroundDto update(Long id, SportGroundDto sportGroundDto, Authentication authentication);
 
+    /**
+     * Удаление площадки
+     * @param id индентификатор площадки
+     * @param authentication
+     * @return существует ли площадка
+     */
     boolean delete(Long id, Authentication authentication);
 }

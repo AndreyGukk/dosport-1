@@ -50,5 +50,11 @@ public interface SportTypeService {
      */
     Boolean deleteById(Short id);
 
+    /**
+     * Обновляет данные вида спорта
+     * @param id индентификатор вида спорта
+     * @param tittle название вида спорта
+     * @return dto вида спорта
+     */
     SportTypeDto update(Short id, String tittle);
 }
