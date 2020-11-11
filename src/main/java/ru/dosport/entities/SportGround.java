@@ -33,9 +33,13 @@ public class SportGround {
     @Column(name = "city", nullable = false)
     private String city;
 
-    //Широта и Долгота (x, y)
-    @Column(name = "location", nullable = false, columnDefinition = "point")
-    private Point location;
+    // Широта
+    @Column(name = "latitude", nullable = false)
+    private Double latitude;
+
+    // Долгота
+    @Column(name = "longitude", nullable = false)
+    private Double longitude;
 
     // Название площадки
     @Column(name = "title", nullable = false)

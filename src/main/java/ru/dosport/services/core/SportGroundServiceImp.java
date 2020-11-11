@@ -55,13 +55,15 @@ public class SportGroundServiceImp implements SportGroundService {
         return findById(id);
     }
 
+    @Transactional
     @Override
     public SportGroundDto create(SportGroundRequest request) {
         SportGround ground = SportGround.builder()
                 .address(request.getAddress())
                 .sportType(typeMapper.mapDtoToEntity(request.getSportTypes()))
                 .title(request.getTitle())
-                .location(new Point(request.getLatitude(), request.getLongitude()))
+                .latitude(request.getLatitude())
+                .longitude(request.getLongitude())
                 .build();
 
         return groundMapper.mapEntityToDto(groundRepository.save(ground));

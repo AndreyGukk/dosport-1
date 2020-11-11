@@ -25,7 +25,7 @@ public class SportGroundRequest {
     private Double latitude;
 
     @NotBlank(message = DATA_NOT_BLANK + "Долгота")
-    private Double longitude ;
+    private Double longitude;
 
     @NotBlank(message = DATA_NOT_BLANK + "Вид спорта")
     private List<SportTypeDto> sportTypes;
