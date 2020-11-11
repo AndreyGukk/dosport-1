@@ -1,7 +1,6 @@
 package ru.dosport.entities;
 
 import lombok.*;
-import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
 import java.util.List;
