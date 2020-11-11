@@ -1,12 +1,16 @@
 package ru.dosport.services.core;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.geo.Point;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
 import ru.dosport.entities.SportGround;
+import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
+import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.SportGroundMapper;
 import ru.dosport.mappers.SportTypeMapper;
 import ru.dosport.repositories.SportGroundRepository;
@@ -58,15 +62,31 @@ public class SportGroundServiceImp implements SportGroundService {
     @Transactional
     @Override
     public SportGroundDto create(SportGroundRequest request) {
-        SportGround ground = SportGround.builder()
-                .address(request.getAddress())
-                .sportType(typeMapper.mapDtoToEntity(request.getSportTypes()))
-                .title(request.getTitle())
-                .latitude(request.getLatitude())
-                .longitude(request.getLongitude())
-                .build();
+        SportGround ground = groundMapper.mapRequestToEntity(request);
 
         return groundMapper.mapEntityToDto(groundRepository.save(ground));
+    }
+
+    @Override
+    public SportGroundDto update(Long id, SportGroundDto sportGroundDto, Authentication authentication) {
+        checkAdminAccess(authentication);
+
+        SportGround sportGround = findById(id);
+
+        if (!sportGround.getId().equals(sportGroundDto.getSportGroundId())) {
+            throw new DataBadRequestException("Площадка указана не коректнно");
+        }
+
+        return groundMapper.mapEntityToDto(groundRepository.save(groundMapper.update(sportGround, sportGroundDto)));
+    }
+
+    @Transactional
+    @Override
+    public boolean delete(Long id, Authentication authentication) {
+        checkAdminAccess(authentication);
+
+        groundRepository.deleteById(id);
+        return groundRepository.existsById(id);
     }
 
     /**
@@ -75,5 +95,11 @@ public class SportGroundServiceImp implements SportGroundService {
     private SportGround findById(Long id) {
         return groundRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
+    }
+
+    private void checkAdminAccess(Authentication authentication) {
+        if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
+            throw new AccessDeniedException("Пользователь не является админом");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package ru.dosport.services.api;
 
+import org.springframework.security.core.Authentication;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
 import ru.dosport.entities.SportGround;
@@ -51,4 +52,8 @@ public interface SportGroundService {
      * @return dto новой площадки
      */
     SportGroundDto create(SportGroundRequest request);
+
+    SportGroundDto update(Long id, SportGroundDto sportGroundDto, Authentication authentication);
+
+    boolean delete(Long id, Authentication authentication);
 }
