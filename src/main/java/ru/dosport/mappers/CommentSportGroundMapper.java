@@ -34,11 +34,7 @@ public interface CommentSportGroundMapper {
     CommentSportGround mapDtoToEntity(CommentSportGroundDto dto);
 
     @Mappings({
-            @Mapping(target = "userId", source = "dto.userId"),
-            @Mapping(target = "sportGround", ignore = true),
-            @Mapping(target = "userFullName", source = "dto.userFullName"),
-            @Mapping(target = "date", source = "dto.date", dateFormat = "dd-MM-yyyy")
+            @Mapping(target = "sportGround", ignore = true)
     })
     CommentSportGround mapRequestToEntity(CommentSportGroundRequest dto);
-
 }

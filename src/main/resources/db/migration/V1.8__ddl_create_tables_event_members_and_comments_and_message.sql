@@ -3,15 +3,13 @@ DROP TABLE IF EXISTS event_members;
 create table event_members
 (
 	id bigserial not null
-		constraint event_member_pkey
+		constraint event_members_pkey
 			primary key,
 	status varchar(255),
+	user_id bigint,
 	event_id bigint
-		constraint fke7ttqbdxnpwren6fg3wktsash
-			references events,
-	user_id bigint
-		constraint fkoobns1hxage1y1gcnf9ol8y2m
-			references users
+		constraint fkaa8h6gi3vaheiptt7ben9qgn7
+			references events
 );
 
 DROP TABLE IF EXISTS sportground_comments;
@@ -19,17 +17,15 @@ DROP TABLE IF EXISTS sportground_comments;
 create table sportground_comments
 (
 	id bigserial not null
-		constraint comments_sportground_pkey
+		constraint sportground_comments_pkey
 			primary key,
-	user_id bigint not null
-    		constraint fkn1pmgagnamc008wh5mpoy87n6
-    			references users,
-    user_full_name varchar(255) not null,
-    sportground_id bigint not null
-    	constraint fkqfh1cd10s9tm56hos97e5l630
-    		references sportgrounds,
 	date date not null,
-	text varchar(255) not null
+	text varchar(255) not null,
+	user_full_name varchar(255) not null,
+	user_id bigint not null,
+	sportground_id bigint not null
+		constraint fk5ixkf3pbbkdrwrcw56h6x1y86
+			references sportgrounds
 );
 
 DROP TABLE IF EXISTS event_messages;
@@ -37,15 +33,13 @@ DROP TABLE IF EXISTS event_messages;
 create table event_messages
 (
 	id bigserial not null
-		constraint event_message_pkey
+		constraint event_messages_pkey
 			primary key,
 	text varchar(255) not null,
-	user_id bigint not null
-	    constraint fkn1pmgagnamc008wh5myoy87n6
-            references users,
+	user_id bigint not null,
 	user_name varchar(255),
 	event_id bigint not null
-		constraint fkd36re9dyewxsuy0kp0om139t4
+		constraint fk9k2alyqybwcu55iwi8v18hjy
 			references events
 				on delete cascade
 );
