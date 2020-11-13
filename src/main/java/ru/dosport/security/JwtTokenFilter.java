@@ -42,7 +42,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         } catch (JwtAuthenticationException ex) {
             log.debug(ex);
             ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writeValueAsString(new ErrorDto(401, ex.getMessage()));
+            String json = mapper.writeValueAsString(new ErrorDto(ex.getMessage()));
             res.setStatus(HttpStatus.UNAUTHORIZED.value());
             res.setContentType("application/json");
             res.setCharacterEncoding("UTF-8");

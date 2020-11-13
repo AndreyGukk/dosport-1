@@ -36,11 +36,11 @@ public class SwaggerConfiguration {
     public Docket api() {
         ApiInfo apiInfo = new ApiInfo(
                 "Dosport backend API",
-                "API для подключения внешних клиентов Dosport",
+                "API для подключения фронтенд клиентов проекта Dosport",
                 "1.0",
                 "",
                 new Contact("Nikolay Gavrilov", "", ""),
-                "",
+                "Допускается использование документированного API только в целях разработки фронтенд клиентов",
                 "",
                 new ArrayList<>());
 
@@ -54,7 +54,7 @@ public class SwaggerConfiguration {
                 .securityContexts(Lists.newArrayList(securityContext()))
                 .securitySchemes(Lists.newArrayList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("ru.dosport.controllers"))
                 .paths(PathSelectors.any())
                 .build();
 
