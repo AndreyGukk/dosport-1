@@ -15,6 +15,8 @@ public final class Messages {
 
     public static final String SWAGGER_WAS_STARTED = "Swagger запущен";
 
+    public static final String SUCCESSFUL_REQUEST = "Успешный запрос";
+
     /**
      * Сообщения об ошибках авторизации
      */
@@ -33,9 +35,9 @@ public final class Messages {
     /**
      * Иные сообщения об ошибках логики и полей запросов
      */
-    public static final String ACCESS_DENIED = "Доступ в данный раздел запрещен";
+    public static final String ACCESS_DENIED = "Ошибка авторизации пользователя";
 
-    public static final String BAD_REQUEST = "Введены неверные данные";
+    public static final String BAD_REQUEST = "Запрос содержит ошибочные данные";
 
     public static final String INVALID_VALUE = "Значение поля %s неверное: %s";
 
@@ -54,5 +56,4 @@ public final class Messages {
     public static final String DATA_WAS_NOT_SAVED = "Данные не сохранены по запросу ";
 
     public static final String DATA_NOT_FOUND = "Данные не найдены ";
-
 }

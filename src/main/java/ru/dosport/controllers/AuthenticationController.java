@@ -2,9 +2,10 @@ package ru.dosport.controllers;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,30 +13,25 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.dosport.dto.AuthenticationDto;
 import ru.dosport.dto.AuthenticationRequest;
-import ru.dosport.security.JwtUser;
+import ru.dosport.dto.ErrorDto;
 import ru.dosport.security.JwtTokenProvider;
+import ru.dosport.security.JwtUser;
 import ru.dosport.services.api.UserService;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ru.dosport.helpers.Messages.*;
 
-/**
- * Контроллер аутентификации.
- */
 @Log4j2
-@Api("Контроллер аутентификации")
+@CrossOrigin
 @RestController
-@RequestMapping(value = "/api/v1/auth/")
+@RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
+@Api(value = "/api/v1/auth", tags = {"Контроллер авторизации пользователя"})
 public class AuthenticationController {
 
     // Список необходимых зависимостей
@@ -43,9 +39,13 @@ public class AuthenticationController {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
 
-    @ApiOperation(value = "Осуществляет авторизацию пользователя и выдачу токена авторизации")
-    @PostMapping("login")
-    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody AuthenticationRequest requestDto) {
+    @PostMapping("/login")
+    @ApiOperation(value = "Осуществляет выдачу токена авторизации пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
+    })
+    public ResponseEntity<AuthenticationDto> login(@Valid @RequestBody AuthenticationRequest requestDto) {
         try {
             String username = requestDto.getEmail();
             authenticationManager.authenticate(
@@ -59,9 +59,7 @@ public class AuthenticationController {
             String token = jwtTokenProvider.createToken(username, user.getId(),
                     user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return ResponseEntity.ok(new AuthenticationDto(token));
         } catch (AuthenticationException e) {
             log.debug(e);
             throw new BadCredentialsException(BAD_CREDENTIALS);

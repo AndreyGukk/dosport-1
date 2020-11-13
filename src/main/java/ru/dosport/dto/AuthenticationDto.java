@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**
- * Dto представление Информации об ошибке
+ * Dto представление Данных авторизации
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ErrorDto {
+public class AuthenticationDto {
 
-    private final String message;
+    private final String token;
 }
