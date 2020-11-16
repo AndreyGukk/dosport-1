@@ -12,7 +12,6 @@ import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.SportGroundMapper;
-import ru.dosport.mappers.SportTypeMapper;
 import ru.dosport.repositories.SportGroundRepository;
 import ru.dosport.services.api.SportGroundService;
 
@@ -32,7 +31,6 @@ public class SportGroundServiceImp implements SportGroundService {
 
     // Мапперы
     private final SportGroundMapper groundMapper;
-    private final SportTypeMapper typeMapper;
 
     @Override
     public SportGroundDto getDtoById(Long id) {

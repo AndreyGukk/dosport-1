@@ -20,13 +20,12 @@ import static ru.dosport.helpers.Roles.ROLE_USER;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/events")
 @RequiredArgsConstructor
+@RequestMapping(value = "/api/v1/events", produces = "application/json")
 @Api(value = "/api/v1/events", tags = {"Контроллер Мероприятий"})
 public class EventController {
 
     // Константы
-    private final String DATA_TYPE = "application/json";
     private final String EVENT_ID = "Идентификатор мероприятия";
     private final String MESSAGE_ID = "Идентификатор сообщения";
 
@@ -41,14 +40,14 @@ public class EventController {
     }
 
     @ApiOperation(value = "Отображает данные мероприятия по его индексу")
-    @GetMapping(value = "/{id}", produces = DATA_TYPE)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<EventDto> readEvent(@ApiParam(value = EVENT_ID) @PathVariable Long id) {
         return ResponseEntity.ok(eventService.getDtoById(id));
     }
 
     @ApiOperation(value = "Создает новое мероприятие")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @PostMapping(produces = DATA_TYPE)
+    @PostMapping()
     public ResponseEntity<EventDto> createEvent(@Valid @RequestBody EventRequest eventRequest,
                                                 Authentication authentication) {
         return ResponseEntity.ok(eventService.save(eventRequest, authentication));
@@ -56,7 +55,7 @@ public class EventController {
 
     @ApiOperation(value = "Изменяет данные мероприятия")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @PutMapping(value = "/{id}", produces = DATA_TYPE)
+    @PutMapping(value = "/{id}")
     public ResponseEntity<EventDto> updateEvent(@RequestBody EventDto eventDto,
                                                 @ApiParam(value = EVENT_ID) @PathVariable Long id,
                                                 Authentication authentication) {
@@ -69,7 +68,7 @@ public class EventController {
     public ResponseEntity<?> deleteEvent(@ApiParam(value = EVENT_ID) @PathVariable Long id,
                                          Authentication authentication) {
         return eventService.deleteById(id, authentication) ?
-                ResponseEntity.badRequest().build() : ResponseEntity.noContent().build();
+                ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "Отображает данные всех участников мероприятия")
@@ -119,7 +118,7 @@ public class EventController {
     public ResponseEntity<EventMessageDto> deleteMessage(@ApiParam(value = EVENT_ID) @PathVariable Long id,
                                                          @ApiParam(value = MESSAGE_ID) @PathVariable Long messageId,
                                                          Authentication authentication) {
-        return eventMessageService.deleteById(id, authentication) ?
+        return eventMessageService.deleteById(messageId, authentication) ?
                 ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 }

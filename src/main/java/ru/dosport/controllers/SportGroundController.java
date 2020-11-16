@@ -21,7 +21,7 @@ import static ru.dosport.helpers.Roles.*;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/sportgrounds")
+@RequestMapping(value = "/api/v1/sportgrounds", produces = "application/json")
 public class SportGroundController {
 
     private final SportGroundService sportGroundService;
@@ -48,7 +48,8 @@ public class SportGroundController {
     @Secured(value = {ROLE_ADMIN})
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSportGround(@PathVariable Long id, Authentication authentication) {
-        return sportGroundService.delete(id, authentication) ? ResponseEntity.badRequest().build() : ResponseEntity.noContent().build();
+        return sportGroundService.delete(id, authentication) ?
+                ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "Обновляет площадку")

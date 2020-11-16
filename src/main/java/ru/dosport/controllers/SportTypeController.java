@@ -19,7 +19,7 @@ import static ru.dosport.helpers.Roles.ROLE_ADMIN;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/sporttype")
+@RequestMapping(value = "/api/v1/sporttype", produces = "application/json")
 public class SportTypeController {
 
     // Необходимые сервисы
@@ -49,7 +49,7 @@ public class SportTypeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSportType(@PathVariable Short id) {
         return typeService.deleteById(id) ?
-                ResponseEntity.badRequest().build() : ResponseEntity.notFound().build();
+                ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "Обновляет вид спорта")
