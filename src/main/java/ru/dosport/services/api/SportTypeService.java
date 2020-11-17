@@ -1,5 +1,6 @@
 package ru.dosport.services.api;
 
+import org.springframework.http.ResponseEntity;
 import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportType;
 
@@ -48,4 +49,12 @@ public interface SportTypeService {
      * @return вид спорта, сохраненный в репозитории
      */
     Boolean deleteById(Short id);
+
+    /**
+     * Обновляет данные вида спорта
+     * @param id индентификатор вида спорта
+     * @param tittle название вида спорта
+     * @return dto вида спорта
+     */
+    SportTypeDto update(Short id, String tittle);
 }

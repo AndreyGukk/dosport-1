@@ -56,6 +56,13 @@ public class SportTypeServiceImpl implements SportTypeService {
         return repository.existsById(id);
     }
 
+    @Override
+    public SportTypeDto update(Short id, String tittle) {
+        SportType sportType = findById(id);
+        sportType.setTitle(tittle);
+        return mapper.mapEntityToDto(repository.save(sportType));
+    }
+
     /**
      * Найти по идентификатору
      */

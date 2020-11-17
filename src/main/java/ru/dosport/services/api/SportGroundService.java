@@ -1,5 +1,6 @@
 package ru.dosport.services.api;
 
+import org.springframework.security.core.Authentication;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
 import ru.dosport.entities.SportGround;
@@ -51,4 +52,21 @@ public interface SportGroundService {
      * @return dto новой площадки
      */
     SportGroundDto create(SportGroundRequest request);
+
+    /**
+     * Обновляет данные о площадке
+     * @param id индентификатор площадки
+     * @param sportGroundDto dto с новыми данными
+     * @param authentication
+     * @return dto с новыми данными
+     */
+    SportGroundDto update(Long id, SportGroundDto sportGroundDto, Authentication authentication);
+
+    /**
+     * Удаление площадки
+     * @param id индентификатор площадки
+     * @param authentication
+     * @return существует ли площадка
+     */
+    boolean delete(Long id, Authentication authentication);
 }

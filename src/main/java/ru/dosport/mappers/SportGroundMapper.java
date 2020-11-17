@@ -1,10 +1,8 @@
 package ru.dosport.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import ru.dosport.dto.SportGroundDto;
+import ru.dosport.dto.SportGroundRequest;
 import ru.dosport.entities.SportGround;
 
 import java.util.List;
@@ -18,8 +16,8 @@ public interface SportGroundMapper {
     @Mappings({
             @Mapping(target = "sportGroundId", source = "entity.id"),
             @Mapping(target = "sportTypes", source = "entity.sportType"),
-            @Mapping(target = "latitude", source = "entity.location.x"),
-            @Mapping(target = "longitude", source = "entity.location.y")
+            @Mapping(target = "latitude", source = "entity.latitude"),
+            @Mapping(target = "longitude", source = "entity.longitude")
     })
     SportGroundDto mapEntityToDto(SportGround entity);
 
@@ -29,4 +27,21 @@ public interface SportGroundMapper {
             @Mapping(target = "id", source = "dto.sportGroundId"),
     })
     SportGround mapDtoToEntity(SportGroundDto dto);
+
+    @Mappings({
+            @Mapping(target = "address", source = "request.address"),
+            @Mapping(target = "sportType", source = "request.sportTypes"),
+            @Mapping(target = "title", source = "request.title"),
+            @Mapping(target = "city", source = "request.city"),
+            @Mapping(target = "latitude", source = "request.latitude"),
+            @Mapping(target = "longitude", source = "request.longitude")
+    })
+    SportGround mapRequestToEntity(SportGroundRequest request);
+
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "events", ignore = true),
+            @Mapping(target = "commentSportGrounds", ignore = true)
+    })
+    SportGround update(@MappingTarget SportGround entity, SportGroundDto dto);
 }

@@ -9,7 +9,8 @@ create table sportgrounds
 		constraint uk_kvtbkuiwnrkn35yqkyi5fqn42
 			unique,
 	city varchar(255) not null,
-	location point not null,
+    latitude double precision not null,
+	longitude double precision not null,
 	title varchar(255) not null
 );
 
