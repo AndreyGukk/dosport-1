@@ -21,6 +21,7 @@ import ru.dosport.services.api.SportTypeService;
 import ru.dosport.services.api.UserService;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -149,5 +150,16 @@ public class EventServiceImpl implements EventService {
     private Event findById(Long id) {
         return eventRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
+    }
+
+    @Override
+    public List<EventDto> getAllDtoByAuthTimeInterval(Authentication authentication, LocalDate from, byte timeInterval) {
+        LocalDate to = from.plusDays(timeInterval);
+        return getAllDtoByAuthFromTo(authentication, from, to);
+    }
+
+    @Override
+    public List<EventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to) {
+        return eventMapper.mapEntityToDto(eventRepository.findAllByUserIdAndTimeFromTo(userService.getIdByAuthentication(authentication), from, to));
     }
 }

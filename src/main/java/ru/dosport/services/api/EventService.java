@@ -6,6 +6,7 @@ import ru.dosport.dto.EventRequest;
 import ru.dosport.dto.MemberDto;
 import ru.dosport.dto.MemberRequest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -82,4 +83,21 @@ public interface EventService {
      * @return dto участника
      */
     MemberDto createEventMember(Long eventId, MemberRequest request);
+
+    /**
+     * Возвращает мероприятия пользователя по аутентификации и за заданный интервал в ремени с заданной даты
+     *
+     * @param from дата начала интервала времени, за который показывают мероприятия
+     * @param timeInterval интервал времени в днях, за который показывается мероприятия (1/7/31)
+     */
+    List<EventDto> getAllDtoByAuthTimeInterval(Authentication authentication, LocalDate from, byte timeInterval);
+
+
+    /**
+     * Возвращает мероприятия пользователя по аутентификации и за заданный интервал в ремени с заданной даты
+     *
+     * @param from дата начала интервала времени, за который показывают мероприятия
+     * @param to дата конца интервала времени
+     */
+    List<EventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to);
 }

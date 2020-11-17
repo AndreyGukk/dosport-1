@@ -13,6 +13,7 @@ import ru.dosport.services.api.EventMessageService;
 import ru.dosport.services.api.EventService;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
@@ -121,4 +122,20 @@ public class EventController {
         return eventMessageService.deleteById(messageId, authentication) ?
                 ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
+
+    //todo метод возвращает список мероприятий по auth, с интервалом.
+    @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ на ___ дней (1/7/31")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping ("/myCalendar/{from}/{in}")
+    public ResponseEntity<List<EventDto>> readAllEventByAuth(Authentication authentication, @PathVariable LocalDate from, @PathVariable byte timeInterval){
+        return ResponseEntity.ok(eventService.getAllDtoByAuthTimeInterval(authentication, from, timeInterval));
+    }
+
+    @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ по ___")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping ("/myCalendar/{from}/{to}")
+    public ResponseEntity<List<EventDto>> readAllEventByAuth(Authentication authentication, @PathVariable LocalDate from, @PathVariable LocalDate to){
+        return ResponseEntity.ok(eventService.getAllDtoByAuthFromTo(authentication, from, to));
+    }
+
 }

@@ -1,8 +1,13 @@
 package ru.dosport.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.dosport.entities.Event;
+
+import javax.persistence.JoinTable;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Репозиторий Мероприятий
@@ -21,4 +26,18 @@ public interface EventRepository extends JpaRepository<Event, Long> {
      * Object save(Object object) сохранить объект
      * List<Object> saveAll(List<Object> objects) сохранить список объектов
      */
+
+    /**
+     *
+     * @param userId -id пользователя
+     * @param from - дата начала интервала времени
+     * @param to - дата конца интервала времени
+     * @return
+     */
+
+    @Query(value = "SELECT s FROM events e JOIN event_members m " +
+            "ON e.id = m.event_id " +
+            "WHERE m.user_id = :userId " +
+            "AND e.start_time BETWEEN  :from  AND  :to ", nativeQuery = true)
+    List <Event> findAllByUserIdAndTimeFromTo(Long userId, LocalDate from, LocalDate to);
 }
