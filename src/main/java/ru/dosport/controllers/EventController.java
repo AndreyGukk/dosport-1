@@ -20,13 +20,12 @@ import static ru.dosport.helpers.Roles.ROLE_USER;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/events")
 @RequiredArgsConstructor
+@RequestMapping(value = "/api/v1/events", produces = "application/json")
 @Api(value = "/api/v1/events", tags = {"Контроллер Мероприятий"})
 public class EventController {
 
     // Константы
-    private final String DATA_TYPE = "application/json";
     private final String EVENT_ID = "Идентификатор мероприятия";
     private final String MESSAGE_ID = "Идентификатор сообщения";
 
@@ -41,35 +40,35 @@ public class EventController {
     }
 
     @ApiOperation(value = "Отображает данные мероприятия по его индексу")
-    @GetMapping(value = "/{id}", produces = DATA_TYPE)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<EventDto> readEvent(@ApiParam(value = EVENT_ID) @PathVariable Long id) {
         return ResponseEntity.ok(eventService.getDtoById(id));
     }
 
-    @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @ApiOperation(value = "Создает новое мероприятие")
-    @PostMapping(produces = DATA_TYPE)
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @PostMapping()
     public ResponseEntity<EventDto> createEvent(@Valid @RequestBody EventRequest eventRequest,
                                                 Authentication authentication) {
         return ResponseEntity.ok(eventService.save(eventRequest, authentication));
     }
 
-    @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @ApiOperation(value = "Изменяет данные мероприятия")
-    @PutMapping(value = "/{id}", produces = DATA_TYPE)
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @PutMapping(value = "/{id}")
     public ResponseEntity<EventDto> updateEvent(@RequestBody EventDto eventDto,
                                                 @ApiParam(value = EVENT_ID) @PathVariable Long id,
                                                 Authentication authentication) {
         return ResponseEntity.ok(eventService.update(eventDto, id, authentication));
     }
 
-    @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @ApiOperation(value = "Удаляет мероприятие по его индексу")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEvent(@ApiParam(value = EVENT_ID) @PathVariable Long id,
                                          Authentication authentication) {
         return eventService.deleteById(id, authentication) ?
-                ResponseEntity.badRequest().build() : ResponseEntity.noContent().build();
+                ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "Отображает данные всех участников мероприятия")
@@ -78,8 +77,8 @@ public class EventController {
         return ResponseEntity.ok(eventService.getAllMembers(id));
     }
 
-    @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @ApiOperation(value = "Добавляет участника в мероприятие")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PostMapping("/{id}/members")
     public ResponseEntity<?> addEventMember(@ApiParam(value = EVENT_ID) @PathVariable Long id,
                                             @RequestBody MemberRequest request) {
@@ -87,12 +86,14 @@ public class EventController {
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
+    @ApiOperation(value = "Отоброжает данные всех сообщений мероприятия")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @GetMapping("/{id}/messages")
     public ResponseEntity<List<EventMessageDto>> readBoard(@ApiParam(value = EVENT_ID) @PathVariable Long id) {
         return ResponseEntity.ok(eventMessageService.getAllDtoByEventId(id));
     }
 
+    @ApiOperation(value = "Добавляет сообщение к мероприятию")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PostMapping("/{id}/messages")
     public ResponseEntity<EventMessageDto> createMessage(@ApiParam(value = EVENT_ID) @PathVariable Long id,
@@ -101,6 +102,7 @@ public class EventController {
         return ResponseEntity.ok(eventMessageService.save(id, request, authentication));
     }
 
+    @ApiOperation(value = "Обновляет данные сообщения")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PutMapping("/{id}/messages/{messageId}")
     public ResponseEntity<EventMessageDto> updateMessage(@ApiParam(value = EVENT_ID) @PathVariable Long id,
@@ -110,12 +112,13 @@ public class EventController {
         return ResponseEntity.ok(eventMessageService.update(messageId, id, request, authentication));
     }
 
+    @ApiOperation(value = "Удаляет сообщение")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @DeleteMapping("/{id}/messages/{messageId}")
     public ResponseEntity<EventMessageDto> deleteMessage(@ApiParam(value = EVENT_ID) @PathVariable Long id,
                                                          @ApiParam(value = MESSAGE_ID) @PathVariable Long messageId,
                                                          Authentication authentication) {
-        return eventMessageService.deleteById(id, authentication) ?
+        return eventMessageService.deleteById(messageId, authentication) ?
                 ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 }
