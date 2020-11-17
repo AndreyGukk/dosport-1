@@ -16,10 +16,10 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommentSportGroundDto {
+public class ReviewDto {
 
     @NotNull(message = DATA_NOT_BLANK + "Индентификатор отзыва")
-    private Long commentId;
+    private Long reviewId;
 
     @NotNull(message = DATA_NOT_BLANK + "Индентификатор пользователя")
     private Long userId;
@@ -36,6 +36,6 @@ public class CommentSportGroundDto {
     private LocalDate date;
 
     @Size(min = 5, max = 300)
-    @NotBlank(message = DATA_NOT_BLANK + "Текст отзова")
+    @NotBlank(message = DATA_NOT_BLANK + "Текст отзыва")
     private String text;
 }
