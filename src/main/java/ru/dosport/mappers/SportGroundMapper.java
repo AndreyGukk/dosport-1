@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Маппер, преобразующий классы SportGround и SportGroundDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class, EventMapper.class, CommentSportGroundMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class, EventMapper.class})
 public interface SportGroundMapper {
 
     @Mappings({
@@ -41,7 +41,6 @@ public interface SportGroundMapper {
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "events", ignore = true),
-            @Mapping(target = "commentSportGrounds", ignore = true)
     })
     SportGround update(@MappingTarget SportGround entity, SportGroundDto dto);
 }
