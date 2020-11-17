@@ -1,5 +1,6 @@
 package ru.dosport.controllers;
 
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -51,7 +52,8 @@ public class ReviewController {
     })
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PostMapping("/{sportGroundsId}/review")
-    public ResponseEntity<ReviewDto> createReview(@PathVariable Long sportGroundsId, @RequestBody ReviewRequest request,
+    public ResponseEntity<ReviewDto> createReview(@PathVariable Long sportGroundsId,
+                                                  @Valid @RequestBody ReviewRequest request,
                                                   Authentication authentication) {
         return reviewService.saveReview(sportGroundsId, request, authentication);
     }
@@ -65,7 +67,8 @@ public class ReviewController {
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PutMapping("/{sportGroundsId}/review/{reviewId}")
     public ResponseEntity<ReviewDto> updateReview(@PathVariable Long sportGroundsId, @PathVariable Long reviewId,
-                                                  @RequestBody ReviewRequest request, Authentication authentication) {
+                                                  @Valid @RequestBody ReviewRequest request,
+                                                  Authentication authentication) {
         return reviewService.updateReview(sportGroundsId, reviewId, request, authentication);
     }
 

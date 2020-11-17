@@ -10,6 +10,7 @@ import ru.dosport.dto.ReviewDto;
 import ru.dosport.dto.ReviewRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.entities.Review;
+import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.ReviewMapper;
@@ -37,8 +38,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ResponseEntity<ReviewDto> readReviewDtoById(Long reviewId, Long sportGroundId) {
         var review = findById(reviewId);
-        return review.getSportGroundId().equals(sportGroundId) ?
-                ResponseEntity.ok(mapper.mapEntityToDto(review)) : ResponseEntity.badRequest().build();
+        if (!review.getSportGroundId().equals(sportGroundId)) {
+            throw new DataBadRequestException("Спортивная площадка указана не корректно");
+        }
+        return ResponseEntity.ok(mapper.mapEntityToDto(review));
     }
 
     @Override
@@ -59,7 +62,8 @@ public class ReviewServiceImpl implements ReviewService {
                     .date(LocalDate.now())
                     .build();
             return ResponseEntity.ok(mapper.mapEntityToDto(repository.save(review)));
-        } else return ResponseEntity.badRequest().build();
+        }
+        throw new DataBadRequestException(String.format(DATA_NOT_FOUND_BY_ID, sportGroundId));
     }
 
     @Transactional
@@ -74,7 +78,7 @@ public class ReviewServiceImpl implements ReviewService {
                 return ResponseEntity.ok(mapper.mapEntityToDto(repository.save(review)));
             }
         }
-        return ResponseEntity.badRequest().build();
+        throw new DataNotFoundException("Отзыв не найлен");
     }
 
     @Override
@@ -87,7 +91,7 @@ public class ReviewServiceImpl implements ReviewService {
                         ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
             }
         }
-        return ResponseEntity.noContent().build();
+        throw new DataNotFoundException("Отзыв не найлен");
     }
 
     private Review findById(Long id) {
