@@ -1,10 +1,7 @@
 package ru.dosport.services.api;
 
 import org.springframework.security.core.Authentication;
-import ru.dosport.dto.EventDto;
-import ru.dosport.dto.EventRequest;
-import ru.dosport.dto.MemberDto;
-import ru.dosport.dto.MemberRequest;
+import ru.dosport.dto.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -90,7 +87,7 @@ public interface EventService {
      * @param from дата начала интервала времени, за который показывают мероприятия
      * @param timeInterval интервал времени в днях, за который показывается мероприятия (1/7/31)
      */
-    List<EventDto> getAllDtoByAuthTimeInterval(Authentication authentication, LocalDate from, byte timeInterval);
+    List<UserEventDto> getAllDtoByAuthTimeInterval(Authentication authentication, LocalDate from, byte timeInterval);
 
 
     /**
@@ -99,5 +96,5 @@ public interface EventService {
      * @param from дата начала интервала времени, за который показывают мероприятия
      * @param to дата конца интервала времени
      */
-    List<EventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to);
+    List<UserEventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to);
 }

@@ -16,7 +16,7 @@ public interface UserSportGroundRepository extends JpaRepository<UserSportGround
     /**
      * Поиск списка избранных площадок по  userId
      */
-    @Query(value = "SELECT s FROM sportgrounds s WHERE s.user_id = :userId", nativeQuery = true)
+    @Query(value = "SELECT s FROM user_sportgrounds s WHERE s.user_id = :userId", nativeQuery = true)
     List<UserSportGround> findAllByUserId(long userId);
 
     /**

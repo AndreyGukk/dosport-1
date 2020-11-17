@@ -123,18 +123,17 @@ public class EventController {
                 ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 
-    //todo метод возвращает список мероприятий по auth, с интервалом.
     @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ на ___ дней (1/7/31")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @GetMapping ("/myCalendar/{from}/{in}")
-    public ResponseEntity<List<EventDto>> readAllEventByAuth(Authentication authentication, @PathVariable LocalDate from, @PathVariable byte timeInterval){
+    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication, @PathVariable LocalDate from, @PathVariable byte timeInterval){
         return ResponseEntity.ok(eventService.getAllDtoByAuthTimeInterval(authentication, from, timeInterval));
     }
 
     @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ по ___")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @GetMapping ("/myCalendar/{from}/{to}")
-    public ResponseEntity<List<EventDto>> readAllEventByAuth(Authentication authentication, @PathVariable LocalDate from, @PathVariable LocalDate to){
+    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication, @PathVariable LocalDate from, @PathVariable LocalDate to){
         return ResponseEntity.ok(eventService.getAllDtoByAuthFromTo(authentication, from, to));
     }
 

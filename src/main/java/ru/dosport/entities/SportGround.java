@@ -17,8 +17,6 @@ import java.util.List;
 @Table(name = "sportgrounds")
 public class SportGround {
 
-    //TODO:
-    // 1. Список избраных площадок (или ещё таблица в этом модуле или перенести к пользователю - надо обдумать)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
+import ru.dosport.dto.UserSportGroundDto;
 import ru.dosport.helpers.Roles;
 import ru.dosport.services.api.SportGroundService;
 
@@ -57,5 +58,29 @@ public class SportGroundController {
     public ResponseEntity<SportGroundDto> updateSportGround(@PathVariable Long id, SportGroundDto sportGroundDto,
                                                             Authentication authentication) {
         return ResponseEntity.ok(sportGroundService.update(id, sportGroundDto, authentication));
+    }
+
+    @ApiOperation("Выводит список избранных площадок пользователя")
+    @Secured(value = {ROLE_ADMIN, ROLE_USER})
+    @GetMapping ("/mySportGrounds")
+    public ResponseEntity<List<SportGroundDto>> readAllSportGroundsByAuth (Authentication authentication) {
+        return ResponseEntity.ok(sportGroundService.getAllDtoByAuth(authentication));
+    }
+
+    @ApiOperation("Добавляет площадку в список избранных")
+    @Secured(value = {ROLE_ADMIN, ROLE_USER})
+    @PostMapping ("/mySportGrounds")
+    public ResponseEntity<UserSportGroundDto> createUserSportGroundsByAuth (@RequestBody SportGroundDto sportGroundDto,
+                                                                            Authentication authentication) {
+        return ResponseEntity.ok(sportGroundService.addDtoByAuth(authentication, sportGroundDto));
+    }
+
+    @ApiOperation("Удаляет площадку из списка избранных по индексу площадки")
+    @Secured(value = {ROLE_ADMIN, ROLE_USER})
+    @DeleteMapping("/mySportGrounds/{id}")
+    public ResponseEntity<?> deleteBySportGroundId (@PathVariable Long id,
+                                                    Authentication authentication) {
+        return sportGroundService.deleteBySportGroundId(id, authentication)?
+                ResponseEntity.badRequest().build() : ResponseEntity.noContent().build();
     }
 }

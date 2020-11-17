@@ -2,6 +2,8 @@ package ru.dosport.mappers;
 
 import org.mapstruct.*;
 import ru.dosport.dto.EventDto;
+import ru.dosport.dto.UserDto;
+import ru.dosport.dto.UserEventDto;
 import ru.dosport.entities.Event;
 
 import java.util.List;
@@ -44,4 +46,20 @@ public interface EventMapper {
             @Mapping(target="endTime", source = "dto.endTimeEvent", dateFormat = "hh:mm")
     })
     Event update(@MappingTarget Event entity, EventDto dto);
+
+    @Mappings({
+            @Mapping(target="user", ignore = true),
+            @Mapping(target="statusUser",  ignore = true),
+
+            @Mapping(target="eventId", source = "entity.eventId", ignore = true),
+            @Mapping(target="sportType", source = "entity.sportType", ignore = true),
+            @Mapping(target="sportGroundId", source = "entity.sportGroundId", ignore = true),
+            @Mapping(target="chatId",source = "entity.chatId", ignore = true),
+            @Mapping(target = "dateEvent", source = "entity.dateEvent", dateFormat = "dd-MM-yyyy"),
+            @Mapping(target="startTimeEvent", source = "entity.startTimeEvent", dateFormat = "hh:mm"),
+            @Mapping(target="endTimeEvent", source = "entity.endTimeEvent", dateFormat = "hh:mm")
+    })
+    UserEventDto mapEventToUserEventDto (EventDto entity);
+
+    List<UserEventDto> mapEventToUserEventDto (List<EventDto> entity);
 }

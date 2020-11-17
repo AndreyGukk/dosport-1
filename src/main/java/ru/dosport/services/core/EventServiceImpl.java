@@ -153,13 +153,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDto> getAllDtoByAuthTimeInterval(Authentication authentication, LocalDate from, byte timeInterval) {
+    public List<UserEventDto> getAllDtoByAuthTimeInterval(Authentication authentication, LocalDate from, byte timeInterval) {
         LocalDate to = from.plusDays(timeInterval);
         return getAllDtoByAuthFromTo(authentication, from, to);
     }
 
     @Override
-    public List<EventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to) {
-        return eventMapper.mapEntityToDto(eventRepository.findAllByUserIdAndTimeFromTo(userService.getIdByAuthentication(authentication), from, to));
+    public List<UserEventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to) {
+        List<UserEventDto> events = eventMapper.mapEventToUserEventDto
+                (eventMapper.mapEntityToDto(eventRepository.findAllByUserIdAndTimeFromTo(userService.getIdByAuthentication(authentication), from, to)));
+        events.forEach(u -> u.setUser(userService.getDtoByAuthentication(authentication)));
+
+        //events.forEach(u -> u.setStatusUser(findById(u.getEventId()).getMembers().п); //todo вытащить статус юзера
+        return events;
     }
 }

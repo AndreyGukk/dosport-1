@@ -38,6 +38,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "SELECT s FROM events e JOIN event_members m " +
             "ON e.id = m.event_id " +
             "WHERE m.user_id = :userId " +
-            "AND e.start_time BETWEEN  :from  AND  :to ", nativeQuery = true)
+            "AND e.date BETWEEN  :from  AND  :to ", nativeQuery = true)
     List <Event> findAllByUserIdAndTimeFromTo(Long userId, LocalDate from, LocalDate to);
 }
