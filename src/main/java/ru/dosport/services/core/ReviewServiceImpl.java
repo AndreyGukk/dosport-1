@@ -36,22 +36,22 @@ public class ReviewServiceImpl implements ReviewService {
     private final SportGroundService groundService;
 
     @Override
-    public ResponseEntity<ReviewDto> readReviewDtoById(Long reviewId, Long sportGroundId) {
+    public ReviewDto readReviewDtoById(Long reviewId, Long sportGroundId) {
         var review = findById(reviewId);
         if (!review.getSportGroundId().equals(sportGroundId)) {
             throw new DataBadRequestException("Спортивная площадка указана не корректно");
         }
-        return ResponseEntity.ok(mapper.mapEntityToDto(review));
+        return mapper.mapEntityToDto(review);
     }
 
     @Override
-    public ResponseEntity<List<ReviewDto>> readAllReviewsDtoBySportGround(Long sportGroundId) {
-        return ResponseEntity.ok(mapper.mapEntityToDto(repository.findAllBySportGroundId(sportGroundId)));
+    public List<ReviewDto> readAllReviewsDtoBySportGround(Long sportGroundId) {
+        return mapper.mapEntityToDto(repository.findAllBySportGroundId(sportGroundId));
     }
 
     @Transactional
     @Override
-    public ResponseEntity<ReviewDto> saveReview(Long sportGroundId, ReviewRequest request, Authentication authentication) {
+    public ReviewDto saveReview(Long sportGroundId, ReviewRequest request, Authentication authentication) {
         if (groundService.exists(sportGroundId)) {
             var user = userService.getDtoByAuthentication(authentication);
             var review = Review.builder()
@@ -61,34 +61,33 @@ public class ReviewServiceImpl implements ReviewService {
                     .sportGroundId(sportGroundId)
                     .date(LocalDate.now())
                     .build();
-            return ResponseEntity.ok(mapper.mapEntityToDto(repository.save(review)));
+            return mapper.mapEntityToDto(repository.save(review));
         }
         throw new DataBadRequestException(String.format(DATA_NOT_FOUND_BY_ID, sportGroundId));
     }
 
     @Transactional
     @Override
-    public ResponseEntity<ReviewDto> updateReview(Long reviewId, Long sportGroundId, ReviewRequest request, Authentication authentication) {
+    public ReviewDto updateReview(Long reviewId, Long sportGroundId, ReviewRequest request, Authentication authentication) {
         if (groundService.exists(sportGroundId) && repository.existsById(reviewId)) {
             if (isAuthorReview(reviewId, authentication)) {
                 var review = findById(reviewId);
                 var user = userService.getDtoByAuthentication(authentication);
                 review.setText(request.getText());
                 review.setUserFullName(concatenationUserName(user));
-                return ResponseEntity.ok(mapper.mapEntityToDto(repository.save(review)));
+                return mapper.mapEntityToDto(repository.save(review));
             }
         }
         throw new DataNotFoundException("Отзыв не найлен");
     }
 
     @Override
-    public ResponseEntity<?> deleteById(Long reviewId, Long sportGroundId, Authentication authentication) {
+    public Boolean deleteById(Long reviewId, Long sportGroundId, Authentication authentication) {
         if (groundService.exists(sportGroundId) && repository.existsById(reviewId)) {
             if (isAuthorReview(reviewId, authentication) || Roles.hasAuthenticationRoleAdminOrThrowException(authentication)) {
                 var review = findById(reviewId);
                 repository.deleteById(review.getId());
-                return repository.existsById(review.getId()) ?
-                        ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+                return repository.existsById(review.getId());
             }
         }
         throw new DataNotFoundException("Отзыв не найлен");

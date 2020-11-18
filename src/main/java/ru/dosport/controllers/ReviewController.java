@@ -34,14 +34,14 @@ public class ReviewController {
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class),
     })
     public ResponseEntity<ReviewDto> getReview(@PathVariable Long sportGroundsId, @PathVariable Long reviewId) {
-        return reviewService.readReviewDtoById(reviewId, sportGroundsId);
+        return ResponseEntity.ok(reviewService.readReviewDtoById(reviewId, sportGroundsId));
     }
 
     @ApiOperation(value = "Отображенеи отзывы спортивной площадки")
     @ApiResponses(value = { @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST)})
     @GetMapping("/{sportGroundsId}/reviews")
     public ResponseEntity<List<ReviewDto>> getAllReviews(@PathVariable Long sportGroundsId) {
-        return reviewService.readAllReviewsDtoBySportGround(sportGroundsId);
+        return ResponseEntity.ok(reviewService.readAllReviewsDtoBySportGround(sportGroundsId));
     }
 
     @ApiOperation(value = "Создает новый отзыв пользователя")
@@ -55,7 +55,7 @@ public class ReviewController {
     public ResponseEntity<ReviewDto> createReview(@PathVariable Long sportGroundsId,
                                                   @Valid @RequestBody ReviewRequest request,
                                                   Authentication authentication) {
-        return reviewService.saveReview(sportGroundsId, request, authentication);
+        return ResponseEntity.ok(reviewService.saveReview(sportGroundsId, request, authentication));
     }
 
     @ApiOperation(value = "Редактирует отзыв пользователя. Редактировать может только сам пользователь")
@@ -69,7 +69,7 @@ public class ReviewController {
     public ResponseEntity<ReviewDto> updateReview(@PathVariable Long sportGroundsId, @PathVariable Long reviewId,
                                                   @Valid @RequestBody ReviewRequest request,
                                                   Authentication authentication) {
-        return reviewService.updateReview(sportGroundsId, reviewId, request, authentication);
+        return ResponseEntity.ok(reviewService.updateReview(sportGroundsId, reviewId, request, authentication));
     }
 
     @ApiOperation(value = "Удаляет отзыв пользователя")
@@ -82,6 +82,7 @@ public class ReviewController {
     @DeleteMapping("/{sportGroundsId}/review/{reviewId}")
     public ResponseEntity<?> deleteReview(@PathVariable Long sportGroundsId, @PathVariable Long reviewId,
                                           Authentication authentication) {
-        return reviewService.deleteById(reviewId, sportGroundsId, authentication);
+        return reviewService.deleteById(reviewId, sportGroundsId, authentication) ?
+                ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 }
