@@ -12,20 +12,20 @@ create table event_members
 			references events
 );
 
-DROP TABLE IF EXISTS sportground_comments;
+DROP TABLE IF EXISTS reviews;
 
-create table sportground_comments
+create table reviews
 (
 	id bigserial not null
-		constraint sportground_comments_pkey
+		constraint reviews_pkey
 			primary key,
 	date date not null,
+	sportground_id bigint not null
+		constraint fkg4mnw05ok6evcd500po2onhmh
+			references sportgrounds,
 	text varchar(255) not null,
 	user_full_name varchar(255) not null,
-	user_id bigint not null,
-	sportground_id bigint not null
-		constraint fk5ixkf3pbbkdrwrcw56h6x1y86
-			references sportgrounds
+	user_id bigint not null
 );
 
 DROP TABLE IF EXISTS event_messages;

@@ -14,10 +14,7 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommentSportGroundRequest {
-
-    @NotNull(message = DATA_NOT_BLANK + "Индентификатор площадки")
-    private Long sportGroundId;
+public class ReviewRequest {
 
     @Size(min = 5, max = 300)
     @NotBlank(message = DATA_NOT_BLANK + "Текст отзыва")

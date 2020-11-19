@@ -93,4 +93,11 @@ public interface SportGroundService {
      * @return существует ли площадка
      */
     boolean deleteBySportGroundId(Long id, Authentication authentication);
+
+    /**
+     * Проверяет существование площадки
+     * @param sportGroundId индентификатор площадки
+     * @return true, false
+     */
+    boolean exists(Long sportGroundId);
 }

@@ -1,8 +1,6 @@
 package ru.dosport.entities;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,9 +11,11 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
-@Table(name = "sportground_comments")
-public class CommentSportGround {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "reviews")
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +31,8 @@ public class CommentSportGround {
     private String userFullName;
 
     // Площадка отзыва
-    @ManyToOne
-    @JoinColumn(name = "sportground_id", nullable = false)
-    private SportGround sportGround;
+    @Column(name = "sportground_id", nullable = false)
+    private Long sportGroundId;
 
     // Дата отзыва
     @Column(name = "date", nullable = false)

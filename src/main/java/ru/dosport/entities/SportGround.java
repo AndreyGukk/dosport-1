@@ -55,6 +55,6 @@ public class SportGround {
     private List<Event> events;
 
     // Список отзывов
-    @OneToMany(mappedBy = "sportGround")
-    private List<CommentSportGround> commentSportGrounds;
+    @OneToMany(mappedBy = "sportGroundId")
+    private List<Review> reviews;
 }
