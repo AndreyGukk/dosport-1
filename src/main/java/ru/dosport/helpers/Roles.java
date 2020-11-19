@@ -1,5 +1,6 @@
 package ru.dosport.helpers;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -28,5 +29,15 @@ public final class Roles {
     public static boolean hasAuthenticationRoleUser(Authentication authentication) {
         return (authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_USER)));
+    }
+
+    /**
+     * Проверить, что пользователь имеет роль Админа
+     * @param authentication данные авторизации
+     * @return true or AccessDeniedException
+     */
+    public static boolean hasAuthenticationRoleAdminOrThrowException(Authentication authentication) {
+        if (hasAuthenticationRoleAdmin(authentication)) return true;
+        else throw new AccessDeniedException("Пользователь не является админом");
     }
 }

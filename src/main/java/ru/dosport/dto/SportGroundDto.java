@@ -37,6 +37,4 @@ public class SportGroundDto {
     private List<SportTypeDto> sportTypes;
 
     private List<EventDto> events;
-
-    private List<CommentSportGroundDto> commentSportGrounds;
 }

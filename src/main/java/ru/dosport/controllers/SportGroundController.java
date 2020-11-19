@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
-import ru.dosport.helpers.Roles;
 import ru.dosport.services.api.SportGroundService;
 
 import java.util.List;

@@ -87,6 +87,11 @@ public class SportGroundServiceImp implements SportGroundService {
         return groundRepository.existsById(id);
     }
 
+    @Override
+    public boolean exists(Long sportGroundId) {
+        return groundRepository.existsById(sportGroundId);
+    }
+
     /**
      * Найти по идентификатору
      */

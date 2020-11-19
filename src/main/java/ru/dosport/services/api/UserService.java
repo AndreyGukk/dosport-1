@@ -65,6 +65,7 @@ public interface UserService {
      * @param authentication данные авторизации
      * @return id Пользователя
      */
+    //TODO: нужна ошибка/уведомить если нет такого пользователя
     Long getIdByAuthentication(Authentication authentication);
 
     /**
