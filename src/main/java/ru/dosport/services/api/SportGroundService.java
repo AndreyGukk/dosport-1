@@ -84,7 +84,7 @@ public interface SportGroundService {
      * @param authentication
      * @return площадка
      */
-    UserSportGroundDto addDtoByAuth (Authentication authentication, SportGroundDto sportGroundDto);
+    UserSportGroundDto addUserSportGroundDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto);
 
     /**
      * Добавление площадки в избранное

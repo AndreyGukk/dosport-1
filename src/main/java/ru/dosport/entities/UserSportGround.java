@@ -26,6 +26,6 @@ public class UserSportGround {
 
 
     @Column(name = "sportground_id")
-    private long sportgroundsId;
+    private long sportGroundId;
 
 }

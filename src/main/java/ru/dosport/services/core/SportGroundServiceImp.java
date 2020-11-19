@@ -14,7 +14,6 @@ import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.SportGroundMapper;
-import ru.dosport.mappers.UserSportGroundMapper;
 import ru.dosport.repositories.SportGroundRepository;
 import ru.dosport.repositories.UserSportGroundRepository;
 import ru.dosport.services.api.SportGroundService;
@@ -38,7 +37,6 @@ public class SportGroundServiceImp implements SportGroundService {
 
     // Мапперы
     private final SportGroundMapper groundMapper;
-    private final UserSportGroundMapper userSportGroundMapper;
     private final UserService userService;
 
     @Override
@@ -118,17 +116,17 @@ public class SportGroundServiceImp implements SportGroundService {
     @Override
     public List<SportGroundDto> getAllDtoByAuth(Authentication authentication) {
         List<SportGroundDto> result = new ArrayList<>();
-        userSportGroundMapper.mapEntityToDto(userSportGroundRepository.findAllByUserId(userService.getIdByAuthentication(authentication))).forEach(s -> result.add(getDtoById(s.getSportGroundId())));
+        groundMapper.mapUserSportGroundEntityToDto(userSportGroundRepository.findAllByUserId(userService.getIdByAuthentication(authentication))).forEach(s -> result.add(getDtoById(s.getSportGroundId())));
         return result;
     }
 
     @Override
-    public UserSportGroundDto addDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto) {
+    public UserSportGroundDto addUserSportGroundDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto) {
         UserSportGround userSportGround = UserSportGround.builder()
                 .userId(userService.getIdByAuthentication(authentication))
-                .sportgroundsId(sportGroundDto.getSportGroundId())
+                .sportGroundId(sportGroundDto.getSportGroundId())
                 .build();
-        return userSportGroundMapper.mapEntityToDto(userSportGroundRepository.save(userSportGround));
+        return groundMapper.mapUserSportGroundEntityToDto(userSportGroundRepository.save(userSportGround));
 
     }
 

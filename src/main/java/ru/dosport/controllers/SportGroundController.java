@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
 import ru.dosport.dto.UserSportGroundDto;
-import ru.dosport.helpers.Roles;
 import ru.dosport.services.api.SportGroundService;
 
 import java.util.List;
@@ -72,7 +71,7 @@ public class SportGroundController {
     @PostMapping ("/mySportGrounds")
     public ResponseEntity<UserSportGroundDto> createUserSportGroundsByAuth (@RequestBody SportGroundDto sportGroundDto,
                                                                             Authentication authentication) {
-        return ResponseEntity.ok(sportGroundService.addDtoByAuth(authentication, sportGroundDto));
+        return ResponseEntity.ok(sportGroundService.addUserSportGroundDtoByAuth(authentication, sportGroundDto));
     }
 
     @ApiOperation("Удаляет площадку из списка избранных по индексу площадки")
