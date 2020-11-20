@@ -61,25 +61,25 @@ public class SportGroundController {
 
     @ApiOperation("Выводит список избранных площадок пользователя")
     @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @GetMapping ("/mySportGrounds")
+    @GetMapping ("/my")
     public ResponseEntity<List<SportGroundDto>> readAllSportGroundsByAuth (Authentication authentication) {
         return ResponseEntity.ok(sportGroundService.getAllDtoByAuth(authentication));
     }
 
     @ApiOperation("Добавляет площадку в список избранных")
     @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @PostMapping ("/mySportGrounds")
+    @PostMapping ("/my")
     public ResponseEntity<UserSportGroundDto> createUserSportGroundsByAuth (@RequestBody SportGroundDto sportGroundDto,
                                                                             Authentication authentication) {
-        return ResponseEntity.ok(sportGroundService.addUserSportGroundDtoByAuth(authentication, sportGroundDto));
+        return ResponseEntity.ok(sportGroundService.saveUserSportGroundDtoByAuth(authentication, sportGroundDto));
     }
 
     @ApiOperation("Удаляет площадку из списка избранных по индексу площадки")
     @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @DeleteMapping("/mySportGrounds/{id}")
+    @DeleteMapping("/my/{id}")
     public ResponseEntity<?> deleteBySportGroundId (@PathVariable Long id,
                                                     Authentication authentication) {
-        return sportGroundService.deleteBySportGroundId(id, authentication)?
+        return sportGroundService.deleteFavoritesBySportGroundId(id, authentication)?
                 ResponseEntity.badRequest().build() : ResponseEntity.noContent().build();
     }
 }

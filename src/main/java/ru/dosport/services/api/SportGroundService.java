@@ -84,7 +84,7 @@ public interface SportGroundService {
      * @param authentication
      * @return площадка
      */
-    UserSportGroundDto addUserSportGroundDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto);
+    UserSportGroundDto saveUserSportGroundDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto);
 
     /**
      * Добавление площадки в избранное
@@ -92,7 +92,7 @@ public interface SportGroundService {
      * @param authentication
      * @return существует ли площадка
      */
-    boolean deleteBySportGroundId(Long id, Authentication authentication);
+    boolean deleteFavoritesBySportGroundId(Long id, Authentication authentication);
 
     /**
      * Проверяет существование площадки

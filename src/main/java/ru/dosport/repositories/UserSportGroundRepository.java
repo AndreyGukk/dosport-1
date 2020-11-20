@@ -23,7 +23,7 @@ public interface UserSportGroundRepository extends JpaRepository<UserSportGround
      * Удаление площадки из избранного
      */
     @Modifying
-    @Query(value = "DELETE s FROM user_sportgrounds s WHERE s.user_id = ?1 AND s.sportground_id = ?2", nativeQuery = true)
+    @Query //(value = "DELETE s FROM user_sportgrounds s WHERE s.user_id = ?1 AND s.sportground_id = ?2", nativeQuery = true)
     @Transactional
     void deleteByUserIdAndSportGroundId(long userId, long sportGroundId);
 

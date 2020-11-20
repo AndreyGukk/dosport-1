@@ -24,7 +24,7 @@ public interface UserSportTypeService {
     /**
      * Выдает список пустых навыков пользователя
      *
-     * @return список нулевых навыков пользователя
+     * @return список навыков пользователя, для которых не задан уровень (для страницы добавления навыков)
      */
     List<SportTypeDto> getEmptyDtoByUser(Authentication authentication);
 

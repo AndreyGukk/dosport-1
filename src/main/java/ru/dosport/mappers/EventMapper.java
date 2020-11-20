@@ -48,7 +48,7 @@ public interface EventMapper {
     Event update(@MappingTarget Event entity, EventDto dto);
 
     @Mappings({
-            @Mapping(target="user", ignore = true),
+
             @Mapping(target="statusUser",  ignore = true),
 
             @Mapping(target="eventId", source = "entity.eventId", ignore = true),

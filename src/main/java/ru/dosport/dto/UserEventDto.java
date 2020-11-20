@@ -9,7 +9,7 @@ import java.time.LocalTime;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserEventDto {
-    private UserDto user;
+   // private UserDto user;
 
     private String statusUser;
 

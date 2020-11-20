@@ -40,7 +40,7 @@ public class UserSportTypeController {
         return new ResponseEntity<>(userSportTypeService.getAllDtoByUserId(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Выводит список пустых навыков")
+    @ApiOperation(value = "Выводит список навыков пользователя, для которых не установлен уровень")
     @Secured(value = {ROLE_ADMIN, ROLE_USER})
     @GetMapping("/add")
     public ResponseEntity<List<SportTypeDto>> readEmptySportTypesByUser(Authentication authentication) {
