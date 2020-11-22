@@ -125,7 +125,7 @@ public class EventController {
 
     @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ на ___ дней (1/7/31")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @GetMapping ("/calendar")
+    @GetMapping ("/calendar/interval")
     public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication, @RequestParam  LocalDate from, @RequestParam  byte timeInterval){
         return ResponseEntity.ok(eventService.getAllDtoByAuthTimeInterval(authentication, from, timeInterval));
     }

@@ -87,7 +87,7 @@ public interface SportGroundService {
     UserSportGroundDto saveUserSportGroundDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto);
 
     /**
-     * Добавление площадки в избранное
+     * Удаление площадки из избранного
      * @param id площадка
      * @param authentication
      * @return существует ли площадка

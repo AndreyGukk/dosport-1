@@ -116,7 +116,9 @@ public class SportGroundServiceImp implements SportGroundService {
     @Override
     public List<SportGroundDto> getAllDtoByAuth(Authentication authentication) {
         List<SportGroundDto> result = new ArrayList<>();
-        groundMapper.mapUserSportGroundEntityToDto(userSportGroundRepository.findAllByUserId(userService.getIdByAuthentication(authentication))).forEach(s -> result.add(getDtoById(s.getSportGroundId())));
+        groundMapper.mapUserSportGroundEntityToDto(userSportGroundRepository
+                .findAllByUserId(userService.getIdByAuthentication(authentication)))
+                .forEach(s -> result.add(getDtoById(s.getSportGroundId())));
         return result;
     }
 
