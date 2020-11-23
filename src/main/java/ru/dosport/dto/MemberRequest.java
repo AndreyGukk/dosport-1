@@ -14,12 +14,6 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MemberRequest {
 
-    @NotBlank(message = DATA_NOT_BLANK + "Индетификатор пользователя")
-    private Long userId;
-
-    @NotBlank(message = DATA_NOT_BLANK + "Индетификатор мероприятия")
-    private Long evenId;
-
     @NotBlank(message = DATA_NOT_BLANK + "Статус пользователя")
     private String userStatus;
 }
