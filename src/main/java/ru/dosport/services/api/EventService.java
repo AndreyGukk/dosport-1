@@ -63,23 +63,22 @@ public interface EventService {
      * Удалить мероприятие по его идентификатору
      *
      * @param id идентификатор мероприятия
-     * @param authentication
+     * @param authentication данные авторизации
      * @return удалено ли мероприятие
      */
     boolean deleteById(Long id, Authentication authentication);
 
     /**
-     * Получить всех участников мероприятия.
+     * Проверяет существует ли сущность.
      * @param eventId идентификатор мероприятия
-     * @return список dto участников
+     * @return true/false
      */
-    List<MemberDto> getAllMembers(Long eventId);
+    boolean exist(Long eventId);
 
     /**
-     * Добавить участника мероприятия
-     * @param eventId идентификатор мероприятия
-     * @param request запрос, содержищий участника, идентификатор мероприятия, статус участника
-     * @return dto участника
+     * Возращает список мероприятйи по списку идентификатора
+     * @param idList списк идентификаторов
+     * @return список мероприятий
      */
-    MemberDto createEventMember(Long eventId, MemberRequest request);
+    List<EventDto> findAllEventDtoById(List<Long> idList);
 }

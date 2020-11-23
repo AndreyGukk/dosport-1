@@ -5,12 +5,16 @@ create table event_members
 	id bigserial not null
 		constraint event_members_pkey
 			primary key,
-	status varchar(255),
-	user_id bigint,
-	event_id bigint
+	status varchar(13) not null,
+	user_id bigint not null,
+	event_id bigint not null
 		constraint fkaa8h6gi3vaheiptt7ben9qgn7
 			references events
+				on delete cascade
 );
+
+create unique index if not exists event_members_user_id_event_id_uindex
+	on event_members (user_id, event_id);
 
 DROP TABLE IF EXISTS reviews;
 

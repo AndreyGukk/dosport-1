@@ -6,24 +6,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.dosport.dto.*;
 import ru.dosport.entities.Event;
-import ru.dosport.entities.EventMember;
-import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Messages;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.EventMapper;
-import ru.dosport.mappers.EventMemberMapper;
 import ru.dosport.repositories.EventRepository;
-import ru.dosport.repositories.MemberRepository;
-import ru.dosport.services.api.EventService;
-import ru.dosport.services.api.SportGroundService;
-import ru.dosport.services.api.SportTypeService;
-import ru.dosport.services.api.UserService;
+import ru.dosport.services.api.*;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 
@@ -36,11 +27,9 @@ public class EventServiceImpl implements EventService {
 
     // Необходимые мапперы
     private final EventMapper eventMapper;
-    private final EventMemberMapper memberMapper;
 
     // Необходимые репозитории
     private final EventRepository eventRepository;
-    private final MemberRepository memberRepository;
 
     // Сервисы
     private final UserService userService;
@@ -50,6 +39,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDto getDtoById(Long id) {
         return eventMapper.mapEntityToDto(findById(id));
+    }
+
+    @Override
+    public List<EventDto> findAllEventDtoById(List<Long> idList) {
+        return eventMapper.mapEntityToDto(eventRepository.findAllById(idList));
     }
 
     @Override
@@ -102,48 +96,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<MemberDto> getAllMembers(Long eventId) {
-        //TODO: проверить всё это
-        List<EventMember> members = memberRepository.findAllByEventId(eventId);
-        List<UserDto> userDtoList = userService.getAllDtoById(members.stream().map(EventMember::getUserId)
-                .collect(Collectors.toList()));
-        List<MemberDto> memberDtoList = new ArrayList<>();
-
-        //Мапить через запланированных участников
-        members.forEach(m -> userDtoList.stream()
-                .filter(u -> m.getUserId().equals(u.getId()))
-                .map(u -> memberMapper.mapEntityToDto(m, u))
-                .forEach(memberDtoList::add));
-
-
-        //Мапить через найденых пользователей
-//        userDtoList.forEach(d -> members.stream()
-//                .filter(member -> member.getUserId().equals(d.getId()))
-//                .map(member -> memberMapper.mapEntityToDto(member, d))
-//                .forEach(memberDtoList::add));
-
-        //Придётся обращаться каждый раз к сервису -> может прерваться
-//        memberDtoList = members.stream()
-//                .map(m -> memberMapper.mapEntityToDto(m, userService.getDtoById(m.getUserId())))
-//                .collect(Collectors.toList());
-
-        return memberDtoList;
-    }
-
-    @Transactional
-    @Override
-    public MemberDto createEventMember(Long eventId, MemberRequest request) {
-        if (eventId.equals(request.getEvenId())) {
-            throw new DataBadRequestException("Не правильно указано мероприятие");
-        }
-        UserDto user = userService.getDtoById(request.getUserId());
-        Event event = findById(eventId);
-        EventMember member = EventMember.builder()
-                .event(event)
-                .userId(request.getUserId())
-                .status(request.getUserStatus())
-                .build();
-        return memberMapper.mapEntityToDto(memberRepository.save(member), user);
+    public boolean exist(Long eventId) {
+        return eventRepository.existsById(eventId);
     }
 
     private Event findById(Long id) {

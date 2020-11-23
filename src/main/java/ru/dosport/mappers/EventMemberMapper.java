@@ -13,18 +13,22 @@ import java.util.List;
 /**
  * Маппер, преобразующий классы EventMember и MemberDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {UserMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface EventMemberMapper {
 
     @Mappings({
-            @Mapping(target = "eventId", source = "entity.event.id"),
-            @Mapping(target = "user", source = "userDto")
+            @Mapping(target = "eventId", source = "entity.eventId"),
+            @Mapping(target = "userId", source = "entity.userId"),
+            @Mapping(target = "userStatus", source = "entity.status")
     })
-    MemberDto mapEntityToDto(EventMember entity, UserDto userDto);
+    MemberDto mapEntityToDto(EventMember entity);
+
+    List<MemberDto> mapEntityToDto(List<EventMember> entries);
 
     @Mappings({
-            @Mapping(target = "event", ignore = true),
-            @Mapping(target = "userId", source = "dto.user.id")
+            @Mapping(target = "eventId", source = "dto.eventId"),
+            @Mapping(target = "userId", source = "dto.userId"),
+            @Mapping(target = "status", source = "dto.userStatus")
     })
     EventMember mapDtoToEntity(MemberDto dto);
 }
