@@ -71,21 +71,6 @@ public class EventController {
                 ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 
-    @ApiOperation(value = "Отображает данные всех участников мероприятия")
-    @GetMapping("/{id}/members")
-    public ResponseEntity<List<MemberDto>> readEventMember(@ApiParam(value = EVENT_ID) @PathVariable Long id) {
-        return ResponseEntity.ok(eventService.getAllMembers(id));
-    }
-
-    @ApiOperation(value = "Добавляет участника в мероприятие")
-    @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @PostMapping("/{id}/members")
-    public ResponseEntity<?> addEventMember(@ApiParam(value = EVENT_ID) @PathVariable Long id,
-                                            @RequestBody MemberRequest request) {
-        return eventService.createEventMember(id, request) != null ?
-                ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
-    }
-
     @ApiOperation(value = "Отоброжает данные всех сообщений мероприятия")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @GetMapping("/{id}/messages")
