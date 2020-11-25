@@ -12,7 +12,7 @@ public class MemberDto {
 
     private Long eventId;
 
-    private UserDto user;
+    private Long userId;
 
-    private String statusUser;
+    private String userStatus;
 }

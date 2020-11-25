@@ -1,6 +1,10 @@
 package ru.dosport.services.api;
 
 import org.springframework.security.core.Authentication;
+import ru.dosport.dto.EventDto;
+import ru.dosport.dto.EventRequest;
+import ru.dosport.dto.MemberDto;
+import ru.dosport.dto.MemberRequest;
 import ru.dosport.dto.*;
 
 import java.time.LocalDate;
@@ -61,10 +65,17 @@ public interface EventService {
      * Удалить мероприятие по его идентификатору
      *
      * @param id идентификатор мероприятия
-     * @param authentication
+     * @param authentication данные авторизации
      * @return удалено ли мероприятие
      */
     boolean deleteById(Long id, Authentication authentication);
+
+    /**
+     * Проверяет существует ли сущность.
+     * @param eventId идентификатор мероприятия
+     * @return true/false
+     */
+    boolean exist(Long eventId);
 
     /**
      * Получить всех участников мероприятия.
@@ -72,6 +83,13 @@ public interface EventService {
      * @return список dto участников
      */
     List<MemberDto> getAllMembers(Long eventId);
+
+    /**
+     * Возращает список мероприятйи по списку идентификатора
+     * @param idList списк идентификаторов
+     * @return список мероприятий
+     */
+    List<EventDto> findAllEventDtoById(List<Long> idList);
 
     /**
      * Добавить участника мероприятия
@@ -97,4 +115,5 @@ public interface EventService {
      * @param to дата конца интервала времени
      */
     List<UserEventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to);
+
 }
