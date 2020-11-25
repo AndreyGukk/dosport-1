@@ -77,12 +77,12 @@ public interface EventService {
      */
     boolean exist(Long eventId);
 
-    /**
-     * Получить всех участников мероприятия.
-     * @param eventId идентификатор мероприятия
-     * @return список dto участников
-     */
-    List<MemberDto> getAllMembers(Long eventId);
+//    /**
+//     * Получить всех участников мероприятия.
+//     * @param eventId идентификатор мероприятия
+//     * @return список dto участников
+//     */
+//    List<MemberDto> getAllMembers(Long eventId);
 
     /**
      * Возращает список мероприятйи по списку идентификатора
@@ -91,13 +91,13 @@ public interface EventService {
      */
     List<EventDto> findAllEventDtoById(List<Long> idList);
 
-    /**
-     * Добавить участника мероприятия
-     * @param eventId идентификатор мероприятия
-     * @param request запрос, содержищий участника, идентификатор мероприятия, статус участника
-     * @return dto участника
-     */
-    MemberDto createEventMember(Long eventId, MemberRequest request);
+//    /**
+//     * Добавить участника мероприятия
+//     * @param eventId идентификатор мероприятия
+//     * @param request запрос, содержищий участника, идентификатор мероприятия, статус участника
+//     * @return dto участника
+//     */
+//    MemberDto createEventMember(Long eventId, MemberRequest request);
 
     /**
      * Возвращает мероприятия пользователя по аутентификации и за заданный интервал в ремени с заданной даты

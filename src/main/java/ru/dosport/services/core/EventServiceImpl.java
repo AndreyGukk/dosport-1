@@ -11,12 +11,10 @@ import ru.dosport.helpers.Messages;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.EventMapper;
 import ru.dosport.repositories.EventRepository;
-import ru.dosport.repositories.MemberRepository;
 import ru.dosport.services.api.EventService;
 import ru.dosport.services.api.SportGroundService;
 import ru.dosport.services.api.SportTypeService;
 import ru.dosport.services.api.UserService;
-import ru.dosport.services.api.*;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
