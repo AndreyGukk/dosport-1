@@ -119,7 +119,6 @@ public class EventServiceImpl implements EventService {
     public List<UserEventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to) {
         List<UserEventDto> events = eventMapper.mapEventToUserEventDto
                 (eventMapper.mapEntityToDto(eventRepository.findAllByUserIdAndTimeFromTo(userService.getIdByAuthentication(authentication), from, to)));
-        //events.forEach(u -> u.setUser(userService.getDtoByAuthentication(authentication)));
 
         //events.forEach(u -> u.setStatusUser(findById(u.getEventId()).getMembers().п); //todo вытащить статус юзера
         return events;
