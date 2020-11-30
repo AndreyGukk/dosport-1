@@ -13,6 +13,7 @@ import ru.dosport.dto.EventMessageRequest;
 
 import ru.dosport.services.api.EventMessageService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static ru.dosport.helpers.MessageSwagger.PAR_EVENT_ID;
@@ -40,7 +41,7 @@ public class MessageController {
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PostMapping("/messages")
     public ResponseEntity<EventMessageDto> createMessage(@ApiParam(value = PAR_EVENT_ID) @PathVariable Long eventId,
-                                                         @RequestBody EventMessageRequest request,
+                                                         @Valid @RequestBody EventMessageRequest request,
                                                          Authentication authentication) {
         return ResponseEntity.ok(eventMessageService.save(eventId, request, authentication));
     }
@@ -49,8 +50,8 @@ public class MessageController {
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PutMapping("/messages/{messageId}")
     public ResponseEntity<EventMessageDto> updateMessage(@ApiParam(value = PAR_EVENT_ID) @PathVariable Long eventId,
-                                                         @ApiParam(value = PAR_MESSAGE_ID)@PathVariable Long messageId,
-                                                         EventMessageRequest request,
+                                                         @ApiParam(value = PAR_MESSAGE_ID) @PathVariable Long messageId,
+                                                         @Valid @RequestBody EventMessageRequest request,
                                                          Authentication authentication) {
         return ResponseEntity.ok(eventMessageService.update(messageId, eventId, request, authentication));
     }
@@ -58,7 +59,7 @@ public class MessageController {
     @ApiOperation(value = "Удаляет сообщение")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @DeleteMapping("/messages/{messageId}")
-    public ResponseEntity<EventMessageDto> deleteMessage(@ApiParam(value = PAR_EVENT_ID)@PathVariable Long eventId,
+    public ResponseEntity<EventMessageDto> deleteMessage(@ApiParam(value = PAR_EVENT_ID) @PathVariable Long eventId,
                                                          @ApiParam(value = PAR_MESSAGE_ID) @PathVariable Long messageId,
                                                          Authentication authentication) {
         return eventMessageService.deleteById(messageId, eventId, authentication) ?

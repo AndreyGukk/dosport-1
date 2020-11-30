@@ -26,13 +26,13 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @GetMapping("/{sportGroundsId}/reviews/{reviewId}")
     @ApiOperation(value = "Отображает отзыв по индентификатору")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class),
     })
+    @GetMapping("/{sportGroundsId}/reviews/{reviewId}")
     public ResponseEntity<ReviewDto> getReview(@PathVariable Long sportGroundsId, @PathVariable Long reviewId) {
         return ResponseEntity.ok(reviewService.readReviewDtoById(reviewId, sportGroundsId));
     }
