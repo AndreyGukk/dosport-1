@@ -68,6 +68,7 @@ public class EventServiceImpl implements EventService {
         return eventMapper.mapEntityToDto(eventRepository.save(event));
     }
 
+    @Transactional
     @Override
     public EventDto update(EventDto eventDto, Long eventId, Authentication authentication) {
         if (authentication != null) {
@@ -83,6 +84,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
+    @Transactional
     @Override
     public boolean deleteById(Long id, Authentication authentication) {
         Event event = findById(id);
@@ -92,7 +94,7 @@ public class EventServiceImpl implements EventService {
             }
         }
         eventRepository.deleteById(id);
-        return eventRepository.existsById(id);
+        return !eventRepository.existsById(id);
     }
 
     @Override

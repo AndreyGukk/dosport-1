@@ -9,7 +9,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.*;
-import ru.dosport.services.api.EventMessageService;
 import ru.dosport.services.api.EventService;
 
 import javax.validation.Valid;
@@ -17,6 +16,7 @@ import java.util.List;
 
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
 import static ru.dosport.helpers.Roles.ROLE_USER;
+import static ru.dosport.helpers.MessageSwagger.PAR_EVENT_ID;
 
 @CrossOrigin
 @RestController
@@ -24,9 +24,6 @@ import static ru.dosport.helpers.Roles.ROLE_USER;
 @RequestMapping(value = "/api/v1/events", produces = "application/json")
 @Api(value = "/api/v1/events", tags = {"Контроллер Мероприятий"})
 public class EventController {
-
-    // Константы
-    private final String EVENT_ID = "Идентификатор мероприятия";
 
     // Необходимые сервисы
     private final EventService eventService;
@@ -39,7 +36,7 @@ public class EventController {
 
     @ApiOperation(value = "Отображает данные мероприятия по его индексу")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EventDto> readEvent(@ApiParam(value = EVENT_ID) @PathVariable Long id) {
+    public ResponseEntity<EventDto> readEvent(@ApiParam(value = PAR_EVENT_ID) @PathVariable Long id) {
         return ResponseEntity.ok(eventService.getDtoById(id));
     }
 
@@ -54,19 +51,18 @@ public class EventController {
     @ApiOperation(value = "Изменяет данные мероприятия")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PutMapping(value = "/{id}")
-    public ResponseEntity<EventDto> updateEvent(@RequestBody EventDto eventDto,
-                                                @ApiParam(value = EVENT_ID) @PathVariable Long id,
-                                                Authentication authentication) {
+    public ResponseEntity<EventDto> updateEvent(@ApiParam(value = PAR_EVENT_ID) @PathVariable Long id,
+                                                @RequestBody EventDto eventDto, Authentication authentication) {
         return ResponseEntity.ok(eventService.update(eventDto, id, authentication));
     }
 
     @ApiOperation(value = "Удаляет мероприятие по его индексу")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteEvent(@ApiParam(value = EVENT_ID) @PathVariable Long id,
+    public ResponseEntity<?> deleteEvent(@ApiParam(value = PAR_EVENT_ID) @PathVariable Long id,
                                          Authentication authentication) {
         return eventService.deleteById(id, authentication) ?
-                ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
+                ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
 }
