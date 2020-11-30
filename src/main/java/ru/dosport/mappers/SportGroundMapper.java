@@ -41,6 +41,7 @@ public interface SportGroundMapper {
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "events", ignore = true),
+            @Mapping(target = "sportType", source = "sportTypes")
     })
-    SportGround update(@MappingTarget SportGround entity, SportGroundDto dto);
+    SportGround update(@MappingTarget SportGround entity, SportGroundRequest request);
 }
