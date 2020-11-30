@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDto getDtoByAuthentication(Authentication authentication) {
+        if(authentication==null) throw new DataNotFoundException(ACCESS_DENIED);
         return userMapper.mapEntityToDto(findById(getUserId(authentication)));
     }
 

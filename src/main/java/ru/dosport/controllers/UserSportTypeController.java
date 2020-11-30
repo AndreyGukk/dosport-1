@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import ru.dosport.dto.SportTypeDto;
 import ru.dosport.dto.UserSportTypeDto;
 import ru.dosport.services.api.UserSportTypeService;
 
@@ -37,6 +38,13 @@ public class UserSportTypeController {
     @GetMapping("/{id}")
     public ResponseEntity<List<UserSportTypeDto>> readAllSportTypesByUserId(@PathVariable("userId") long id) {
         return new ResponseEntity<>(userSportTypeService.getAllDtoByUserId(id), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Выводит список навыков пользователя, для которых не установлен уровень")
+    @Secured(value = {ROLE_ADMIN, ROLE_USER})
+    @GetMapping("/unused")
+    public ResponseEntity<List<SportTypeDto>> readEmptySportTypesByUser(Authentication authentication) {
+        return new ResponseEntity<>(userSportTypeService.getEmptyDtoByUser(authentication), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Выводит список собственных навыков пользователся")

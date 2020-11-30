@@ -6,14 +6,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.dosport.dto.*;
 import ru.dosport.entities.Event;
+import ru.dosport.entities.UserEvent;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Messages;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.EventMapper;
 import ru.dosport.repositories.EventRepository;
-import ru.dosport.services.api.*;
+import ru.dosport.services.api.EventService;
+import ru.dosport.services.api.SportGroundService;
+import ru.dosport.services.api.SportTypeService;
+import ru.dosport.services.api.UserService;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
@@ -103,5 +108,16 @@ public class EventServiceImpl implements EventService {
     private Event findById(Long id) {
         return eventRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
+    }
+
+    @Override
+    public List<UserEventDto> getAllDtoByAuthTimeInterval(Authentication authentication, LocalDate from, byte timeInterval) {
+        LocalDate to = from.plusDays(timeInterval);
+        return getAllDtoByAuthFromTo(authentication, from, to);
+    }
+
+    @Override
+    public List<UserEventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to) {
+        return eventMapper.mapUserEventToUserEventDto(eventRepository.findAllByUserIdAndTimeFromTo(userService.getIdByAuthentication(authentication), from, to));
     }
 }

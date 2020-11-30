@@ -3,6 +3,7 @@ package ru.dosport.services.api;
 import org.springframework.security.core.Authentication;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
+import ru.dosport.dto.UserSportGroundDto;
 import ru.dosport.entities.SportGround;
 
 import java.util.List;
@@ -69,6 +70,29 @@ public interface SportGroundService {
      * @return существует ли площадка
      */
     boolean delete(Long id, Authentication authentication);
+
+    /**
+     * Получение списка избранных площадок пользователя
+     * @param authentication
+     * @return список
+     */
+    List<SportGroundDto> getAllDtoByAuth(Authentication authentication);
+
+    /**
+     * Добавление площадки в избранное
+     * @param sportGroundDto площадка
+     * @param authentication
+     * @return площадка
+     */
+    UserSportGroundDto saveUserSportGroundDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto);
+
+    /**
+     * Удаление площадки из избранного
+     * @param id площадка
+     * @param authentication
+     * @return существует ли площадка
+     */
+    boolean deleteFavoritesBySportGroundId(Long id, Authentication authentication);
 
     /**
      * Проверяет существование площадки
