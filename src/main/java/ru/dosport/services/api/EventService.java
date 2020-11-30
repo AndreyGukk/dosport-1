@@ -40,11 +40,11 @@ public interface EventService {
     /**
      * Изменить данные мероприятия по его id
      *
-     * @param eventDto мероприятие с измененными данными
+     * @param eventRequest мероприятие с измененными данными
      * @param eventId индекс мероприятия
      * @param authentication данные авторизации
      */
-    EventDto update(EventDto eventDto, Long eventId, Authentication authentication);
+    EventDto update(EventRequest eventRequest, Long eventId, Authentication authentication);
 
     /**
      * Удалить мероприятие по его идентификатору
