@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserEventDto {
 
-    private String statusUser;
+    private String status;
 
     private Long eventId;
 

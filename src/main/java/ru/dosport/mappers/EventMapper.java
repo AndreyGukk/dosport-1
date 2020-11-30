@@ -54,10 +54,10 @@ public interface EventMapper {
             @Mapping(target = "eventId", source = "entity.eventId", ignore = true),
             @Mapping(target = "startTimeEvent", source = "entity.startTimeEvent", dateFormat = "hh:mm"),
             @Mapping(target = "endTimeEvent", source = "entity.endTimeEvent", dateFormat = "hh:mm"),
-            @Mapping(target = "date", source = "entity.date", dateFormat = "dd-MM-yyyy"),
+            @Mapping(target = "date", source = "entity.dateEvent", dateFormat = "dd-MM-yyyy"),
             @Mapping(target = "chatId", source = "entity.chatId", ignore = true),
             @Mapping(target = "sportType", source = "entity.sportType", ignore = true),
-            @Mapping(target = "sportGroundId", source = "entity.sportGroundId", ignore = true)
+            @Mapping(target = "sportGroundId", source = "entity.sportGround", ignore = true)
     })
     UserEventDto mapUserEventToUserEventDto(UserEvent entity);
 

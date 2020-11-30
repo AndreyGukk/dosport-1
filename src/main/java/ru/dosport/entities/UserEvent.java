@@ -3,10 +3,7 @@ package ru.dosport.entities;
 import lombok.Getter;
 import ru.dosport.dto.SportTypeDto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -18,6 +15,7 @@ public class UserEvent {
     private String status;
 
     // id мероприятия
+    @Id
     @Column(name = "event_id", nullable = false)
     private Long eventId;
 
