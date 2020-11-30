@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.dosport.entities.Event;
+import ru.dosport.entities.UserEvent;
 
 import javax.persistence.JoinTable;
 import java.time.LocalDate;
@@ -37,7 +38,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query(value = "SELECT s FROM events e JOIN event_members m " +
             "ON e.id = m.event_id " +
+            "JOIN sport_types s " +
+            "ON s.id = e.sportType " +
             "WHERE m.user_id = :userId " +
             "AND e.date BETWEEN  :from  AND  :to ", nativeQuery = true)
-    List <Event> findAllByUserIdAndTimeFromTo(Long userId, LocalDate from, LocalDate to);
+    List <UserEvent> findAllByUserIdAndTimeFromTo(Long userId, LocalDate from, LocalDate to);
 }

@@ -9,21 +9,20 @@ import java.time.LocalTime;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserEventDto {
-   // private UserDto user;
 
     private String statusUser;
 
     private Long eventId;
 
-    private LocalDate dateEvent;
+    private LocalDate date;
 
     private LocalTime startTimeEvent;
 
     private LocalTime endTimeEvent;
 
-    private SportTypeDto sportType;
+    private String sportType;
 
-    private Long sportGroundId;
+    private SportGroundDto sportGroundId;
 
     private Long chatId;
 }

@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.dosport.dto.*;
 import ru.dosport.entities.Event;
+import ru.dosport.entities.UserEvent;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Messages;
 import ru.dosport.helpers.Roles;
@@ -117,10 +118,6 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<UserEventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to) {
-        List<UserEventDto> events = eventMapper.mapEventToUserEventDto
-                (eventMapper.mapEntityToDto(eventRepository.findAllByUserIdAndTimeFromTo(userService.getIdByAuthentication(authentication), from, to)));
-
-        //events.forEach(u -> u.setStatusUser(findById(u.getEventId()).getMembers().п); //todo вытащить статус юзера
-        return events;
+        return eventMapper.mapUserEventToUserEventDto(eventRepository.findAllByUserIdAndTimeFromTo(userService.getIdByAuthentication(authentication), from, to));
     }
 }
