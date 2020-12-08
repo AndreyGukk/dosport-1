@@ -60,6 +60,19 @@ public class UserController {
         return ResponseEntity.ok(userService.update(userDto, authentication));
     }
 
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping(value = "/{id}", produces = DATA_TYPE, consumes = DATA_TYPE)
+    @ApiOperation(value = "Возваращает пользователя по его id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
+    })
+    public ResponseEntity<UserDto> readUserById(@Valid @PathVariable Long id) {
+        return ResponseEntity.ok(userService.getDtoById(id));
+    }
+
     @PostMapping(value = "", produces = DATA_TYPE, consumes = DATA_TYPE)
     @ApiOperation(value = "Создает новый профиль пользователя")
     @ApiResponses(value = {

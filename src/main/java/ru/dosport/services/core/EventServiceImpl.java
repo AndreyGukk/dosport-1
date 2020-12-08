@@ -4,26 +4,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.dosport.dto.*;
+import ru.dosport.dto.EventDto;
+import ru.dosport.dto.EventRequest;
+import ru.dosport.dto.UserEventDto;
 import ru.dosport.entities.Event;
-import ru.dosport.entities.EventMember;
-import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
-import ru.dosport.helpers.Messages;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.EventMapper;
-import ru.dosport.mappers.EventMemberMapper;
 import ru.dosport.repositories.EventRepository;
-import ru.dosport.repositories.MemberRepository;
 import ru.dosport.services.api.EventService;
 import ru.dosport.services.api.SportGroundService;
 import ru.dosport.services.api.SportTypeService;
 import ru.dosport.services.api.UserService;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 
@@ -36,11 +32,9 @@ public class EventServiceImpl implements EventService {
 
     // Необходимые мапперы
     private final EventMapper eventMapper;
-    private final EventMemberMapper memberMapper;
 
     // Необходимые репозитории
     private final EventRepository eventRepository;
-    private final MemberRepository memberRepository;
 
     // Сервисы
     private final UserService userService;
@@ -50,6 +44,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDto getDtoById(Long id) {
         return eventMapper.mapEntityToDto(findById(id));
+    }
+
+    @Override
+    public List<EventDto> findAllEventDtoById(List<Long> idList) {
+        return eventMapper.mapEntityToDto(eventRepository.findAllById(idList));
     }
 
     @Override
@@ -74,21 +73,28 @@ public class EventServiceImpl implements EventService {
         return eventMapper.mapEntityToDto(eventRepository.save(event));
     }
 
+    @Transactional
     @Override
-    public EventDto update(EventDto eventDto, Long eventId, Authentication authentication) {
-        if (authentication != null) {
-            Event event = findById(eventId);
+    public EventDto update(EventRequest request, Long eventId, Authentication authentication) {
+        var event = findById(eventId);
 
-            if (!event.getOrganizerId().equals(userService.getIdByAuthentication(authentication))) {
-                throw new AccessDeniedException("Пользователь не является организатором мероприятия");
-            }
-
-            return eventMapper.mapEntityToDto(eventRepository.save(eventMapper.update(findById(eventId), eventDto)));
-        } else {
-            throw new AccessDeniedException(Messages.ACCESS_DENIED);
+        if (!event.getOrganizerId().equals(userService.getIdByAuthentication(authentication))) {
+            throw new AccessDeniedException("Пользователь не является организатором мероприятия");
         }
+
+        event.setStartTime(request.getStartTimeEvent());
+        event.setEndTime(request.getEndTimeEvent());
+        event.setDate(request.getDateEvent());
+
+        if (!event.getSportType().getTitle().equals(request.getSportTypeTitle())) {
+            event.setSportType(sportTypeService.getSportTypeByTitle(request.getSportTypeTitle()));
+        }
+
+        return eventMapper.mapEntityToDto(eventRepository.save(event));
+
     }
 
+    @Transactional
     @Override
     public boolean deleteById(Long id, Authentication authentication) {
         Event event = findById(id);
@@ -98,56 +104,27 @@ public class EventServiceImpl implements EventService {
             }
         }
         eventRepository.deleteById(id);
-        return eventRepository.existsById(id);
+        return !eventRepository.existsById(id);
     }
 
     @Override
-    public List<MemberDto> getAllMembers(Long eventId) {
-        //TODO: проверить всё это
-        List<EventMember> members = memberRepository.findAllByEventId(eventId);
-        List<UserDto> userDtoList = userService.getAllDtoById(members.stream().map(EventMember::getUserId)
-                .collect(Collectors.toList()));
-        List<MemberDto> memberDtoList = new ArrayList<>();
-
-        //Мапить через запланированных участников
-        members.forEach(m -> userDtoList.stream()
-                .filter(u -> m.getUserId().equals(u.getId()))
-                .map(u -> memberMapper.mapEntityToDto(m, u))
-                .forEach(memberDtoList::add));
-
-
-        //Мапить через найденых пользователей
-//        userDtoList.forEach(d -> members.stream()
-//                .filter(member -> member.getUserId().equals(d.getId()))
-//                .map(member -> memberMapper.mapEntityToDto(member, d))
-//                .forEach(memberDtoList::add));
-
-        //Придётся обращаться каждый раз к сервису -> может прерваться
-//        memberDtoList = members.stream()
-//                .map(m -> memberMapper.mapEntityToDto(m, userService.getDtoById(m.getUserId())))
-//                .collect(Collectors.toList());
-
-        return memberDtoList;
-    }
-
-    @Transactional
-    @Override
-    public MemberDto createEventMember(Long eventId, MemberRequest request) {
-        if (eventId.equals(request.getEvenId())) {
-            throw new DataBadRequestException("Не правильно указано мероприятие");
-        }
-        UserDto user = userService.getDtoById(request.getUserId());
-        Event event = findById(eventId);
-        EventMember member = EventMember.builder()
-                .event(event)
-                .userId(request.getUserId())
-                .status(request.getUserStatus())
-                .build();
-        return memberMapper.mapEntityToDto(memberRepository.save(member), user);
+    public boolean exist(Long eventId) {
+        return eventRepository.existsById(eventId);
     }
 
     private Event findById(Long id) {
         return eventRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
+    }
+
+    @Override
+    public List<UserEventDto> getAllDtoByAuthTimeInterval(Authentication authentication, LocalDate from, byte timeInterval) {
+        LocalDate to = from.plusDays(timeInterval);
+        return getAllDtoByAuthFromTo(authentication, from, to);
+    }
+
+    @Override
+    public List<UserEventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to) {
+        return eventMapper.mapUserEventToUserEventDto(eventRepository.findAllByUserIdAndTimeFromTo(userService.getIdByAuthentication(authentication), from, to));
     }
 }

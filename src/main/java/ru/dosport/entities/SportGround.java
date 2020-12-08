@@ -1,7 +1,6 @@
 package ru.dosport.entities;
 
 import lombok.*;
-import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.List;
 @Table(name = "sportgrounds")
 public class SportGround {
 
-    //TODO:
-    // 1. Список избраных площадок (или ещё таблица в этом модуле или перенести к пользователю - надо обдумать)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +30,13 @@ public class SportGround {
     @Column(name = "city", nullable = false)
     private String city;
 
-    //Широта и Долгота (x, y)
-    @Column(name = "location", nullable = false, columnDefinition = "point")
-    private Point location;
+    // Широта
+    @Column(name = "latitude", nullable = false)
+    private Double latitude;
+
+    // Долгота
+    @Column(name = "longitude", nullable = false)
+    private Double longitude;
 
     // Название площадки
     @Column(name = "title", nullable = false)
@@ -54,6 +55,6 @@ public class SportGround {
     private List<Event> events;
 
     // Список отзывов
-    @OneToMany(mappedBy = "sportGround")
-    private List<CommentSportGround> commentSportGrounds;
+    @OneToMany(mappedBy = "sportGroundId")
+    private List<Review> reviews;
 }

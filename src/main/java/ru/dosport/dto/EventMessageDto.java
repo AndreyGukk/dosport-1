@@ -21,7 +21,5 @@ public class EventMessageDto {
 
     private String userName;
 
-    @Size(min = 5, max = 300)
-    @NotBlank(message = DATA_NOT_BLANK + "Текст сообщения")
     private String text;
 }

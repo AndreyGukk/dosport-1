@@ -1,25 +1,25 @@
 package ru.dosport.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import ru.dosport.dto.SportGroundDto;
+import ru.dosport.dto.SportGroundRequest;
+import ru.dosport.dto.UserSportGroundDto;
 import ru.dosport.entities.SportGround;
+import ru.dosport.entities.UserSportGround;
 
 import java.util.List;
 
 /**
  * Маппер, преобразующий классы SportGround и SportGroundDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class, EventMapper.class, CommentSportGroundMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class, EventMapper.class})
 public interface SportGroundMapper {
 
     @Mappings({
             @Mapping(target = "sportGroundId", source = "entity.id"),
             @Mapping(target = "sportTypes", source = "entity.sportType"),
-            @Mapping(target = "latitude", source = "entity.location.x"),
-            @Mapping(target = "longitude", source = "entity.location.y")
+            @Mapping(target = "latitude", source = "entity.latitude"),
+            @Mapping(target = "longitude", source = "entity.longitude")
     })
     SportGroundDto mapEntityToDto(SportGround entity);
 
@@ -29,4 +29,29 @@ public interface SportGroundMapper {
             @Mapping(target = "id", source = "dto.sportGroundId"),
     })
     SportGround mapDtoToEntity(SportGroundDto dto);
+
+    @Mappings({
+            @Mapping(target = "address", source = "request.address"),
+            @Mapping(target = "sportType", source = "request.sportTypes"),
+            @Mapping(target = "title", source = "request.title"),
+            @Mapping(target = "city", source = "request.city"),
+            @Mapping(target = "latitude", source = "request.latitude"),
+            @Mapping(target = "longitude", source = "request.longitude")
+    })
+    SportGround mapRequestToEntity(SportGroundRequest request);
+
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "events", ignore = true),
+            @Mapping(target = "sportType", source = "sportTypes")
+    })
+    SportGround update(@MappingTarget SportGround entity, SportGroundRequest request);
+
+    UserSportGround mapUserSportGroundDtoToEntity(UserSportGroundDto dto);
+
+    UserSportGroundDto mapUserSportGroundEntityToDto(UserSportGround entity);
+
+    List<UserSportGround> mapUserSportGroundDtoToEntity(List<UserSportGroundDto> dto);
+
+    List<UserSportGroundDto> mapUserSportGroundEntityToDto(List<UserSportGround> entities);
 }

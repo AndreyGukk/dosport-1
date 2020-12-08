@@ -5,27 +5,31 @@ create table event_members
 	id bigserial not null
 		constraint event_members_pkey
 			primary key,
-	status varchar(255),
-	user_id bigint,
-	event_id bigint
+	status varchar(13) not null,
+	user_id bigint not null,
+	event_id bigint not null
 		constraint fkaa8h6gi3vaheiptt7ben9qgn7
 			references events
+				on delete cascade
 );
 
-DROP TABLE IF EXISTS sportground_comments;
+create unique index if not exists event_members_user_id_event_id_uindex
+	on event_members (user_id, event_id);
 
-create table sportground_comments
+DROP TABLE IF EXISTS reviews;
+
+create table reviews
 (
 	id bigserial not null
-		constraint sportground_comments_pkey
+		constraint reviews_pkey
 			primary key,
 	date date not null,
+	sportground_id bigint not null
+		constraint fkg4mnw05ok6evcd500po2onhmh
+			references sportgrounds,
 	text varchar(255) not null,
 	user_full_name varchar(255) not null,
-	user_id bigint not null,
-	sportground_id bigint not null
-		constraint fk5ixkf3pbbkdrwrcw56h6x1y86
-			references sportgrounds
+	user_id bigint not null
 );
 
 DROP TABLE IF EXISTS event_messages;

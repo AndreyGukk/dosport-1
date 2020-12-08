@@ -1,17 +1,25 @@
 package ru.dosport.services.core;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.geo.Point;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
+import ru.dosport.dto.UserSportGroundDto;
 import ru.dosport.entities.SportGround;
+import ru.dosport.entities.UserSportGround;
+import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
+import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.SportGroundMapper;
-import ru.dosport.mappers.SportTypeMapper;
 import ru.dosport.repositories.SportGroundRepository;
+import ru.dosport.repositories.UserSportGroundRepository;
 import ru.dosport.services.api.SportGroundService;
+import ru.dosport.services.api.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
@@ -25,10 +33,11 @@ public class SportGroundServiceImp implements SportGroundService {
 
     // Репозитории
     private final SportGroundRepository groundRepository;
+    private final UserSportGroundRepository userSportGroundRepository;
 
     // Мапперы
     private final SportGroundMapper groundMapper;
-    private final SportTypeMapper typeMapper;
+    private final UserService userService;
 
     @Override
     public SportGroundDto getDtoById(Long id) {
@@ -55,16 +64,35 @@ public class SportGroundServiceImp implements SportGroundService {
         return findById(id);
     }
 
+    @Transactional
     @Override
     public SportGroundDto create(SportGroundRequest request) {
-        SportGround ground = SportGround.builder()
-                .address(request.getAddress())
-                .sportType(typeMapper.mapDtoToEntity(request.getSportTypes()))
-                .title(request.getTitle())
-                .location(new Point(request.getLatitude(), request.getLongitude()))
-                .build();
+        SportGround ground = groundMapper.mapRequestToEntity(request);
 
         return groundMapper.mapEntityToDto(groundRepository.save(ground));
+    }
+
+    @Override
+    public SportGroundDto update(Long id, SportGroundRequest request, Authentication authentication) {
+        checkAdminAccess(authentication);
+
+        var sportGround = findById(id);
+
+        return groundMapper.mapEntityToDto(groundRepository.save(groundMapper.update(sportGround, request)));
+    }
+
+    @Transactional
+    @Override
+    public boolean delete(Long id, Authentication authentication) {
+        checkAdminAccess(authentication);
+
+        groundRepository.deleteById(id);
+        return groundRepository.existsById(id);
+    }
+
+    @Override
+    public boolean exists(Long sportGroundId) {
+        return groundRepository.existsById(sportGroundId);
     }
 
     /**
@@ -73,5 +101,36 @@ public class SportGroundServiceImp implements SportGroundService {
     private SportGround findById(Long id) {
         return groundRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
+    }
+
+    private void checkAdminAccess(Authentication authentication) {
+        if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
+            throw new AccessDeniedException("Пользователь не является админом");
+        }
+    }
+
+    @Override
+    public List<SportGroundDto> getAllDtoByAuth(Authentication authentication) {
+        List<SportGroundDto> result = new ArrayList<>();
+        groundMapper.mapUserSportGroundEntityToDto(userSportGroundRepository
+                .findAllByUserId(userService.getIdByAuthentication(authentication)))
+                .forEach(s -> result.add(getDtoById(s.getSportGroundId())));
+        return result;
+    }
+
+    @Override
+    public UserSportGroundDto saveUserSportGroundDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto) {
+        UserSportGround userSportGround = UserSportGround.builder()
+                .userId(userService.getIdByAuthentication(authentication))
+                .sportGroundId(sportGroundDto.getSportGroundId())
+                .build();
+        return groundMapper.mapUserSportGroundEntityToDto(userSportGroundRepository.save(userSportGround));
+
+    }
+
+    @Override
+    public boolean deleteFavoritesBySportGroundId(Long id, Authentication authentication) {
+        userSportGroundRepository.deleteByUserIdAndSportGroundId(userService.getIdByAuthentication(authentication), id);
+        return !userSportGroundRepository.findByUserIdAndSportGroundId(userService.getIdByAuthentication(authentication), id).isPresent();
     }
 }

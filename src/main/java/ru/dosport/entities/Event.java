@@ -51,7 +51,7 @@ public class Event {
     private Long organizerId;
 
     // Список участников мероприятия
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "eventId")
     private Set<EventMember> members;
 
     // ID чата
