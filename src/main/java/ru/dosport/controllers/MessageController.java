@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.EventMessageDto;
 import ru.dosport.dto.EventMessageRequest;
-
 import ru.dosport.services.api.EventMessageService;
 
 import javax.validation.Valid;
@@ -28,6 +27,7 @@ import static ru.dosport.helpers.Roles.ROLE_USER;
 @Api(value = "/api/v1/events", tags = {"Контроллер Сообщений"})
 public class MessageController {
 
+    // Список необходимых зависимостей
     private final EventMessageService eventMessageService;
 
     @ApiOperation(value = "Отоброжает данные всех сообщений мероприятия")

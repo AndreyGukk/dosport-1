@@ -6,17 +6,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.dosport.dto.*;
+import ru.dosport.dto.ErrorDto;
+import ru.dosport.dto.EventDto;
+import ru.dosport.dto.EventRequest;
+import ru.dosport.dto.UserEventDto;
 import ru.dosport.services.api.EventService;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ru.dosport.helpers.MessageSwagger.PAR_EVENT_ID;
 import static ru.dosport.helpers.Messages.*;
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
 import static ru.dosport.helpers.Roles.ROLE_USER;
-import static ru.dosport.helpers.MessageSwagger.PAR_EVENT_ID;
 
 @CrossOrigin
 @RestController
@@ -25,7 +28,7 @@ import static ru.dosport.helpers.MessageSwagger.PAR_EVENT_ID;
 @Api(value = "/api/v1/events", tags = {"Контроллер Мероприятий"})
 public class EventController {
 
-    // Необходимые сервисы
+    // Список необходимых зависимостей
     private final EventService eventService;
 
     @ApiOperation(value = "Отображает данные всех мероприятий")
@@ -71,7 +74,8 @@ public class EventController {
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PutMapping(value = "/{id}")
     public ResponseEntity<EventDto> updateEvent(@ApiParam(value = PAR_EVENT_ID) @PathVariable Long id,
-                                                @Valid @RequestBody EventRequest eventRequest, Authentication authentication) {
+                                                @Valid @RequestBody EventRequest eventRequest,
+                                                Authentication authentication) {
         return ResponseEntity.ok(eventService.update(eventRequest, id, authentication));
     }
 
@@ -93,14 +97,18 @@ public class EventController {
     @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ на ___ дней (1/7/31")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @GetMapping ("/calendar/interval")
-    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication, @RequestParam  LocalDate from, @RequestParam  byte timeInterval){
+    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication,
+                                                                 @RequestParam  LocalDate from,
+                                                                 @RequestParam  byte timeInterval){
         return ResponseEntity.ok(eventService.getAllDtoByAuthTimeInterval(authentication, from, timeInterval));
     }
 
     @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ по ___")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @GetMapping ("/calendar")
-    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication, @RequestParam  LocalDate from, @RequestParam  LocalDate to){
+    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication,
+                                                                 @RequestParam  LocalDate from,
+                                                                 @RequestParam  LocalDate to){
         return ResponseEntity.ok(eventService.getAllDtoByAuthFromTo(authentication, from, to));
     }
 }

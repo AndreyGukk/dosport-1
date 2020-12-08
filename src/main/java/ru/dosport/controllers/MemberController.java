@@ -19,7 +19,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.*;
-import static ru.dosport.helpers.Roles.*;
+import static ru.dosport.helpers.Roles.ROLE_ADMIN;
+import static ru.dosport.helpers.Roles.ROLE_USER;
 
 @CrossOrigin
 @RestController
@@ -28,6 +29,7 @@ import static ru.dosport.helpers.Roles.*;
 @Api(value = "/api/v1/events", tags = {"Контроллер Участников"})
 public class MemberController {
 
+    // Список необходимых зависимостей
     private final EventMemberService memberService;
 
     @ApiOperation(value = "Отображает участников по индентификатору мероприятия")
@@ -57,7 +59,8 @@ public class MemberController {
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @GetMapping("{eventId}/members/{userId}")
-    public ResponseEntity<MemberDto> getMemberEvents(@PathVariable Long eventId, @PathVariable Long userId) {
+    public ResponseEntity<MemberDto> getMemberEvents(@PathVariable Long eventId,
+                                                     @PathVariable Long userId) {
         return ResponseEntity.ok(memberService.readMember(eventId, userId));
     }
 
@@ -69,7 +72,8 @@ public class MemberController {
     })
     @Secured(value = {ROLE_USER})
     @PostMapping("/{eventId}/members")
-    public ResponseEntity<?> addMember(@PathVariable Long eventId, @Valid @RequestBody MemberRequest request,
+    public ResponseEntity<?> addMember(@PathVariable Long eventId,
+                                       @Valid @RequestBody MemberRequest request,
                                        Authentication authentication) {
         return ResponseEntity.ok(memberService.saveOrUpdateMember(request, eventId, authentication));
     }
@@ -81,7 +85,8 @@ public class MemberController {
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @DeleteMapping("/{eventId}/members/{userId}")
-    public ResponseEntity<?> deleteMember(@PathVariable Long eventId, @PathVariable Long userId) {
+    public ResponseEntity<?> deleteMember(@PathVariable Long eventId,
+                                          @PathVariable Long userId) {
         return memberService.deleteMember(userId, eventId) ?
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }

@@ -1,5 +1,6 @@
 package ru.dosport.controllers;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -18,24 +19,24 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.*;
-import static ru.dosport.helpers.Roles.*;
+import static ru.dosport.helpers.Roles.ROLE_ADMIN;
+import static ru.dosport.helpers.Roles.ROLE_USER;
 
-/**
- * Контроллер Спортивных площадок.
- */
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/sportgrounds", produces = "application/json")
+@Api(tags = {"Контроллер Спортивных площадок"})
 public class SportGroundController {
 
+    // Список необходимых зависимостей
     private final SportGroundService sportGroundService;
 
     @ApiOperation(value = "Отображает данные всех площадок")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
-            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @GetMapping
     public ResponseEntity<List<SportGroundDto>> readAllSportGrounds(@RequestParam(required = false) String city) {
@@ -46,7 +47,7 @@ public class SportGroundController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
-            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @GetMapping("/{id}")
     public ResponseEntity<SportGroundDto> readSportGround(@PathVariable Long id) {
@@ -57,7 +58,7 @@ public class SportGroundController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
-            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @PostMapping
     public ResponseEntity<?> createSportGround(@Valid @RequestBody SportGroundRequest groundRequest) {
@@ -68,11 +69,12 @@ public class SportGroundController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
-            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @Secured(value = {ROLE_ADMIN})
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSportGround(@PathVariable Long id, Authentication authentication) {
+    public ResponseEntity<?> deleteSportGround(@PathVariable Long id,
+                                               Authentication authentication) {
         return sportGroundService.delete(id, authentication) ?
                 ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
@@ -81,7 +83,7 @@ public class SportGroundController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
-            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @Secured(value = {ROLE_ADMIN})
     @PutMapping("/{id}")

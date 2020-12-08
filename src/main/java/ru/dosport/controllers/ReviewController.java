@@ -1,6 +1,9 @@
 package ru.dosport.controllers;
 
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -24,20 +27,22 @@ import static ru.dosport.helpers.Roles.ROLE_USER;
 @Api(tags = {"Контроллер Отзывов пользователя"})
 public class ReviewController {
 
+    // Список необходимых зависимостей
     private final ReviewService reviewService;
 
     @ApiOperation(value = "Отображает отзыв по индентификатору")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
-            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @GetMapping("/{sportGroundsId}/reviews/{reviewId}")
-    public ResponseEntity<ReviewDto> getReview(@PathVariable Long sportGroundsId, @PathVariable Long reviewId) {
+    public ResponseEntity<ReviewDto> getReview(@PathVariable Long sportGroundsId,
+                                               @PathVariable Long reviewId) {
         return ResponseEntity.ok(reviewService.readReviewDtoById(reviewId, sportGroundsId));
     }
 
-    @ApiOperation(value = "Отображенеи отзывы спортивной площадки")
+    @ApiOperation(value = "Отображает отзывы спортивной площадки")
     @ApiResponses(value = { @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST)})
     @GetMapping("/{sportGroundsId}/reviews")
     public ResponseEntity<List<ReviewDto>> getAllReviews(@PathVariable Long sportGroundsId) {
@@ -66,7 +71,8 @@ public class ReviewController {
     })
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @PutMapping("/{sportGroundsId}/review/{reviewId}")
-    public ResponseEntity<ReviewDto> updateReview(@PathVariable Long sportGroundsId, @PathVariable Long reviewId,
+    public ResponseEntity<ReviewDto> updateReview(@PathVariable Long sportGroundsId,
+                                                  @PathVariable Long reviewId,
                                                   @Valid @RequestBody ReviewRequest request,
                                                   Authentication authentication) {
         return ResponseEntity.ok(reviewService.updateReview(sportGroundsId, reviewId, request, authentication));
@@ -80,7 +86,8 @@ public class ReviewController {
     })
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @DeleteMapping("/{sportGroundsId}/review/{reviewId}")
-    public ResponseEntity<?> deleteReview(@PathVariable Long sportGroundsId, @PathVariable Long reviewId,
+    public ResponseEntity<?> deleteReview(@PathVariable Long sportGroundsId,
+                                          @PathVariable Long reviewId,
                                           Authentication authentication) {
         return reviewService.deleteById(reviewId, sportGroundsId, authentication) ?
                 ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
