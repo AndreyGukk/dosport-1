@@ -3,7 +3,8 @@ package ru.dosport.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
@@ -15,21 +16,21 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SportGroundRequest {
 
-    @NotBlank(message = DATA_NOT_BLANK + "Адрес")
+    @NotNull(message = DATA_NOT_BLANK + "Адрес")
     private String address;
 
-    @NotBlank(message = DATA_NOT_BLANK + "Название")
+    @NotEmpty(message = DATA_NOT_BLANK + "Название")
     private String title;
 
-    @NotBlank(message = DATA_NOT_BLANK + "Город")
+    @NotEmpty(message = DATA_NOT_BLANK + "Город")
     private String city;
 
-    @NotBlank(message = DATA_NOT_BLANK + "Широта")
+    @NotNull(message = DATA_NOT_BLANK + "Широта")
     private Double latitude;
 
-    @NotBlank(message = DATA_NOT_BLANK + "Долгота")
+    @NotNull(message = DATA_NOT_BLANK + "Долгота")
     private Double longitude;
 
-    @NotBlank(message = DATA_NOT_BLANK + "Вид спорта")
+    @NotEmpty(message = DATA_NOT_BLANK + "Вид спорта")
     private List<SportTypeDto> sportTypes;
 }

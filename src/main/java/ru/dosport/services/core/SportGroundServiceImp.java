@@ -73,16 +73,12 @@ public class SportGroundServiceImp implements SportGroundService {
     }
 
     @Override
-    public SportGroundDto update(Long id, SportGroundDto sportGroundDto, Authentication authentication) {
+    public SportGroundDto update(Long id, SportGroundRequest request, Authentication authentication) {
         checkAdminAccess(authentication);
 
-        SportGround sportGround = findById(id);
+        var sportGround = findById(id);
 
-        if (!sportGround.getId().equals(sportGroundDto.getSportGroundId())) {
-            throw new DataBadRequestException("Площадка указана не коректнно");
-        }
-
-        return groundMapper.mapEntityToDto(groundRepository.save(groundMapper.update(sportGround, sportGroundDto)));
+        return groundMapper.mapEntityToDto(groundRepository.save(groundMapper.update(sportGround, request)));
     }
 
     @Transactional

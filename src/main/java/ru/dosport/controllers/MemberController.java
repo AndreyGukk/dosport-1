@@ -15,6 +15,7 @@ import ru.dosport.dto.MemberDto;
 import ru.dosport.dto.MemberRequest;
 import ru.dosport.services.api.EventMemberService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.*;
@@ -68,7 +69,7 @@ public class MemberController {
     })
     @Secured(value = {ROLE_USER})
     @PostMapping("/{eventId}/members")
-    public ResponseEntity<?> addMember(@PathVariable Long eventId, @RequestBody MemberRequest request,
+    public ResponseEntity<?> addMember(@PathVariable Long eventId, @Valid @RequestBody MemberRequest request,
                                        Authentication authentication) {
         return ResponseEntity.ok(memberService.saveOrUpdateMember(request, eventId, authentication));
     }

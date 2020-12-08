@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.dosport.dto.*;
+import ru.dosport.dto.EventDto;
+import ru.dosport.dto.EventRequest;
 import ru.dosport.entities.Event;
 import ru.dosport.entities.UserEvent;
 import ru.dosport.exceptions.DataNotFoundException;
-import ru.dosport.helpers.Messages;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.EventMapper;
 import ru.dosport.repositories.EventRepository;
@@ -73,21 +73,28 @@ public class EventServiceImpl implements EventService {
         return eventMapper.mapEntityToDto(eventRepository.save(event));
     }
 
+    @Transactional
     @Override
-    public EventDto update(EventDto eventDto, Long eventId, Authentication authentication) {
-        if (authentication != null) {
-            Event event = findById(eventId);
+    public EventDto update(EventRequest request, Long eventId, Authentication authentication) {
+        var event = findById(eventId);
 
-            if (!event.getOrganizerId().equals(userService.getIdByAuthentication(authentication))) {
-                throw new AccessDeniedException("Пользователь не является организатором мероприятия");
-            }
-
-            return eventMapper.mapEntityToDto(eventRepository.save(eventMapper.update(findById(eventId), eventDto)));
-        } else {
-            throw new AccessDeniedException(Messages.ACCESS_DENIED);
+        if (!event.getOrganizerId().equals(userService.getIdByAuthentication(authentication))) {
+            throw new AccessDeniedException("Пользователь не является организатором мероприятия");
         }
+
+        event.setStartTime(request.getStartTimeEvent());
+        event.setEndTime(request.getEndTimeEvent());
+        event.setDate(request.getDateEvent());
+
+        if (!event.getSportType().getTitle().equals(request.getSportTypeTitle())) {
+            event.setSportType(sportTypeService.getSportTypeByTitle(request.getSportTypeTitle()));
+        }
+
+        return eventMapper.mapEntityToDto(eventRepository.save(event));
+
     }
 
+    @Transactional
     @Override
     public boolean deleteById(Long id, Authentication authentication) {
         Event event = findById(id);
@@ -97,7 +104,7 @@ public class EventServiceImpl implements EventService {
             }
         }
         eventRepository.deleteById(id);
-        return eventRepository.existsById(id);
+        return !eventRepository.existsById(id);
     }
 
     @Override

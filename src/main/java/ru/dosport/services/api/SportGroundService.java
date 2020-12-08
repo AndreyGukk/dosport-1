@@ -57,16 +57,16 @@ public interface SportGroundService {
     /**
      * Обновляет данные о площадке
      * @param id индентификатор площадки
-     * @param sportGroundDto dto с новыми данными
-     * @param authentication
+     * @param request площадка с новыми данными
+     * @param authentication данные авторизации
      * @return dto с новыми данными
      */
-    SportGroundDto update(Long id, SportGroundDto sportGroundDto, Authentication authentication);
+    SportGroundDto update(Long id, SportGroundRequest request, Authentication authentication);
 
     /**
      * Удаление площадки
      * @param id индентификатор площадки
-     * @param authentication
+     * @param authentication данные авторизации
      * @return существует ли площадка
      */
     boolean delete(Long id, Authentication authentication);

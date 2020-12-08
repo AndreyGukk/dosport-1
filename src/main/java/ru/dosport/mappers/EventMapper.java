@@ -62,6 +62,4 @@ public interface EventMapper {
     UserEventDto mapUserEventToUserEventDto(UserEvent entity);
 
     List<UserEventDto> mapUserEventToUserEventDto(List<UserEvent> entity);
-
-
 }

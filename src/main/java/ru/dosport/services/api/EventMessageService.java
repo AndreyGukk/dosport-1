@@ -8,43 +8,45 @@ import java.util.List;
 public interface EventMessageService {
 
     /**
-     * Вернутть сообщение к мероприятию по его идентификатору
-     *
+     * Возращает сообщение к мероприятию по его идентификатору
      * @param id идентификатор мероприятия
-     * @return сообщение к мероприятию
+     * @return dto сообщения к мероприятию
      */
     EventMessageDto getDtoById(Long id);
 
     /**
-     * Вернуть все сообщения мероприятия
-     *
-     * @return список сообщений мероприятия
+     * Возращает все сообщения мероприятия
+     * @param eventId идентификатор мероприятия
+     * @return список dto сообщений мероприятия
      */
     List<EventMessageDto> getAllDtoByEventId(Long eventId);
 
     /**
-     * Создать новое сообщение к мероприятию
-     *
-     * @return новое сообщение к мероприятию, сохраненное в репозитории
+     * Создаёт новое сообщение к мероприятию
+     * @param eventId идентификатор мероприятия
+     * @param request текст сообщения
+     * @param authentication данные авторизации
+     * @return dto нового сообщения к мероприятию, сохраненное в репозитории
      */
     EventMessageDto save(Long eventId, EventMessageRequest request, Authentication authentication);
 
     /**
-     * Обновить сообщение к мероприятию
+     * Обновляет сообщение к мероприятию
      * @param messageId id сообщения
      * @param eventId id мероприятия
      * @param request запрос с новым текстом
-     * @param authentication
-     * @return новое сообщение к мероприятию, сохраненное в репозитории
+     * @param authentication данные авторизации
+     * @return dto нового сообщения к мероприятию, обновлённое в репозитории
      */
     EventMessageDto update(Long messageId, Long eventId, EventMessageRequest request, Authentication authentication);
 
     /**
-     * Удалить сообщение к мероприятию по его идентификатору
+     * Удаляет сообщение к мероприятию по его идентификатору
      *
-     * @param id идентификатор сообщение
-     * @param authentication
+     * @param messageId идентификатор сообщение
+     * @param eventId идентификатор мероприятия
+     * @param authentication данные авторизации
      * @return удалено ли сообщение
      */
-    boolean deleteById(Long id, Authentication authentication);
+    boolean deleteById(Long messageId, Long eventId, Authentication authentication);
 }
