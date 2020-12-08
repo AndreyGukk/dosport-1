@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.ErrorDto;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
+import ru.dosport.dto.UserSportGroundDto;
 import ru.dosport.services.api.SportGroundService;
 
 import javax.validation.Valid;
@@ -88,5 +89,29 @@ public class SportGroundController {
                                                             @Valid @RequestBody SportGroundRequest request,
                                                             Authentication authentication) {
         return ResponseEntity.ok(sportGroundService.update(id, request, authentication));
+    }
+
+    @ApiOperation("Выводит список избранных площадок пользователя")
+    @Secured(value = {ROLE_ADMIN, ROLE_USER})
+    @GetMapping ("/my")
+    public ResponseEntity<List<SportGroundDto>> readAllSportGroundsByAuth (Authentication authentication) {
+        return ResponseEntity.ok(sportGroundService.getAllDtoByAuth(authentication));
+    }
+
+    @ApiOperation("Добавляет площадку в список избранных")
+    @Secured(value = {ROLE_ADMIN, ROLE_USER})
+    @PostMapping ("/my")
+    public ResponseEntity<UserSportGroundDto> createUserSportGroundsByAuth (@RequestBody SportGroundDto sportGroundDto,
+                                                                            Authentication authentication) {
+        return ResponseEntity.ok(sportGroundService.saveUserSportGroundDtoByAuth(authentication, sportGroundDto));
+    }
+
+    @ApiOperation("Удаляет площадку из списка избранных по индексу площадки")
+    @Secured(value = {ROLE_ADMIN, ROLE_USER})
+    @DeleteMapping("/my/{id}")
+    public ResponseEntity<?> deleteBySportGroundId (@PathVariable Long id,
+                                                    Authentication authentication) {
+        return sportGroundService.deleteFavoritesBySportGroundId(id, authentication)?
+                ResponseEntity.badRequest().build() : ResponseEntity.noContent().build();
     }
 }

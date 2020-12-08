@@ -10,6 +10,7 @@ import ru.dosport.dto.*;
 import ru.dosport.services.api.EventService;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.*;
@@ -89,4 +90,17 @@ public class EventController {
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
+    @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ на ___ дней (1/7/31")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping ("/calendar/interval")
+    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication, @RequestParam  LocalDate from, @RequestParam  byte timeInterval){
+        return ResponseEntity.ok(eventService.getAllDtoByAuthTimeInterval(authentication, from, timeInterval));
+    }
+
+    @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ по ___")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping ("/calendar")
+    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication, @RequestParam  LocalDate from, @RequestParam  LocalDate to){
+        return ResponseEntity.ok(eventService.getAllDtoByAuthFromTo(authentication, from, to));
+    }
 }

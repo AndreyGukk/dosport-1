@@ -2,6 +2,7 @@ package ru.dosport.services.api;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import ru.dosport.dto.SportTypeDto;
 import ru.dosport.dto.UserSportTypeDto;
 import ru.dosport.entities.UserSportType;
 
@@ -19,6 +20,13 @@ public interface UserSportTypeService {
      * @return список навыков пользователя
      */
     List<UserSportTypeDto> getAllDtoByUserId(Long id);
+
+    /**
+     * Выдает список пустых навыков пользователя
+     *
+     * @return список навыков пользователя, для которых не задан уровень (для страницы добавления навыков)
+     */
+    List<SportTypeDto> getEmptyDtoByUser(Authentication authentication);
 
     /**
      * Выдает список навыков пользователя по аутентификации
