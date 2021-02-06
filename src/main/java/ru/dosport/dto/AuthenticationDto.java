@@ -1,6 +1,7 @@
 package ru.dosport.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ApiModel(description = "Dto представление Данных авторизации")
 public class AuthenticationDto {
 
     private final String token;
