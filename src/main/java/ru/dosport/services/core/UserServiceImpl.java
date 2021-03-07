@@ -7,11 +7,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
 import ru.dosport.entities.Authority;
-import ru.dosport.entities.Gender;
+import ru.dosport.enums.Gender;
 import ru.dosport.entities.User;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
@@ -33,11 +34,9 @@ import static ru.dosport.helpers.Roles.ROLE_USER;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    // Необходимые сервисы и мапперы
+    // Необходимые сервисы, мапперы и репозитории
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-
-    // Необходимые репозитории
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
 
@@ -53,7 +52,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDto getDtoByAuthentication(Authentication authentication) {
-        if(authentication==null) throw new DataNotFoundException(ACCESS_DENIED);
         return userMapper.mapEntityToDto(findById(getUserId(authentication)));
     }
 
@@ -124,6 +122,42 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.existsById(id);
     }
 
+    @Transactional
+    @Override
+    public String activateUser(String activationCode) {
+        return USER_WAS_ACTIVATED;
+    }
+
+    @Override
+    public List<UserDto> getUserFriendsDtoByAuthentication(Authentication authentication) {
+        User user = findById(getUserId(authentication));
+        return userMapper.mapEntityToDto(user.getFriends());
+    }
+
+    @Override
+    public List<UserDto> getRelatedUsersDtoByAuthentication(Authentication authentication) {
+        List<User> users = userRepository.findPossibleFriendsByUserId(getUserId(authentication));
+        return userMapper.mapEntityToDto(users);
+    }
+
+    @Transactional
+    @Override
+    public boolean addUserToFriendsByAuthentication(Long friendId, Authentication authentication) {
+        User user = findById(getUserId(authentication));
+        user.getFriends().add(findById(friendId));
+        userRepository.save(user);
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean deleteUserFromFriendsByAuthentication(Long friendId, Authentication authentication) {
+        User user = findById(getUserId(authentication));
+        user.getFriends().remove(findById(friendId));
+        userRepository.save(user);
+        return true;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userMapper.mapEntityToJwt(findByUsername(username));
@@ -149,6 +183,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      * Получить id пользователя по данным аутентификации
      */
     private Long getUserId(Authentication authentication) {
+        if(authentication==null) throw new DataNotFoundException(ACCESS_DENIED);
         return ((JwtUser) authentication.getPrincipal()).getId();
     }
 }

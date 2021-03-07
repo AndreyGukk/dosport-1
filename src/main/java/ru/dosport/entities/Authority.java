@@ -25,7 +25,7 @@ public class Authority implements GrantedAuthority {
     private Short id;
 
     // Роль пользователя, варианты: ROLE_ADMIN - администратор сайта, ROLE_USER - пользователь сайта
-    @Column(name = "authority", nullable = false)
+    @Column(name = "authority", nullable = false, length = 50)
     private String authority;
 
     @ManyToMany

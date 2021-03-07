@@ -1,6 +1,8 @@
 package ru.dosport.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -8,7 +10,10 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ApiModel(description = "Dto представление Информации об ошибке")
 public class ErrorDto {
 
+    @ApiModelProperty(notes = "Сообщение об ошибке",
+            dataType = "String", position = 0)
     private final String message;
 }

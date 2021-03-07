@@ -3,6 +3,7 @@ package ru.dosport.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.dosport.enums.Gender;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -27,11 +28,11 @@ public class User {
     private Long id;
 
     // Логин
-    @Column(name = "user_name", nullable = false, unique = true)
+    @Column(name = "user_name", nullable = false, unique = true, length = 50)
     private String username;
 
     // Пароль
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, length = 150)
     private String password;
 
     // Пользователь активен (true) или заблокирован (false)
@@ -56,23 +57,39 @@ public class User {
     private boolean hideBirthdayDate;
 
     // Имя
-    @Column(name = "first_name")
+    @Column(name = "first_name", length = 50)
     private String firstName;
 
     // Фамилия
-    @Column(name = "last_name")
+    @Column(name = "last_name", length = 100)
     private String lastName;
 
     // Пол
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender")
     @Enumerated(EnumType.ORDINAL)
     private Gender gender;
 
     // Личная информация
-    @Column(name = "info")
+    @Column(name = "info", length = 250)
     private String info;
 
     // Ссылка на адрес фотографии
-    @Column(name = "photo_link")
+    @Column(name = "photo_link", length = 250)
     private String photoLink;
+
+    // Список друзей
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_friends",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id"))
+    private List<User> friends = new ArrayList<>();
+
+    // Список избранных площадок
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_sportgrounds",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "sportground_id"))
+    private List<SportGround> favoriteSportGrounds = new ArrayList<>();
 }

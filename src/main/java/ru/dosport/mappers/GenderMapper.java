@@ -2,7 +2,7 @@ package ru.dosport.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
-import ru.dosport.entities.Gender;
+import ru.dosport.enums.Gender;
 
 /**
  * Маппер, преобразующий классы Gender и GenderDto друг в друга
@@ -10,11 +10,11 @@ import ru.dosport.entities.Gender;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface GenderMapper {
 
-    default String mapEntityToString(Gender entity) {
+    default String mapEnumToString(Gender entity) {
         return entity.getDescription();
     }
 
-    default Gender mapStringToEntity(String string) {
+    default Gender mapStringToEnum(String string) {
         Gender entity;
         switch (string) {
             case "Не выбран":
