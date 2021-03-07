@@ -16,6 +16,7 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 public class MemberRequest {
 
     @NotBlank(message = DATA_NOT_BLANK + "Статус пользователя")
-    @ApiModelProperty(notes = "Статус пользователя как участника события", dataType = "String", position = 0)
+    @ApiModelProperty(notes = "Статус пользователя как участника события",
+            dataType = "String", position = 0)
     private String userStatus;
 }

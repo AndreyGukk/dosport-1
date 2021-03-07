@@ -114,6 +114,14 @@ public interface UserService {
     boolean deleteById(Long id);
 
     /**
+     * Активировать пользователя
+     *
+     * @param activationCode значение строки запроса валидации
+     * @return значение активен ли пользователь
+     */
+    String activateUser(String activationCode);
+
+    /**
      * Найти список друзей пользователя по данным авторизации
      *
      * @param authentication данные авторизации
@@ -127,7 +135,7 @@ public interface UserService {
      * @param authentication данные авторизации
      * @return список пользователей
      */
-    List<UserDto> getPossibleUserFriendsDtoByAuthentication(Authentication authentication);
+    List<UserDto> getRelatedUsersDtoByAuthentication(Authentication authentication);
 
     /**
      * Добавить пользователя в список его друзей по данным авторизации и id друга

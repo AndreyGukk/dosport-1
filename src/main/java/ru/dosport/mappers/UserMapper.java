@@ -24,7 +24,7 @@ public interface UserMapper {
     JwtUser mapEntityToJwt(User entity);
 
     @Mappings({
-            @Mapping(target="enabled", constant = "true")
+            @Mapping(target="enabled", constant = "false")
     })
     User mapDtoToEntity(UserRequest dto);
 

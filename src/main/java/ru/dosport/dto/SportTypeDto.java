@@ -18,11 +18,13 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 @ApiModel(description = "Dto представление сущности Вид спорта")
 public class SportTypeDto {
 
-    @ApiModelProperty(notes = "Уникальный идентификатор вида спорта", dataType = "Long", example = "1", required = true, position = 0)
+    @ApiModelProperty(notes = "Уникальный идентификатор вида спорта",
+            dataType = "Long", example = "1", required = true, position = 0)
     private Short sportTypeId;
 
     @Size(max = 255)
-    @NotBlank(message = DATA_NOT_BLANK + "вид спорта")
-    @ApiModelProperty(notes = "Название вида спорта", dataType = "String", example = "Бокс",  position = 1)
+    @NotBlank(message = DATA_NOT_BLANK + "Название")
+    @ApiModelProperty(notes = "Название вида спорта, до 255 символов",
+            dataType = "String", example = "Бокс",  required = true, position = 1)
     private String title;
 }

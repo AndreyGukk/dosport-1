@@ -43,7 +43,7 @@ public class UserRequest {
     private String password;
 
     @Size(min=6, max=25, message = INVALID_PASSWORD_CONFIRM_LENGTH)
-    @NotBlank(message = DATA_NOT_BLANK + "Пароль")
+    @NotBlank(message = DATA_NOT_BLANK + "Подтверждение пароля")
     @ApiModelProperty(notes = "Подтверждение пароля, от 6 до 25 символов",
             dataType = "String", required = true, position = 4)
     private String passwordConfirm;

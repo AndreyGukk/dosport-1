@@ -13,6 +13,7 @@ import lombok.Data;
 @ApiModel(description = "Dto представление Информации об ошибке")
 public class ErrorDto {
 
-    @ApiModelProperty(notes = "Сообщение об ошибке", dataType = "String", position = 0)
+    @ApiModelProperty(notes = "Сообщение об ошибке",
+            dataType = "String", position = 0)
     private final String message;
 }

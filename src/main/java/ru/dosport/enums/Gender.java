@@ -1,4 +1,4 @@
-package ru.dosport.entities;
+package ru.dosport.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

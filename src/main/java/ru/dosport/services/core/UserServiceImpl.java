@@ -12,7 +12,7 @@ import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
 import ru.dosport.entities.Authority;
-import ru.dosport.entities.Gender;
+import ru.dosport.enums.Gender;
 import ru.dosport.entities.User;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
@@ -122,6 +122,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.existsById(id);
     }
 
+    @Transactional
+    @Override
+    public String activateUser(String activationCode) {
+        return USER_WAS_ACTIVATED;
+    }
+
     @Override
     public List<UserDto> getUserFriendsDtoByAuthentication(Authentication authentication) {
         User user = findById(getUserId(authentication));
@@ -129,7 +135,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<UserDto> getPossibleUserFriendsDtoByAuthentication(Authentication authentication) {
+    public List<UserDto> getRelatedUsersDtoByAuthentication(Authentication authentication) {
         List<User> users = userRepository.findPossibleFriendsByUserId(getUserId(authentication));
         return userMapper.mapEntityToDto(users);
     }

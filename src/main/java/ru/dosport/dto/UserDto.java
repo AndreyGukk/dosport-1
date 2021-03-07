@@ -19,7 +19,7 @@ public class UserDto {
 
     @NotBlank(message = DATA_NOT_BLANK)
     @Positive
-    @ApiModelProperty(notes = "Уникальный идентификатор пользователя",
+    @ApiModelProperty(notes = "Уникальный идентификатор пользователя, больше 0",
             dataType = "Long", example = "1", required = true, position = 0)
     private Long id;
 
@@ -35,7 +35,7 @@ public class UserDto {
     private String birthdayDate;
 
     @NotNull(message = DATA_NOT_BLANK + "Скрыть дату рождения")
-    @ApiModelProperty(notes = "Скрыть/показать дату рождения пользователя",
+    @ApiModelProperty(notes = "Значение флага сокрытия даты рождения пользователя",
             dataType = "Boolean",  example = "true", position = 3)
     private boolean hideBirthdayDate;
 
@@ -50,7 +50,7 @@ public class UserDto {
     private String lastName;
 
     @NotBlank(message = DATA_NOT_BLANK + "Пол пользователя")
-    @ApiModelProperty(notes = "Пол пользователя, значения: Не выбран или 0, Женский или 1, Мужской или 2",
+    @ApiModelProperty(notes = "Пол пользователя, значения: 'Не выбран' или 0, 'Женский' или 1, 'Мужской' или 2",
             dataType = "String", example = "2", required = true, position = 6)
     private String gender;
 

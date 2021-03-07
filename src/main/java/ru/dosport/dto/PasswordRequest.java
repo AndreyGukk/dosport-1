@@ -18,16 +18,21 @@ import static ru.dosport.helpers.Messages.*;
 @ApiModel(description = "Запрос на изменение пароля")
 public class PasswordRequest {
 
-    @Size(min=4, max=20, message = INVALID_PASSWORD_LENGTH)
+    @Size(min=6, max=25, message = INVALID_PASSWORD_LENGTH)
     @NotBlank(message = DATA_NOT_BLANK + "Старый пароль")
-    @ApiModelProperty(notes = "Старый пароль пользователя", dataType = "String", required = true, position = 0)
+    @ApiModelProperty(notes = "Старый пароль пользователя",
+            dataType = "String", required = true, position = 0)
     private String oldPassword;
 
-    @Size(min=4, max=20, message = INVALID_PASSWORD_LENGTH)
-    @NotBlank(message = DATA_NOT_BLANK + "Новый пароль")
-    @ApiModelProperty(notes = "Новый пароль пользователя", dataType = "String", required = true, position = 1)
+    @Size(min=6, max=25, message = INVALID_PASSWORD_LENGTH)
+    @NotBlank(message = DATA_NOT_BLANK + "Новый пароль, от 6 до 25 символов")
+    @ApiModelProperty(notes = "Новый пароль пользователя",
+            dataType = "String", required = true, position = 1)
     private String newPassword;
 
-    @ApiModelProperty(notes = "Подтверждение пароля", dataType = "String", required = true, position = 2)
+    @Size(min=6, max=25, message = INVALID_PASSWORD_CONFIRM_LENGTH)
+    @NotBlank(message = DATA_NOT_BLANK + "Подтверждение пароля")
+    @ApiModelProperty(notes = "Подтверждение пароля, от 6 до 25 символов",
+            dataType = "String", required = true, position = 2)
     private String newPasswordConfirm;
 }

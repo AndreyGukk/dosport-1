@@ -14,6 +14,7 @@ public final class Messages {
     public static final String USER_WAS_FOUND = "Пользователь с логином %s загружен";
     public static final String SWAGGER_WAS_STARTED = "Swagger запущен";
     public static final String SUCCESSFUL_REQUEST = "Успешный запрос";
+    public static final String USER_WAS_ACTIVATED = "Пользователь успешно активирован";
 
     /**
      * Сообщения об ошибках авторизации

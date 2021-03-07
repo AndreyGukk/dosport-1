@@ -20,15 +20,19 @@ public class UserSportTypeDto {
 
     @Positive
     @Digits(integer = 19, fraction = 0, message = USER_NOT_FOUND_BY_ID)
-    @ApiModelProperty(notes = "Уникальный идентификатор пользователя", dataType = "Long", example = "1", required = true, position = 0)
+    @ApiModelProperty(notes = "Уникальный идентификатор пользователя",
+            dataType = "Long", example = "1", required = true, position = 0)
     private Long userId;
 
-    @ApiModelProperty(notes = "Имя пользователя", dataType = "String",  example = "Иван", required = true, position = 1)
+    @ApiModelProperty(notes = "Имя пользователя",
+            dataType = "String",  example = "Иван", required = true, position = 1)
     private String firstname;
 
-    @ApiModelProperty(notes = "Название вида спорта", dataType = "String", example = "Бокс",  position = 2)
+    @ApiModelProperty(notes = "Название вида спорта",
+            dataType = "String", example = "Бокс",  position = 2)
     private String SportType;
 
-    @ApiModelProperty(notes = "Классификатор уровеня пользователя", dataType = "Short", example = "1", required = true, position = 3)
+    @ApiModelProperty(notes = "Классификатор уровня пользователя",
+            dataType = "Short", example = "1", required = true, position = 3)
     private short level;
 }

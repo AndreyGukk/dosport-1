@@ -20,9 +20,12 @@ public class AuthenticationRequest {
 
     @NotBlank(message = DATA_NOT_BLANK + "Адрес эл. почты")
     @Email
-    @ApiModelProperty(notes = "Email пользователя", dataType = "String", example = "ivanov@gmail.com", required = true, position = 0)
+    @ApiModelProperty(notes = "Email пользователя",
+            dataType = "String", example = "ivanov@gmail.com", required = true, position = 0)
     private String email;
 
     @NotBlank(message = DATA_NOT_BLANK + "Пароль")
+    @ApiModelProperty(notes = "Пароль",
+            dataType = "String", example = "aaaaaa", required = true, position = 1)
     private String password;
 }
