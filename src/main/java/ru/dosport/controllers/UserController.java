@@ -17,6 +17,8 @@ import ru.dosport.services.api.UserService;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static ru.dosport.helpers.Messages.*;
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
 import static ru.dosport.helpers.Roles.ROLE_USER;
@@ -61,7 +63,7 @@ public class UserController {
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @GetMapping(value = "/{id}", produces = DATA_TYPE, consumes = DATA_TYPE)
+    @GetMapping(value = "/{id}", produces = DATA_TYPE)
     @ApiOperation(value = "Возваращает пользователя по его id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
@@ -95,5 +97,57 @@ public class UserController {
                                                 Authentication authentication) {
         return userService.updatePassword(passwordRequest, authentication) ?
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping(value = "/friends", produces = DATA_TYPE)
+    @ApiOperation(value = "Отображает список друзей пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
+    })
+    public ResponseEntity<List<UserDto>> readUserFriends(Authentication authentication) {
+        return ResponseEntity.ok(userService.getUserFriendsDtoByAuthentication(authentication));
+    }
+
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping(value = "/possibleFriends", produces = DATA_TYPE)
+    @ApiOperation(value = "Отображает список пользователей, которые добавили пользователя в друзья")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
+    })
+    public ResponseEntity<List<UserDto>> readPossibleUserFriends(Authentication authentication) {
+        return ResponseEntity.ok(userService.getPossibleUserFriendsDtoByAuthentication(authentication));
+    }
+
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @PatchMapping(value = "/friends/{friendId}", produces = DATA_TYPE, consumes = DATA_TYPE)
+    @ApiOperation(value = "Добавляет в список друзей пользователя другого пользователя по id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
+    })
+    public ResponseEntity<?> addUserToFriends(@Valid @PathVariable Long friendId,
+                                              Authentication authentication) {
+        return ResponseEntity.ok(userService.addUserToFriendsByAuthentication(friendId, authentication));
+    }
+
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @DeleteMapping(value = "/friends/{friendId}", produces = DATA_TYPE, consumes = DATA_TYPE)
+    @ApiOperation(value = "Удаляет из списка друзей пользователя другого пользователя по id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
+    })
+    public ResponseEntity<?> deleteUserFromFriends(@Valid @PathVariable Long friendId,
+                                                   Authentication authentication) {
+        return ResponseEntity.ok(userService.deleteUserFromFriendsByAuthentication(friendId, authentication));
     }
 }

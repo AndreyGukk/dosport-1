@@ -112,4 +112,34 @@ public interface UserService {
      * @return удален ли пользователь
      */
     boolean deleteById(Long id);
+
+    /**
+     * Найти список друзей пользователя по данным авторизации
+     *
+     * @param authentication данные авторизации
+     * @return список пользователей
+     */
+    List<UserDto> getUserFriendsDtoByAuthentication(Authentication authentication);
+
+    /**
+     * Найти список пользователей, которые добавили пользователя в друзья по данным авторизации
+     *
+     * @param authentication данные авторизации
+     * @return список пользователей
+     */
+    List<UserDto> getPossibleUserFriendsDtoByAuthentication(Authentication authentication);
+
+    /**
+     * Добавить пользователя в список его друзей по данным авторизации и id друга
+     *
+     * @param authentication данные авторизации
+     */
+    boolean addUserToFriendsByAuthentication(Long friendId, Authentication authentication);
+
+    /**
+     * Удалить пользователя из списка его друзей  по данным авторизации и id друга
+     *
+     * @param authentication данные авторизации
+     */
+    boolean deleteUserFromFriendsByAuthentication(Long friendId, Authentication authentication);
 }

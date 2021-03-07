@@ -1,9 +1,11 @@
 package ru.dosport.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.dosport.entities.User;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,4 +30,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Найти пользователя по его логину
      */
     Optional<User> findByUsername(String username);
+
+    /**
+     * Найти список пользователей, которые добавили пользователя в друзья
+     */
+    @Query (value = "SELECT s FROM users_friends s WHERE s.friend_id = ?1", nativeQuery = true)
+    List<User> findPossibleFriendsByUserId(long userId);
 }
