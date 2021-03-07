@@ -19,7 +19,6 @@ import static ru.dosport.helpers.Messages.*;
 public class AuthenticationRequest {
 
     @NotBlank(message = DATA_NOT_BLANK + "Адрес эл. почты")
-    @Email
     @ApiModelProperty(notes = "Email пользователя",
             dataType = "String", example = "ivanov@gmail.com", required = true, position = 0)
     private String email;

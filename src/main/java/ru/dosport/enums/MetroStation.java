@@ -4,15 +4,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Пол пользователя
+ * Перечислений станций метро
  */
 @Getter
 @RequiredArgsConstructor
-public enum Gender {
+public enum MetroStation {
 
-    NOT_SELECTED("Не выбран"),
-    FEMALE("Женский"),
-    MALE("Мужской");
+    NOT_SELECTED    ("Не выбрано"),
+    SOKOLNIKI       ("Сокольники");
 
     private final String description;
 }

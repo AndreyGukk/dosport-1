@@ -27,7 +27,7 @@ import static ru.dosport.helpers.Roles.ROLE_USER;
 @RestController
 @RequestMapping("/api/v1/profile")
 @RequiredArgsConstructor
-@Api(value = "/api/v1/profile", tags = {"Контроллер профиля пользователя"})
+@Api(value = "/api/v1/profile", tags = {"Контроллер Профиля пользователя"})
 public class UserController {
 
     // Тип данных
@@ -89,7 +89,7 @@ public class UserController {
     @PatchMapping(value = "/password", produces = DATA_TYPE, consumes = DATA_TYPE)
     @ApiOperation(value = "Изменяет пароль авторизованного пользователя")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST, response = boolean.class),
             @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
     })
@@ -127,7 +127,7 @@ public class UserController {
     @PatchMapping(value = "/friends/{friendId}", produces = DATA_TYPE)
     @ApiOperation(value = "Добавляет в список друзей пользователя другого пользователя по id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST, response = boolean.class),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
             @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
@@ -141,7 +141,7 @@ public class UserController {
     @DeleteMapping(value = "/friends/{friendId}", produces = DATA_TYPE)
     @ApiOperation(value = "Удаляет из списка друзей пользователя другого пользователя по id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST, response = boolean.class),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
             @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)

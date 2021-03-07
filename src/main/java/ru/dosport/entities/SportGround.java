@@ -1,6 +1,9 @@
 package ru.dosport.entities;
 
 import lombok.*;
+import ru.dosport.enums.Infrastructure;
+import ru.dosport.enums.MetroStation;
+import ru.dosport.enums.SurfaceType;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,18 +20,22 @@ import java.util.List;
 @Table(name = "sportgrounds")
 public class SportGround {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    // Город
+    @Column(name = "city", nullable = false, length = 100)
+    private String city;
+
     // Адрес площадки
-    @Column(name = "address", nullable = false, unique = true)
+    @Column(name = "address", nullable = false, unique = true, length = 255)
     private String address;
 
-    @Column(name = "city", nullable = false)
-    private String city;
+    // Название площадки
+    @Column(name = "title", nullable = false, length = 150)
+    private String title;
 
     // Широта
     @Column(name = "latitude", nullable = false)
@@ -38,17 +45,39 @@ public class SportGround {
     @Column(name = "longitude", nullable = false)
     private Double longitude;
 
-    // Название площадки
-    @Column(name = "title", nullable = false)
-    private String title;
+    // Станция метро
+    @Column(name = "metro_station")
+    @Enumerated(EnumType.ORDINAL)
+    private MetroStation metroStation;
 
-    // Вид спорта
+    // Тип покрытия
+    @Column(name = "surface_type")
+    @Enumerated(EnumType.ORDINAL)
+    private SurfaceType surfaceType;
+
+    // Стоимость аренды в час
+    @Column(name = "rent_price")
+    private Integer rentPrice;
+
+    // Является ли площадка открытой (расположена на улице)
+    @Column(name = "opened")
+    private boolean opened;
+
+    // Список инфраструктуры площадки
     @ManyToMany
+    @JoinTable(
+            name = "sportground_infrastructures",
+            joinColumns = @JoinColumn(name = "sportground_id"),
+            inverseJoinColumns = @JoinColumn(name = "infrastructure_id"))
+    private List<Infrastructure> infrastructures;
+
+    // Список видов спорта
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "sportground_sport_types",
             joinColumns = @JoinColumn(name = "sportground_id"),
             inverseJoinColumns = @JoinColumn(name = "sport_type_id"))
-    private List<SportType> sportType;
+    private List<SportType> sportTypes;
 
     // Список мероприятий на площадке
     @OneToMany(mappedBy = "sportGround")

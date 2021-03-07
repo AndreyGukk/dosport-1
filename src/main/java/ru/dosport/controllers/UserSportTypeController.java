@@ -27,7 +27,7 @@ import static ru.dosport.helpers.Roles.ROLE_USER;
 @RestController
 @RequestMapping("/api/v1/profile/sporttype")
 @RequiredArgsConstructor
-@Api(value = "/api/v1/profile/sporttype", tags = {"Контроллер спортивных навыков Пользователя"})
+@Api(value = "/api/v1/profile/sporttype", tags = {"Контроллер Спортивных навыков Пользователя"})
 public class UserSportTypeController {
 
     // Тип данных

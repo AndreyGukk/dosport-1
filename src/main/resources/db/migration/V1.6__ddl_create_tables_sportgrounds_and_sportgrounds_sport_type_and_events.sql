@@ -5,13 +5,17 @@ create table sportgrounds
 	id bigserial not null
 		constraint sportgrounds_pkey
 			primary key,
+	city varchar(100) not null,
 	address varchar(255) not null
 		constraint uk_kvtbkuiwnrkn35yqkyi5fqn42
-			unique,
-	city varchar(255) not null,
+		    unique,
+	title varchar(150) not null,
     latitude double precision not null,
 	longitude double precision not null,
-	title varchar(255) not null
+	metro_station smallint,
+	surface_type smallint,
+	rent_price integer,
+	opened boolean
 );
 
 DROP TABLE IF EXISTS sportground_sport_types;
@@ -44,4 +48,24 @@ create table events
 	sport_type_id smallint not null
 		constraint fk33979w9uvke4fjm824mu07qdi
 			references sport_types
+);
+
+DROP TABLE IF EXISTS infrastructures;
+
+create table infrastructures
+(
+	id integer not null
+	    primary key
+);
+
+DROP TABLE IF EXISTS sportground_infrastructures;
+
+create table sportground_infrastructures
+(
+	sportground_id bigint not null
+		constraint fk_sportground_id
+			references sportgrounds,
+	infrastructure_id integer not null
+		constraint fk_infrastructure_id
+			references infrastructures
 );

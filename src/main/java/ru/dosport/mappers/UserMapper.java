@@ -11,7 +11,8 @@ import java.util.List;
 /**
  * Маппер, преобразующий классы User и UserDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        uses = {GenderMapper.class})
 public interface UserMapper {
 
     @Mappings({
