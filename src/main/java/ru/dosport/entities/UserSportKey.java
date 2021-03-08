@@ -18,14 +18,9 @@ public class UserSportKey implements Serializable {
 
     @Getter
     @Setter
-    private long userId;
+    private Long userId;
 
     @Getter
     @Setter
-    private short sportTypeId;
-
-    public UserSportKey(long userId, short sportTypeId) {
-        this.userId = userId;
-        this.sportTypeId = sportTypeId;
-    }
+    private Short sportTypeId;
 }

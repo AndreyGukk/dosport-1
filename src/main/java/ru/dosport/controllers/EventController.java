@@ -41,6 +41,21 @@ public class EventController {
         return ResponseEntity.ok(eventService.getAllDto());
     }
 
+    @ApiOperation(value = "Отображает данные всех мероприятий площадки с заданными параметрами")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
+    })
+    @GetMapping("/")
+    public ResponseEntity<List<EventDto>> readAllEventByParams(@RequestParam (required = false) LocalDate fromDate,
+                                                               @RequestParam (required = false) LocalDate toDate,
+                                                               @RequestParam (required = false) Short sportTypeId,
+                                                               @RequestParam (required = false) Long sportGroundId,
+                                                               @RequestParam (required = false) Long organizerId) {
+        return ResponseEntity.ok(
+                eventService.getAllDtoByParams(fromDate, toDate, sportTypeId, sportGroundId, organizerId));
+    }
+
     @ApiOperation(value = "Отображает данные мероприятия по его индексу")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
@@ -97,18 +112,25 @@ public class EventController {
     @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ на ___ дней (1/7/31")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @GetMapping ("/calendar/interval")
-    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication,
-                                                                 @RequestParam  LocalDate from,
-                                                                 @RequestParam  byte timeInterval){
+    public ResponseEntity<List<UserEventDto>> readAllEventByAuthAndDate(Authentication authentication,
+                                                                        @RequestParam  LocalDate from,
+                                                                        @RequestParam  byte timeInterval){
         return ResponseEntity.ok(eventService.getAllDtoByAuthTimeInterval(authentication, from, timeInterval));
     }
 
     @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ по ___")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @GetMapping ("/calendar")
-    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication,
-                                                                 @RequestParam  LocalDate from,
-                                                                 @RequestParam  LocalDate to){
+    @GetMapping ("/calendar/")
+    public ResponseEntity<List<UserEventDto>> readAllEventByAuthAndDate(Authentication authentication,
+                                                                        @RequestParam  LocalDate from,
+                                                                        @RequestParam  LocalDate to){
         return ResponseEntity.ok(eventService.getAllDtoByAuthFromTo(authentication, from, to));
+    }
+
+    @ApiOperation(value = "Отображает список всех мероприятий пользователя")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping ("/calendar")
+    public ResponseEntity<List<UserEventDto>> readAllEventByAuth(Authentication authentication){
+        return ResponseEntity.ok(eventService.getAllDtoByAuth(authentication));
     }
 }

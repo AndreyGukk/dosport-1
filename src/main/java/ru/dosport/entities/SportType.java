@@ -20,7 +20,7 @@ public class SportType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private short id;
+    private Short id;
 
     // Вид спорта
     @Column(name = "title", nullable = false, unique = true)

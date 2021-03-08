@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.ErrorDto;
 import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
-import ru.dosport.dto.UserRequest;
 import ru.dosport.services.api.UserService;
 
 import javax.validation.Valid;
-
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.*;
@@ -73,16 +71,6 @@ public class UserController {
     })
     public ResponseEntity<UserDto> readUserById(@Valid @PathVariable Long id) {
         return ResponseEntity.ok(userService.getDtoById(id));
-    }
-
-    @PostMapping(value = "", produces = DATA_TYPE, consumes = DATA_TYPE)
-    @ApiOperation(value = "Создает новый профиль пользователя")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
-            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
-    })
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserRequest userRequest) {
-        return ResponseEntity.ok(userService.save(userRequest));
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})

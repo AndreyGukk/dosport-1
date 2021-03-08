@@ -1,7 +1,6 @@
 package ru.dosport.entities;
 
 import lombok.Getter;
-import ru.dosport.dto.SportTypeDto;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,14 +9,14 @@ import java.time.LocalTime;
 @Getter
 @Entity
 public class UserEvent {
-    // статус юзера в мероприятии: точно идет, неточно
-    @Column(name = "status", nullable = false)
-    private String status;
 
-    // id мероприятия
     @Id
     @Column(name = "event_id", nullable = false)
     private Long eventId;
+
+    // Статус пользователя в мероприятии: точно идет, неточно
+    @Column(name = "status", nullable = false)
+    private String status;
 
     // Дата проведения мероприятия
     @Column(name = "date", nullable = false)

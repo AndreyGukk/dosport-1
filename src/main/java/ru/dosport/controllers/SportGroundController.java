@@ -32,15 +32,16 @@ public class SportGroundController {
     // Список необходимых зависимостей
     private final SportGroundService sportGroundService;
 
-    @ApiOperation(value = "Отображает данные всех площадок")
+    @ApiOperation(value = "Отображает данные всех площадок по определенному городу и виду спорта")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @GetMapping
-    public ResponseEntity<List<SportGroundDto>> readAllSportGrounds(@RequestParam(required = false) String city) {
-        return ResponseEntity.ok(sportGroundService.getAllDto(city));
+    public ResponseEntity<List<SportGroundDto>> readAllSportGroundsByCityAndSportType(
+            @RequestParam(required = false) String city, @RequestParam (required = false) Short sportTypeId) {
+        return ResponseEntity.ok(sportGroundService.getAllDtoByCityAndSportTypeId(city, sportTypeId));
     }
 
     @ApiOperation(value = "Отображает данные площадки по её индексу")
@@ -50,7 +51,7 @@ public class SportGroundController {
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<SportGroundDto> readSportGround(@PathVariable Long id) {
+    public ResponseEntity<SportGroundDto> readSportGroundById(@PathVariable Long id) {
         return ResponseEntity.ok(sportGroundService.getDtoById(id));
     }
 
@@ -73,8 +74,8 @@ public class SportGroundController {
     })
     @Secured(value = {ROLE_ADMIN})
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSportGround(@PathVariable Long id,
-                                               Authentication authentication) {
+    public ResponseEntity<?> deleteSportGroundById(@PathVariable Long id,
+                                                   Authentication authentication) {
         return sportGroundService.delete(id, authentication) ?
                 ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }

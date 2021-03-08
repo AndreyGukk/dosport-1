@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import ru.dosport.entities.Event;
 import ru.dosport.entities.UserEvent;
 
-import javax.persistence.JoinTable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,26 +15,14 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-    /*
-     * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ РЕПОЗИТОРИЕВ
-     * Optional<Object> findById(Long id) найти объект по параметру
-     * List<Object> findAll() найти все объекты
-     * List<Object> findAllByEnabled(boolean enabled) найти все объекты по параметру
-     * void delete(Object object) удалить конкретный объект
-     * void deleteById(Long id) удалить объект по параметру
-     * void deleteAll(List<Object> objects) удалить список объектов
-     * Object save(Object object) сохранить объект
-     * List<Object> saveAll(List<Object> objects) сохранить список объектов
-     */
-
     /**
+     * Найти список UserEvent по идентификатору пользователя, начальной и конечной датам
      *
-     * @param userId -id пользователя
-     * @param from - дата начала интервала времени
-     * @param to - дата конца интервала времени
-     * @return
+     * @param userId id пользователя
+     * @param from дата начала интервала времени
+     * @param to дата конца интервала времени
+     * @return список UserEvent
      */
-
     @Query(value = "SELECT s FROM events e JOIN event_members m " +
             "ON e.id = m.event_id " +
             "JOIN sport_types s " +
@@ -43,4 +30,38 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "WHERE m.user_id = :userId " +
             "AND e.date BETWEEN  :from  AND  :to ", nativeQuery = true)
     List <UserEvent> findAllByUserIdAndTimeFromTo(Long userId, LocalDate from, LocalDate to);
+
+    /**
+     * Найти список событий по определенным параметрам поиска
+     *
+     * @param fromDate начальная дата поиска
+     * @param toDate конечная дата поиска
+     * @param sportTypeId идентификатор вида спорта
+     * @param sportGroundId идентификатор площадки
+     * @param organizerId идентификатор организатора
+     * @return список Event
+     */
+    @Query(value = "SELECT s FROM events e JOIN event_members m " +
+            "ON e.id = m.event_id " +
+            "JOIN sport_types s " +
+            "ON s.id = e.sport_type_id " +
+            "WHERE s.organizer_user_id = :organizerId " +
+            "AND e.date BETWEEN  :fromDate  AND  :toDate " +
+            "AND e.sport_type_id = :sportTypeId" +
+            "AND e.sportground_id = :sportGroundId", nativeQuery = true)
+    List<Event> findAllByParams(
+            LocalDate fromDate, LocalDate toDate, Short sportTypeId, Long sportGroundId, Long organizerId);
+
+    /**
+     * Найти список UserEvent по идентификатору пользователя
+     *
+     * @param userId id пользователя
+     * @return список UserEvent
+     */
+    @Query(value = "SELECT s FROM events e JOIN event_members m " +
+            "ON e.id = m.event_id " +
+            "JOIN sport_types s " +
+            "ON s.id = e.sportType " +
+            "WHERE m.user_id = :userId ", nativeQuery = true)
+    List <UserEvent> findAllByUserId(Long userId);
 }

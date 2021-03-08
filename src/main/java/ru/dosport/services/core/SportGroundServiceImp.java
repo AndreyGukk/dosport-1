@@ -10,7 +10,6 @@ import ru.dosport.dto.SportGroundRequest;
 import ru.dosport.dto.UserSportGroundDto;
 import ru.dosport.entities.SportGround;
 import ru.dosport.entities.UserSportGround;
-import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.SportGroundMapper;
@@ -50,13 +49,21 @@ public class SportGroundServiceImp implements SportGroundService {
     }
 
     @Override
-    public List<SportGroundDto> getAllDto(String city) {
-        return city == null ? getAllDto() : groundMapper.mapEntityToDto(groundRepository.findAllByCity(city));
+    public List<SportGroundDto> getAllDtoByIdList(List<Long> idList) {
+        return groundMapper.mapEntityToDto(groundRepository.findAllById(idList));
     }
 
     @Override
-    public List<SportGroundDto> getAllDtoById(List<Long> idList) {
-        return groundMapper.mapEntityToDto(groundRepository.findAllById(idList));
+    public List<SportGroundDto> getAllDtoByCityAndSportTypeId(String city, Short sportTypeId) {
+        if (city == null) {
+            return sportTypeId == null ?
+                    getAllDto() :
+                    groundMapper.mapEntityToDto(groundRepository.findAllBySportTypes(sportTypeId));
+        } else {
+            return sportTypeId == null ?
+                    groundMapper.mapEntityToDto(groundRepository.findAllByCity(city)) :
+                    groundMapper.mapEntityToDto(groundRepository.findAllByCityAndSportTypes(city, sportTypeId));
+        }
     }
 
     @Override

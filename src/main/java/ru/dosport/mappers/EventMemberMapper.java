@@ -1,19 +1,19 @@
 package ru.dosport.mappers;
 
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
 import ru.dosport.dto.MemberDto;
-import ru.dosport.dto.UserDto;
-import ru.dosport.dto.UserRequest;
 import ru.dosport.entities.EventMember;
-import ru.dosport.entities.User;
-import ru.dosport.security.JwtUser;
 
 import java.util.List;
 
 /**
  * Маппер, преобразующий классы EventMember и MemberDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        uses = {ParticipationStatusMapper.class})
 public interface EventMemberMapper {
 
     @Mappings({

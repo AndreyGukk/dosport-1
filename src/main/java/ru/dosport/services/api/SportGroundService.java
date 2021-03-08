@@ -27,18 +27,21 @@ public interface SportGroundService {
     List<SportGroundDto> getAllDto();
 
     /**
-     * Возвращает все площадки города
-     * @param city город
-     * @return список dto площадок
-     */
-    List<SportGroundDto> getAllDto(String city);
-
-    /**
      * Возращает площадки из списка индетификаторов
      * @param idList список идентификаторов площадок
      * @return список dto площадок
      */
-    List<SportGroundDto> getAllDtoById(List<Long> idList);
+    List<SportGroundDto> getAllDtoByIdList(List<Long> idList);
+
+
+    /**
+     * Возвращает все площадки города с заданным видом спорта
+     * 
+     * @param city город
+     * @param sportTypeId идентификатор вида спорта
+     * @return список dto площадок
+     */
+    List<SportGroundDto> getAllDtoByCityAndSportTypeId(String city, Short sportTypeId);
 
     /**
      * Возвращает площадку по идентификатору
@@ -73,7 +76,7 @@ public interface SportGroundService {
 
     /**
      * Получение списка избранных площадок пользователя
-     * @param authentication
+     * @param authentication данные авторизации
      * @return список
      */
     List<SportGroundDto> getAllDtoByAuth(Authentication authentication);
@@ -81,7 +84,7 @@ public interface SportGroundService {
     /**
      * Добавление площадки в избранное
      * @param sportGroundDto площадка
-     * @param authentication
+     * @param authentication данные авторизации
      * @return площадка
      */
     UserSportGroundDto saveUserSportGroundDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto);
@@ -89,7 +92,7 @@ public interface SportGroundService {
     /**
      * Удаление площадки из избранного
      * @param id площадка
-     * @param authentication
+     * @param authentication данные авторизации
      * @return существует ли площадка
      */
     boolean deleteFavoritesBySportGroundId(Long id, Authentication authentication);

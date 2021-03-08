@@ -1,6 +1,7 @@
 package ru.dosport.entities;
 
 import lombok.*;
+import ru.dosport.enums.ParticipationStatus;
 
 import javax.persistence.*;
 
@@ -25,5 +26,6 @@ public class EventMember {
     private Long userId;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.ORDINAL)
+    private ParticipationStatus status;
 }

@@ -14,9 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import ru.dosport.dto.AuthenticationDto;
-import ru.dosport.dto.AuthenticationRequest;
-import ru.dosport.dto.ErrorDto;
+import ru.dosport.dto.*;
 import ru.dosport.security.JwtTokenProvider;
 import ru.dosport.security.JwtUser;
 import ru.dosport.services.api.UserService;
@@ -29,7 +27,7 @@ import static ru.dosport.helpers.Messages.*;
 @Log4j2
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/api/v1/auth")
+@RequestMapping(value = "/api/v1/auth", consumes = "application/json", produces = "application/json")
 @RequiredArgsConstructor
 @Api(value = "/api/v1/auth", tags = {"Контроллер авторизации пользователя"})
 public class AuthenticationController {
@@ -64,5 +62,15 @@ public class AuthenticationController {
             log.debug(e);
             throw new BadCredentialsException(BAD_CREDENTIALS);
         }
+    }
+
+    @PostMapping(value = "/register")
+    @ApiOperation(value = "Создает новый профиль пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
+    })
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(userService.save(userRequest));
     }
 }

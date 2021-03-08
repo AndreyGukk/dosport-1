@@ -7,10 +7,14 @@ import ru.dosport.entities.SportGround;
 import java.util.List;
 
 /**
- * Репозиторий Площадок
+ * Репозиторий Спортивных площадок
  */
 @Repository
 public interface SportGroundRepository extends JpaRepository<SportGround, Long> {
 
     List<SportGround> findAllByCity(String city);
+
+    List<SportGround> findAllBySportTypes(Short sportTypes);
+
+    List<SportGround> findAllByCityAndSportTypes(String city, Short sportTypes);
 }

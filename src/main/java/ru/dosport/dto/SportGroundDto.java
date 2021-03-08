@@ -69,8 +69,4 @@ public class SportGroundDto {
     @ApiModelProperty(notes = "Список видов спорта",
             dataType = "List<SportTypeDto>",  position = 11)
     private List<SportTypeDto> sportTypes;
-
-    @ApiModelProperty(notes = "Список мероприятий",
-            dataType = "List<EventDto>", position = 12)
-    private List<EventDto> events;
 }

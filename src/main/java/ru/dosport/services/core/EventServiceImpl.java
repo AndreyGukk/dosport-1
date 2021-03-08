@@ -24,19 +24,15 @@ import java.util.List;
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 
 /**
- * Сервис пользователей
+ * Сервис Мероприятий
  */
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
-    // Необходимые мапперы
+    // Необходимые зависимости
     private final EventMapper eventMapper;
-
-    // Необходимые репозитории
     private final EventRepository eventRepository;
-
-    // Сервисы
     private final UserService userService;
     private final SportTypeService sportTypeService;
     private final SportGroundService sportGroundService;
@@ -54,6 +50,12 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDto> getAllDto() {
         return eventMapper.mapEntityToDto(eventRepository.findAll());
+    }
+
+    @Override
+    public List<EventDto> getAllDtoByParams(LocalDate fromDate, LocalDate toDate, Short sportTypeId, Long sportGroundId, Long organizerId) {
+        return eventMapper.mapEntityToDto(
+                eventRepository.findAllByParams(fromDate, toDate, sportTypeId, sportGroundId, organizerId));
     }
 
     @Transactional
@@ -78,7 +80,7 @@ public class EventServiceImpl implements EventService {
     public EventDto update(EventRequest request, Long eventId, Authentication authentication) {
         var event = findById(eventId);
 
-        if (!event.getOrganizerId().equals(userService.getIdByAuthentication(authentication))) {
+        if (!(event.getOrganizerId() == userService.getIdByAuthentication(authentication))) {
             throw new AccessDeniedException("Пользователь не является организатором мероприятия");
         }
 
@@ -98,7 +100,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public boolean deleteById(Long id, Authentication authentication) {
         Event event = findById(id);
-        if (!event.getOrganizerId().equals(userService.getIdByAuthentication(authentication))) {
+        if (!(event.getOrganizerId() == userService.getIdByAuthentication(authentication))) {
             if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
                 throw new AccessDeniedException("Пользователь не является организатором мероприятия");
             }
@@ -125,6 +127,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<UserEventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to) {
-        return eventMapper.mapUserEventToUserEventDto(eventRepository.findAllByUserIdAndTimeFromTo(userService.getIdByAuthentication(authentication), from, to));
+        return eventMapper.mapUserEventToUserEventDto(eventRepository.findAllByUserIdAndTimeFromTo(
+                userService.getIdByAuthentication(authentication), from, to));
+    }
+
+    @Override
+    public List<UserEventDto> getAllDtoByAuth(Authentication authentication) {
+        return eventMapper.mapUserEventToUserEventDto(eventRepository.findAllByUserId(
+                userService.getIdByAuthentication(authentication)));
     }
 }

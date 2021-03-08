@@ -5,7 +5,7 @@ create table event_members
 	id bigserial not null
 		constraint event_members_pkey
 			primary key,
-	status varchar(13) not null,
+	status smallint not null,
 	user_id bigint not null,
 	event_id bigint not null
 		constraint fkaa8h6gi3vaheiptt7ben9qgn7

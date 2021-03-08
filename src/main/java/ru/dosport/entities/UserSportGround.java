@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 /**
- * сущность избранные площадки пользователя
+ * Сущность избранные площадки пользователя
  */
 
 @Entity
@@ -16,6 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "user_sportgrounds")
 public class UserSportGround {
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column
@@ -27,5 +28,4 @@ public class UserSportGround {
 
     @Column(name = "sportground_id")
     private long sportGroundId;
-
 }

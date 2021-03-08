@@ -12,6 +12,7 @@ import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.MemberStatus;
 import ru.dosport.mappers.EventMemberMapper;
+import ru.dosport.mappers.ParticipationStatusMapper;
 import ru.dosport.repositories.EventMemberRepository;
 import ru.dosport.services.api.EventMemberService;
 import ru.dosport.services.api.EventService;
@@ -26,10 +27,10 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 @RequiredArgsConstructor
 public class EventMemberServiceImpl implements EventMemberService {
 
+    // Необходимые зависимости
     private final EventMemberMapper memberMapper;
-
+    private final ParticipationStatusMapper statusMapper;
     private final EventMemberRepository memberRepository;
-
     private final UserService userService;
     private final EventService eventService;
 
@@ -57,12 +58,12 @@ public class EventMemberServiceImpl implements EventMemberService {
                 var eventMember = memberRepository.
                         findByUserIdAndEventId(userService.getIdByAuthentication(authentication), eventId);
                 if (eventMember.isPresent()) {
-                    eventMember.get().setStatus(request.getUserStatus());
+                    eventMember.get().setStatus(statusMapper.mapStringToEnum(request.getUserStatus()));
                 } else {
                     eventMember = Optional.of(EventMember.builder()
                             .userId(userService.getIdByAuthentication(authentication))
                             .eventId(eventId)
-                            .status(request.getUserStatus())
+                            .status(statusMapper.mapStringToEnum(request.getUserStatus()))
                             .build());
                 }
                 return memberMapper.mapEntityToDto(memberRepository.save(eventMember.get()));

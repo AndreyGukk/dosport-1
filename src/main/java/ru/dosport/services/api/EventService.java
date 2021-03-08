@@ -31,6 +31,14 @@ public interface EventService {
     List<EventDto> getAllDto();
 
     /**
+     * Возвращает все мероприятия, имеющие определенные параметры поиска
+     *
+     * @return список dto мероприятий
+     */
+    List<EventDto> getAllDtoByParams(
+            LocalDate fromDate, LocalDate toDate, Short sportTypeId, Long sportGroundId, Long organizerId);
+
+    /**
      * Создать новое мероприятие
      *
      * @param eventRequest запрос, содержащий данные мероприятия
@@ -103,4 +111,10 @@ public interface EventService {
      */
     List<UserEventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to);
 
+    /**
+     * Возвращает все мероприятия пользователя по аутентификации
+     *
+     * @return список dto мероприятий
+     */
+    List<UserEventDto> getAllDtoByAuth(Authentication authentication);
 }

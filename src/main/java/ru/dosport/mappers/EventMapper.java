@@ -13,7 +13,8 @@ import java.util.List;
 /**
  * Маппер, преобразующий классы Event и EventDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {SportTypeMapper.class, EventMemberMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        uses = {SportTypeMapper.class, EventMemberMapper.class})
 public interface EventMapper {
 
     @Mappings({
