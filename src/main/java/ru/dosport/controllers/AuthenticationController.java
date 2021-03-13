@@ -73,4 +73,15 @@ public class AuthenticationController {
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(userService.save(userRequest));
     }
+
+    @PostMapping(value = "/activate/{activationCode}")
+    @ApiOperation(value = "Активирует пользователя с помощью кода активации")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
+    })
+    public ResponseEntity<?> activateUser(@PathVariable String activationCode) {
+        return ResponseEntity.ok(userService.activateUser(activationCode));
+    }
 }
