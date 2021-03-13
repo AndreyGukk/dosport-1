@@ -3,8 +3,7 @@ package ru.dosport.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -25,16 +24,16 @@ public class Event {
     private Long id;
 
     // Дата проведения мероприятия
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "creation_date", nullable = false)
+    private LocalDateTime creationDateTime;
 
     // Время начала мероприятия
-    @Column(name = "start_time", nullable = false)
-    private LocalTime startTime;
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime startDateTime;
 
     // Время завершения мероприятия
-    @Column(name = "end_time")
-    private LocalTime endTime;
+    @Column(name = "end_date", nullable = false)
+    private LocalDateTime endDateTime;
 
     // Вид спорта
     @ManyToOne
@@ -47,14 +46,26 @@ public class Event {
     private SportGround sportGround;
 
     // Организатор мероприятия
-    @Column(name = "organizer_user_id", nullable = false)
+    @Column(name = "organizer_id", nullable = false)
     private Long organizerId;
 
     // Список участников мероприятия
     @OneToMany(mappedBy = "eventId")
     private Set<EventMember> members;
 
-    // ID чата
-    @Column(name = "chat_id")
-    private Long chatId;
+    // Описание мероприятия
+    @Column(name = "description", length = 150)
+    private String description;
+
+    // Приватность мероприятия
+    @Column(name = "is_private", nullable = false)
+    private Boolean isPrivate;
+
+    // Цена участия в мероприятии
+    @Column(name = "price")
+    private Integer price;
+
+    // Максимальное количество участников мероприятия
+    @Column(name = "maximum_members")
+    private Short maximumMembers;
 }

@@ -7,6 +7,7 @@ import ru.dosport.entities.Event;
 import ru.dosport.entities.UserEvent;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,8 +35,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     /**
      * Найти список событий по определенным параметрам поиска
      *
-     * @param fromDate начальная дата поиска
-     * @param toDate конечная дата поиска
+     * @param from начальная дата поиска
+     * @param to конечная дата поиска
      * @param sportTypeId идентификатор вида спорта
      * @param sportGroundId идентификатор площадки
      * @param organizerId идентификатор организатора
@@ -46,11 +47,11 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "JOIN sport_types s " +
             "ON s.id = e.sport_type_id " +
             "WHERE s.organizer_user_id = :organizerId " +
-            "AND e.date BETWEEN  :fromDate  AND  :toDate " +
+            "AND e.date BETWEEN  :from  AND  :to " +
             "AND e.sport_type_id = :sportTypeId" +
             "AND e.sportground_id = :sportGroundId", nativeQuery = true)
     List<Event> findAllByParams(
-            LocalDate fromDate, LocalDate toDate, Short sportTypeId, Long sportGroundId, Long organizerId);
+            LocalDate from, LocalDate to, Short sportTypeId, Long sportGroundId, Long organizerId);
 
     /**
      * Найти список UserEvent по идентификатору пользователя
@@ -64,4 +65,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "ON s.id = e.sportType " +
             "WHERE m.user_id = :userId ", nativeQuery = true)
     List <UserEvent> findAllByUserId(Long userId);
+
+    @Query(value = "SELECT s FROM events e JOIN event_members m " +
+            "AND e.date BETWEEN  :from  AND  :to ", nativeQuery = true)
+    List<Event> findAllByTimeFromTo(LocalDateTime from, LocalDateTime to);
+
+    List<Event> findAllBySportGroundId(Long sportGroundId);
 }

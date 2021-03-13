@@ -7,11 +7,10 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDateTime;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 
@@ -23,30 +22,46 @@ import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
 @ApiModel(description = "Запрос для регистрации нового Мероприятия")
 public class EventRequest {
 
+    @NotNull(message = DATA_NOT_BLANK + "Дата и время начала")
     @FutureOrPresent
-    @NotNull(message = DATA_NOT_BLANK + "Дата")
-    @DateTimeFormat(pattern="yyyy.MM.dd")
-    @ApiModelProperty(notes = "Дата проведения Мероприятия", dataType = "LocalDate", example = "2007-12-03", required = true, position = 0)
-    private LocalDate dateEvent;
+    @DateTimeFormat(pattern="yyyy.MM.dd HH:mm")
+    @ApiModelProperty(notes = "Дата и время начала проведения Мероприятия",
+            dataType = "LocalDateTime", example = "2020-12-03 10:15", required = true, position = 0)
+    private LocalDateTime startDateTime;
 
-    @NotNull(message = DATA_NOT_BLANK + "Время начала")
-    @DateTimeFormat(pattern="HH:mm")
-    @ApiModelProperty(notes = "Время начала проведения Мероприятия", dataType = "LocalTime", example = "10:15", required = true, position = 1)
-    private LocalTime startTimeEvent;
-
-    @DateTimeFormat(pattern="HH:mm")
-    @ApiModelProperty(notes = "Время окончания проведения Мероприятия", dataType = "LocalTime", example = "10:15", required = true, position = 2)
-    private LocalTime endTimeEvent;
+    @NotNull(message = DATA_NOT_BLANK + "Дата и время начала")
+    @FutureOrPresent
+    @DateTimeFormat(pattern="yyyy.MM.dd HH:mm")
+    @ApiModelProperty(notes = "Дата и время окончания проведения Мероприятия",
+            dataType = "LocalDateTime", example = "2020-12-03 10:15", required = true, position = 1)
+    private LocalDateTime endDateTime;
 
     @NotEmpty(message = DATA_NOT_BLANK + "Вид спорта")
-    @ApiModelProperty(notes = "Вид спорта", dataType = "String", example = "фехтование", required = true, position = 3)
+    @ApiModelProperty(notes = "Вид спорта",
+            dataType = "String", example = "фехтование", required = true, position = 2)
     private String sportTypeTitle;
 
     @NotEmpty(message = DATA_NOT_BLANK + "Игровая площадка")
-    @ApiModelProperty(notes = "Место проведения Мероприятия", dataType = "Long", example = "1", required = true, position = 4)
-    private String sportGroundId;
+    @ApiModelProperty(notes = "Идентификатор спортивной площадки",
+            dataType = "Long", example = "1", required = true, position = 3)
+    private Long sportGroundId;
 
-    @NotEmpty(message = DATA_NOT_BLANK + "Организатор")
-    @ApiModelProperty(notes = "Id организатора", dataType = "Long", example = "1", required = true, position = 5)
-    private Long organizerId;
+    @ApiModelProperty(notes = "Описание мероприятия, до 150 символов",
+            dataType = "String", example = "Классное мероприятие", required = true, position = 4)
+    private String description;
+
+    @NotEmpty(message = DATA_NOT_BLANK + "Приватность мероприятия")
+    @ApiModelProperty(notes = "Приватность мероприятия, true - закрытое",
+            dataType = "Boolean", example = "true", required = true, position = 5)
+    private Boolean isPrivate;
+
+    @PositiveOrZero
+    @ApiModelProperty(notes = "Цена участия в мероприятии",
+            dataType = "Integer", example = "100", position = 6)
+    private Integer price;
+
+    @PositiveOrZero
+    @ApiModelProperty(notes = "Максимальное количество участников мероприятия",
+            dataType = "Short", example = "10", position = 7)
+    private Short maximumMembers;
 }

@@ -27,6 +27,15 @@ public interface EventMemberService {
     MemberDto saveOrUpdateMember(MemberRequest request, Long eventId, Authentication authentication);
 
     /**
+     * Добавить участника мероприятия
+     * @param eventId идентификатор мероприятия
+     * @param request запрос, содержищий участника, идентификатор мероприятия, статус участника
+     * @param authentication данные авторизации
+     * @return dto участника
+     */
+    MemberDto addMember(MemberRequest request, Long eventId, Authentication authentication);
+
+    /**
      * Удаляет участника.
      * @param userId идентификатор пользователя
      * @param eventId идентификатор мероприятия

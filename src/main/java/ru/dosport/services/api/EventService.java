@@ -3,11 +3,10 @@ package ru.dosport.services.api;
 import org.springframework.security.core.Authentication;
 import ru.dosport.dto.EventDto;
 import ru.dosport.dto.EventRequest;
-import ru.dosport.dto.MemberDto;
-import ru.dosport.dto.MemberRequest;
-import ru.dosport.dto.*;
+import ru.dosport.dto.UserEventDto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -29,6 +28,29 @@ public interface EventService {
      * @return список dto мероприятий
      */
     List<EventDto> getAllDto();
+
+    /**
+     * Сделать мероприятие приватным/публичным (только для организатора)
+     *
+     * @param eventId идентификатор мероприятия
+     * @return true/false
+     */
+    boolean isPrivate(Long eventId, Authentication authentication);
+
+    /**
+     * Получить всех мероприятий за определенный интервал времени
+     * @param from дата начала интервала времени, за который показывают мероприятия
+     * @param to дата конца интервала времени
+     * @return список мероприятий
+     */
+    List<EventDto> getAllDtoByTimeFromTo(LocalDateTime from, LocalDateTime to);
+
+    /**
+     * Получить список мероприятий для определенной площадки
+     * @param sportGroundId идентификатор площадки, для которой получаем список мероприятий
+     * @return список мероприятий
+     */
+    List<EventDto> getAllDtoBySportGroundId(Long sportGroundId);
 
     /**
      * Возвращает все мероприятия, имеющие определенные параметры поиска
@@ -80,22 +102,14 @@ public interface EventService {
 //    List<MemberDto> getAllMembers(Long eventId);
 
     /**
-     * Возращает список мероприятйи по списку идентификатора
+     * Возращает список мероприятий по списку идентификатора
      * @param idList списк идентификаторов
      * @return список мероприятий
      */
     List<EventDto> findAllEventDtoById(List<Long> idList);
 
-//    /**
-//     * Добавить участника мероприятия
-//     * @param eventId идентификатор мероприятия
-//     * @param request запрос, содержищий участника, идентификатор мероприятия, статус участника
-//     * @return dto участника
-//     */
-//    MemberDto createEventMember(Long eventId, MemberRequest request);
-
     /**
-     * Возвращает мероприятия пользователя по аутентификации и за заданный интервал в ремени с заданной даты
+     * Возвращает мероприятия пользователя по аутентификации и за заданный интервал времени с заданной даты
      *
      * @param from дата начала интервала времени, за который показывают мероприятия
      * @param timeInterval интервал времени в днях, за который показывается мероприятия (1/7/31)
@@ -104,7 +118,7 @@ public interface EventService {
 
 
     /**
-     * Возвращает мероприятия пользователя по аутентификации и за заданный интервал в ремени с заданной даты
+     * Возвращает мероприятия пользователя по аутентификации и за заданный интервал времени с заданной даты
      *
      * @param from дата начала интервала времени, за который показывают мероприятия
      * @param to дата конца интервала времени

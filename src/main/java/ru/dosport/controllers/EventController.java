@@ -109,7 +109,7 @@ public class EventController {
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
-    @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ на ___ дней (1/7/31")
+    @ApiOperation(value = "Отображает список мероприятий пользователя за период с ___ на ___ дней (1/7/31)")
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
     @GetMapping ("/calendar/interval")
     public ResponseEntity<List<UserEventDto>> readAllEventByAuthAndDate(Authentication authentication,

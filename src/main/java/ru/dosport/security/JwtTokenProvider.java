@@ -73,12 +73,8 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException(JWT_TOKEN_NOT_VALID);
-        }
+    public boolean validateToken(String token) throws JwtException, IllegalArgumentException {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+        return !claims.getBody().getExpiration().before(new Date());
     }
 }

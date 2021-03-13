@@ -1,6 +1,7 @@
 package ru.dosport.services.core;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import ru.dosport.entities.EventMember;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.MemberStatus;
+import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.EventMemberMapper;
 import ru.dosport.mappers.ParticipationStatusMapper;
 import ru.dosport.repositories.EventMemberRepository;
@@ -93,4 +95,29 @@ public class EventMemberServiceImpl implements EventMemberService {
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, userId)));
     }
 
+    @Transactional
+    @Override
+    public MemberDto addMember(MemberRequest request, Long eventId, Authentication authentication) {
+        boolean isPrivate = eventService.isPrivate(eventId, authentication);
+        EventMember eventMember;
+        if (isPrivate) {
+            if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
+                throw new AccessDeniedException("Пользователь не является организатором мероприятия");
+            } else {
+                eventMember = EventMember.builder()
+                        .userId(userService.getIdByAuthentication(authentication))
+                        .eventId(eventId)
+                        .status(statusMapper.mapStringToEnum(request.getUserStatus()))
+                        .build();
+                return memberMapper.mapEntityToDto(memberRepository.save(eventMember));
+            }
+        } else {
+            eventMember = EventMember.builder()
+                    .userId(userService.getIdByAuthentication(authentication))
+                    .eventId(eventId)
+                    .status(statusMapper.mapStringToEnum(request.getUserStatus()))
+                    .build();
+            return memberMapper.mapEntityToDto(memberRepository.save(eventMember));
+        }
+    }
 }

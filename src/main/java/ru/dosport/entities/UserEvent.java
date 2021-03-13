@@ -3,8 +3,7 @@ package ru.dosport.entities;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -19,16 +18,16 @@ public class UserEvent {
     private String status;
 
     // Дата проведения мероприятия
-    @Column(name = "date", nullable = false)
-    private LocalDate dateEvent;
+    @Column(name = "creation_date", nullable = false)
+    private LocalDateTime creationDateTime;
 
     // Время начала мероприятия
-    @Column(name = "start_time", nullable = false)
-    private LocalTime startTimeEvent;
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime startDateTime;
 
     // Время завершения мероприятия
-    @Column(name = "end_time")
-    private LocalTime endTimeEvent;
+    @Column(name = "end_date", nullable = false)
+    private LocalDateTime endDateTime;
 
     // Вид спорта
     @Column(name = "title", nullable = false)

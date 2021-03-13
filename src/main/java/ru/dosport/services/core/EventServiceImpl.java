@@ -8,6 +8,7 @@ import ru.dosport.dto.EventDto;
 import ru.dosport.dto.EventRequest;
 import ru.dosport.dto.UserEventDto;
 import ru.dosport.entities.Event;
+import ru.dosport.entities.SportGround;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.EventMapper;
@@ -19,6 +20,7 @@ import ru.dosport.services.api.UserService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
@@ -53,23 +55,23 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDto> getAllDtoByParams(LocalDate fromDate, LocalDate toDate, Short sportTypeId, Long sportGroundId, Long organizerId) {
+    public List<EventDto> getAllDtoByParams(LocalDate from, LocalDate to, Short sportTypeId, Long sportGroundId, Long organizerId) {
         return eventMapper.mapEntityToDto(
-                eventRepository.findAllByParams(fromDate, toDate, sportTypeId, sportGroundId, organizerId));
+                eventRepository.findAllByParams(from, to, sportTypeId, sportGroundId, organizerId));
     }
 
     @Transactional
     @Override
     public EventDto save(EventRequest eventRequest, Authentication authentication) {
         Event event = Event.builder()
-                .date(eventRequest.getDateEvent())
-                .startTime(eventRequest.getStartTimeEvent())
+                .creationDateTime(LocalDateTime.now())
+                .startDateTime(eventRequest.getStartDateTime())
                 .sportType(sportTypeService.getSportTypeByTitle(eventRequest.getSportTypeTitle()))
-                .sportGround(sportGroundService.getById(Long.valueOf(eventRequest.getSportGroundId())))
+                .sportGround(sportGroundService.getById(eventRequest.getSportGroundId()))
                 .organizerId(userService.getIdByAuthentication(authentication))
                 .build();
-        if (eventRequest.getEndTimeEvent() != null) {
-            event.setEndTime(eventRequest.getEndTimeEvent());
+        if (eventRequest.getEndDateTime() != null) {
+            event.setEndDateTime(eventRequest.getEndDateTime());
         }
 
         return eventMapper.mapEntityToDto(eventRepository.save(event));
@@ -84,9 +86,8 @@ public class EventServiceImpl implements EventService {
             throw new AccessDeniedException("Пользователь не является организатором мероприятия");
         }
 
-        event.setStartTime(request.getStartTimeEvent());
-        event.setEndTime(request.getEndTimeEvent());
-        event.setDate(request.getDateEvent());
+        event.setStartDateTime(request.getStartDateTime());
+        event.setEndDateTime(request.getEndDateTime());
 
         if (!event.getSportType().getTitle().equals(request.getSportTypeTitle())) {
             event.setSportType(sportTypeService.getSportTypeByTitle(request.getSportTypeTitle()));
@@ -135,5 +136,25 @@ public class EventServiceImpl implements EventService {
     public List<UserEventDto> getAllDtoByAuth(Authentication authentication) {
         return eventMapper.mapUserEventToUserEventDto(eventRepository.findAllByUserId(
                 userService.getIdByAuthentication(authentication)));
+    }
+
+    @Override
+    public List<EventDto> getAllDtoByTimeFromTo(LocalDateTime from, LocalDateTime to) {
+        return eventMapper.mapEntityToDto(eventRepository.findAllByTimeFromTo(from, to));
+    }
+
+    @Override
+    public List<EventDto> getAllDtoBySportGroundId(Long sportGroundId) {
+        return eventMapper.mapEntityToDto(eventRepository.findAllBySportGroundId(sportGroundId));
+    }
+
+    @Override
+    public boolean isPrivate(Long eventId, Authentication authentication) {
+        if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
+            throw new AccessDeniedException("Пользователь не является организатором мероприятия");
+        } else {
+            boolean isPrivate = isPrivate(eventId, authentication);
+            return isPrivate;
+        }
     }
 }
