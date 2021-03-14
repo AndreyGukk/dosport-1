@@ -27,10 +27,8 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 public class EventMessageServiceImpl implements EventMessageService {
 
     private final EventMessageRepository messageRepository;
-
     private final EventMapper eventMapper;
     private final EventMessageMapper messageMapper;
-
     private final EventService eventService;
     private final UserService userService;
 
@@ -50,11 +48,10 @@ public class EventMessageServiceImpl implements EventMessageService {
         checkExistEvent(eventId);
 
         var event = eventMapper.mapDtoToEntity(eventService.getDtoById(eventId));
-        var user = userService.getDtoByAuthentication(authentication);
+        var user = userService.getByAuthentication(authentication);
         var message = EventMessage.builder()
                 .event(event)
-                .userId(user.getId())
-                .userName(String.format("%s %s", user.getFirstName(), user.getLastName()))
+                .user(user)
                 .text(request.getText())
                 .build();
         return messageMapper.mapEntityToDto(messageRepository.save(message));
@@ -81,7 +78,7 @@ public class EventMessageServiceImpl implements EventMessageService {
         checkExistEvent(eventId);
         var message = findById(id);
 
-        if (!message.getUserId().equals(userService.getIdByAuthentication(authentication))) {
+        if (!message.getUser().equals(userService.getIdByAuthentication(authentication))) {
             if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
                 throw new AccessDeniedException("Пользователь не является автором сообщения");
             }

@@ -7,6 +7,7 @@ import ru.dosport.security.JwtUser;
 import ru.dosport.entities.User;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Маппер, преобразующий классы User и UserDto друг в друга
@@ -22,6 +23,8 @@ public interface UserMapper {
 
     List<UserDto> mapEntityToDto(List<User> entities);
 
+    List<UserDto> mapEntityToDto(Set<User> entities);
+
     JwtUser mapEntityToJwt(User entity);
 
     @Mappings({
@@ -35,8 +38,10 @@ public interface UserMapper {
             @Mapping(target="password", ignore = true),
             @Mapping(target="enabled", ignore = true),
             @Mapping(target="authorities", ignore = true),
-            @Mapping(target="friends", ignore = true),
-            @Mapping(target="favoriteSportGrounds", ignore = true),
+            @Mapping(target="subscribes", ignore = true),
+            @Mapping(target="subscribers", ignore = true),
+            @Mapping(target="sportGrounds", ignore = true),
+            @Mapping(target="sports", ignore = true),
             @Mapping(target="birthdayDate", source="dto.birthdayDate", dateFormat = "dd-MM-yyyy")
     })
     User update(@MappingTarget User entity, UserDto dto);

@@ -7,10 +7,11 @@ import ru.dosport.enums.Gender;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 
 /**
  * Сущность Пользователь
@@ -27,7 +28,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    // Логин
+    // Никнейм
     @Column(name = "user_name", nullable = false, unique = true, length = 50)
     private String username;
 
@@ -39,15 +40,6 @@ public class User {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    // Список ролей
-    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "users_authorities",
-            // Внешний ключ для User в в таблице users_authorities
-            joinColumns = @JoinColumn(name = "user_id"),
-            // Внешний ключ для другой стороны, User в таблице users_authorities
-            inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private List<Authority> authorities = new ArrayList<>();
-
     // Дата рождения
     @Column(name = "birthday_date")
     private LocalDate birthdayDate;
@@ -56,40 +48,55 @@ public class User {
     @Column(name = "hide_birthday_date")
     private boolean hideBirthdayDate;
 
-    // Имя
-    @Column(name = "first_name", length = 50)
-    private String firstName;
-
-    // Фамилия
-    @Column(name = "last_name", length = 100)
-    private String lastName;
-
     // Пол
     @Column(name = "gender")
     @Enumerated(EnumType.ORDINAL)
     private Gender gender;
 
     // Личная информация
-    @Column(name = "info", length = 250)
+    @Column(name = "info", length = 150)
     private String info;
 
     // Ссылка на адрес фотографии
-    @Column(name = "photo_link", length = 250)
+    @Column(name = "photo_link", length = 150)
     private String photoLink;
 
-    // Список друзей
-    @ManyToMany(cascade = CascadeType.ALL)
+    // Список ролей
+    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_authorities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    private Set<Authority> authorities = new HashSet<>();
+
+    // Список подписок - пользователей, на которых подписался данный пользователь
+    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "users_friends",
+            name = "user_subscribes",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id"))
-    private List<User> friends = new ArrayList<>();
+    private Set<User> subscribes = new HashSet<>();
+
+    // Список подписчиков - пользователей, которые подписаны на данного пользователя
+    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_subscribes",
+            joinColumns = @JoinColumn(name = "friend_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> subscribers = new HashSet<>();
 
     // Список избранных площадок
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "users_sportgrounds",
+            name = "user_sportgrounds",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "sportground_id"))
-    private List<SportGround> favoriteSportGrounds = new ArrayList<>();
+    private Set<SportGround> sportGrounds = new HashSet<>();
+
+    // Список видов спорта
+    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_sports",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "sport_type_id"))
+    private Set<SportGround> sports = new HashSet<>();
 }

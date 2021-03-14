@@ -4,6 +4,7 @@ import org.springframework.security.core.Authentication;
 import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
+import ru.dosport.entities.User;
 import ru.dosport.security.JwtUser;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * Сервис пользователей
  */
 public interface UserService {
+
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
      * User getById(Long id) найти объект по параметру
@@ -50,6 +52,14 @@ public interface UserService {
      * @return пользователь
      */
     UserDto getDtoByAuthentication(Authentication authentication);
+
+    /**
+     * Найти пользователя по данным авторизации
+     *
+     * @param authentication данные авторизации
+     * @return пользователь
+     */
+    User getByAuthentication(Authentication authentication);
 
     /**
      * Найти Jwt пользователя
@@ -108,10 +118,10 @@ public interface UserService {
     /**
      * Удалить пользователя по его идентификатору
      *
-     * @param id идентификатор пользователя
+     * @param authentication данные авторизации
      * @return удален ли пользователь
      */
-    boolean deleteById(Long id);
+    boolean deleteByAuthentication(Authentication authentication);
 
     /**
      * Активировать пользователя
@@ -127,7 +137,7 @@ public interface UserService {
      * @param authentication данные авторизации
      * @return список пользователей
      */
-    List<UserDto> getUserFriendsDtoByAuthentication(Authentication authentication);
+    List<UserDto> getSubscribesByAuthentication(Authentication authentication);
 
     /**
      * Найти список пользователей, которые добавили пользователя в друзья по данным авторизации
@@ -135,19 +145,19 @@ public interface UserService {
      * @param authentication данные авторизации
      * @return список пользователей
      */
-    List<UserDto> getRelatedUsersDtoByAuthentication(Authentication authentication);
+    List<UserDto> getSubscribersByAuthentication(Authentication authentication);
 
     /**
      * Добавить пользователя в список его друзей по данным авторизации и id друга
      *
      * @param authentication данные авторизации
      */
-    boolean addUserToFriendsByAuthentication(Long friendId, Authentication authentication);
+    boolean addSubscribeByAuthentication(Long friendId, Authentication authentication);
 
     /**
      * Удалить пользователя из списка его друзей  по данным авторизации и id друга
      *
      * @param authentication данные авторизации
      */
-    boolean deleteUserFromFriendsByAuthentication(Long friendId, Authentication authentication);
+    boolean deleteSubscribeByAuthentication(Long friendId, Authentication authentication);
 }

@@ -25,11 +25,9 @@ public class EventMessage {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
-
-    @Column(name = "user_name")
-    private String userName;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(name = "text", nullable = false)
     private String text;

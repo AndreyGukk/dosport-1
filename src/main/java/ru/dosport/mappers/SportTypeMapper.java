@@ -4,11 +4,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
-import ru.dosport.dto.EventDto;
-import ru.dosport.dto.EventRequest;
 import ru.dosport.dto.SportTypeDto;
-import ru.dosport.entities.Event;
 import ru.dosport.entities.SportType;
+import ru.dosport.entities.UserSportType;
 
 import java.util.List;
 
@@ -31,4 +29,8 @@ public interface SportTypeMapper {
     SportType mapDtoToEntity(SportTypeDto dto);
 
     List<SportType> mapDtoToEntity(List<SportTypeDto> dtos);
+
+    SportTypeDto mapEntityToDto(UserSportType entity);
+
+    List<SportTypeDto> mapUserEntityToDto(List<UserSportType> entities);
 }

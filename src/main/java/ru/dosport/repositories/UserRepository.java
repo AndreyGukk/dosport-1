@@ -34,6 +34,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Найти список пользователей, которые добавили пользователя в друзья
      */
-    @Query (value = "SELECT s FROM users_friends s WHERE s.friend_id = ?1", nativeQuery = true)
-    List<User> findPossibleFriendsByUserId(long userId);
+    @Query (value = "SELECT s FROM user_subscribes s WHERE s.friend_id = ?1", nativeQuery = true)
+    List<User> findSubscribersByUserId(long userId);
 }

@@ -33,7 +33,7 @@ public class ReviewDto {
     @Size(min = 2, max = 50)
     @NotBlank(message = DATA_NOT_BLANK + "Полное имя пользователя")
     @ApiModelProperty(notes = "Имя пользователя", dataType = "String", required = true, position = 2)
-    private String userFullName;
+    private String username;
 
     @NotNull(message = DATA_NOT_BLANK + "Индентификатор площадки")
     @ApiModelProperty(notes = "Идентификатор спортивной площадки", dataType = "Long", example = "1", required = true, position = 3)

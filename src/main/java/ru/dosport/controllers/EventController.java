@@ -111,7 +111,7 @@ public class EventController {
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
-    /**
+    /*
      * Методы работающие с мероприятиями пользователя
      */
 
@@ -140,7 +140,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.getAllDtoByAuth(authentication));
     }
 
-    /**
+    /*
      * Методы, работающие с участниками мероприятия
      */
 
@@ -203,7 +203,7 @@ public class EventController {
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
-    /**
+    /*
      * Методы, работающие с сообщениями мероприятий
      */
 

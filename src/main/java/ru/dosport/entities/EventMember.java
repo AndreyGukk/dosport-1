@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "event_members")
+@Table(name = "event_users")
 public class EventMember {
 
     @Id

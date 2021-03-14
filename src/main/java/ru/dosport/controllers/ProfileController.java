@@ -5,14 +5,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.dosport.dto.*;
+import ru.dosport.dto.ErrorDto;
+import ru.dosport.dto.PasswordRequest;
+import ru.dosport.dto.UserDto;
 import ru.dosport.services.api.UserService;
-import ru.dosport.services.api.UserSportTypeService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,7 +23,7 @@ import static ru.dosport.helpers.Roles.ROLE_USER;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/profile")
+@RequestMapping(value = "/api/v1/profile", produces = "application/json")
 @RequiredArgsConstructor
 @Api(value = "/api/v1/profile", tags = {"Контроллер Профиля пользователя"})
 public class ProfileController {
@@ -33,22 +33,21 @@ public class ProfileController {
 
     // Необходимые сервисы
     private final UserService userService;
-    private final UserSportTypeService userSportTypeService;
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @GetMapping(value = "", produces = DATA_TYPE)
+    @GetMapping(value = "")
     @ApiOperation(value = "Отображает собственный профиль авторизованного пользователя")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
-    public ResponseEntity<UserDto> readUser(Authentication authentication) {
+    public ResponseEntity<UserDto> readProfile(Authentication authentication) {
         return ResponseEntity.ok(userService.getDtoByAuthentication(authentication));
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @PatchMapping(value = "", produces = DATA_TYPE, consumes = DATA_TYPE)
+    @PatchMapping(value = "", consumes = DATA_TYPE)
     @ApiOperation(value = "Изменяет собственный профиль авторизованного пользователя")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
@@ -56,132 +55,102 @@ public class ProfileController {
             @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
-    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto,
-                                              Authentication authentication) {
+    public ResponseEntity<UserDto> updateProfile(@Valid @RequestBody UserDto userDto,
+                                                     Authentication authentication) {
         return ResponseEntity.ok(userService.update(userDto, authentication));
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @GetMapping(value = "/{id}", produces = DATA_TYPE)
-    @ApiOperation(value = "Возваращает пользователя по его id")
+    @GetMapping(value = "/{id}")
+    @ApiOperation(value = "Отображает профиль пользователя по его id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
             @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
-    public ResponseEntity<UserDto> readUserById(@Valid @PathVariable Long id) {
+    public ResponseEntity<UserDto> readProfileById(@Valid @PathVariable Long id) {
         return ResponseEntity.ok(userService.getDtoById(id));
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @PatchMapping(value = "/password", produces = DATA_TYPE, consumes = DATA_TYPE)
+    @PatchMapping(value = "/password", consumes = DATA_TYPE)
     @ApiOperation(value = "Изменяет пароль авторизованного пользователя")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST, response = boolean.class),
             @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
     })
-    public ResponseEntity<?> updateUserPassword(@Valid @RequestBody PasswordRequest passwordRequest,
-                                                Authentication authentication) {
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody PasswordRequest passwordRequest,
+                                            Authentication authentication) {
         return userService.updatePassword(passwordRequest, authentication) ?
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @GetMapping(value = "/friends", produces = DATA_TYPE)
-    @ApiOperation(value = "Отображает список друзей пользователя")
+    @DeleteMapping(value = "", consumes = DATA_TYPE)
+    @ApiOperation(value = "Полность удаляет профиль и все данные авторизованного пользователя")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
-            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
-            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class)
     })
-    public ResponseEntity<List<UserDto>> readUserFriends(Authentication authentication) {
-        return ResponseEntity.ok(userService.getUserFriendsDtoByAuthentication(authentication));
+    public ResponseEntity<?> deleteProfile(Authentication authentication) {
+        return ResponseEntity.ok(userService.deleteByAuthentication(authentication));
     }
 
-    @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @GetMapping(value = "/relations", produces = DATA_TYPE)
-    @ApiOperation(value = "Отображает список пользователей, которые добавили пользователя в друзья")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
-            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
-            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
-    })
-    public ResponseEntity<List<UserDto>> readRelatedUsers(Authentication authentication) {
-        return ResponseEntity.ok(userService.getRelatedUsersDtoByAuthentication(authentication));
-    }
-
-    @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @PatchMapping(value = "/friends/{friendId}", produces = DATA_TYPE)
-    @ApiOperation(value = "Добавляет в список друзей пользователя другого пользователя по id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST, response = boolean.class),
-            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
-            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
-            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
-    })
-    public ResponseEntity<?> addUserToFriends(@Valid @PathVariable Long friendId,
-                                              Authentication authentication) {
-        return ResponseEntity.ok(userService.addUserToFriendsByAuthentication(friendId, authentication));
-    }
-
-    @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @DeleteMapping(value = "/friends/{friendId}", produces = DATA_TYPE)
-    @ApiOperation(value = "Удаляет из списка друзей пользователя другого пользователя по id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST, response = boolean.class),
-            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
-            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
-            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
-    })
-    public ResponseEntity<?> deleteUserFromFriends(@Valid @PathVariable Long friendId,
-                                                   Authentication authentication) {
-        return ResponseEntity.ok(userService.deleteUserFromFriendsByAuthentication(friendId, authentication));
-    }
-
-    /**
-     * Методы, относящиеся к видам спорта (навыкам) пользователя
+    /*
+     * Методы относящиеся к подпискам и подписчикам пользователя
      */
 
-    @ApiOperation(value = "Выводит список навыков пользователся по id пользователя")
-    @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @GetMapping("/sporttype/{id}")
-    public ResponseEntity<List<UserSportTypeDto>> readAllSportTypesByUserId(@PathVariable("userId") long id) {
-        return new ResponseEntity<>(userSportTypeService.getAllDtoByUserId(id), HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Выводит список навыков пользователя, для которых не установлен уровень")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping(value = "/subscribers")
+    @ApiOperation(value = "Отображает подписчиков - список пользователей, которые подписаны на данного пользователя")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
-            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class)
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
-    @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @GetMapping("/sporttype/unused")
-    public ResponseEntity<List<SportTypeDto>> readEmptySportTypesByUser(Authentication authentication) {
-        return new ResponseEntity<>(userSportTypeService.getEmptyDtoByUser(authentication), HttpStatus.OK);
+    public ResponseEntity<List<UserDto>> readSubscribers(Authentication authentication) {
+        return ResponseEntity.ok(userService.getSubscribersByAuthentication(authentication));
     }
 
-    @ApiOperation(value = "Выводит список собственных навыков пользователся")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @GetMapping(value = "/subscribes")
+    @ApiOperation(value = "Отображает подписки - список пользователей, на которых подписался данный пользователь")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
-            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class)
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
-    @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @GetMapping("/sporttype")
-    public ResponseEntity<List<UserSportTypeDto>> readAllSportTypes(Authentication authentication) {
-        return new ResponseEntity<>(userSportTypeService.getAllDtoByUserAuthentication(authentication), HttpStatus.OK);
+    public ResponseEntity<List<UserDto>> readSubscribes(Authentication authentication) {
+        return ResponseEntity.ok(userService.getSubscribesByAuthentication(authentication));
     }
 
-    @ApiOperation(value = "Изменяет список навыков пользователся")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @PatchMapping(value = "/subscribes/{friendId}")
+    @ApiOperation(value = "Добавляет в подписки пользователя по id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
-            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class)
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST, response = boolean.class),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
-    @Secured(value = {ROLE_USER})
-    @PutMapping("/sporttype")
-    public ResponseEntity<List<UserSportTypeDto>> updateUserSportTypesByUserId(@Valid List<UserSportTypeDto> dtoList,
-                                                                               Authentication authentication) {
-        return new ResponseEntity<>(userSportTypeService.update(dtoList, authentication), HttpStatus.OK);
+    public ResponseEntity<?> addSubscribe(@Valid @PathVariable Long friendId,
+                                          Authentication authentication) {
+        return ResponseEntity.ok(userService.addSubscribeByAuthentication(friendId, authentication));
+    }
+
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @DeleteMapping(value = "/subscribes/{friendId}")
+    @ApiOperation(value = "Удаляет из подписок пользователя по id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST, response = boolean.class),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
+            @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
+    })
+    public ResponseEntity<?> deleteSubscribe(@Valid @PathVariable Long friendId,
+                                             Authentication authentication) {
+        return ResponseEntity.ok(userService.deleteSubscribeByAuthentication(friendId, authentication));
     }
 }

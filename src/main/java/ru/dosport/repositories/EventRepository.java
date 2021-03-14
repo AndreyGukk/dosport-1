@@ -24,7 +24,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
      * @param to дата конца интервала времени
      * @return список UserEvent
      */
-    @Query(value = "SELECT s FROM events e JOIN event_members m " +
+    @Query(value = "SELECT s FROM events e JOIN event_users m " +
             "ON e.id = m.event_id " +
             "JOIN sport_types s " +
             "ON s.id = e.sportType " +
@@ -42,7 +42,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
      * @param organizerId идентификатор организатора
      * @return список Event
      */
-    @Query(value = "SELECT s FROM events e JOIN event_members m " +
+    @Query(value = "SELECT s FROM events e JOIN event_users m " +
             "ON e.id = m.event_id " +
             "JOIN sport_types s " +
             "ON s.id = e.sport_type_id " +
@@ -59,14 +59,14 @@ public interface EventRepository extends JpaRepository<Event, Long> {
      * @param userId id пользователя
      * @return список UserEvent
      */
-    @Query(value = "SELECT s FROM events e JOIN event_members m " +
+    @Query(value = "SELECT s FROM events e JOIN event_users m " +
             "ON e.id = m.event_id " +
             "JOIN sport_types s " +
             "ON s.id = e.sportType " +
             "WHERE m.user_id = :userId ", nativeQuery = true)
     List <UserEvent> findAllByUserId(Long userId);
 
-    @Query(value = "SELECT s FROM events e JOIN event_members m " +
+    @Query(value = "SELECT s FROM events e JOIN event_users m " +
             "AND e.date BETWEEN  :from  AND  :to ", nativeQuery = true)
     List<Event> findAllByTimeFromTo(LocalDateTime from, LocalDateTime to);
 

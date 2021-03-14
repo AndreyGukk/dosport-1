@@ -56,6 +56,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public User getByAuthentication(Authentication authentication) {
+        return findById(getUserId(authentication));
+    }
+
+    @Override
     public JwtUser getJwtByUsername(String username) {
         return userMapper.mapEntityToJwt(findByUsername(username));
     }
@@ -117,7 +122,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deleteByAuthentication(Authentication authentication) {
+        Long id = getUserId(authentication);
         userRepository.deleteById(id);
         return userRepository.existsById(id);
     }
@@ -129,31 +135,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<UserDto> getUserFriendsDtoByAuthentication(Authentication authentication) {
+    public List<UserDto> getSubscribesByAuthentication(Authentication authentication) {
         User user = findById(getUserId(authentication));
-        return userMapper.mapEntityToDto(user.getFriends());
+        return userMapper.mapEntityToDto(user.getSubscribes());
     }
 
     @Override
-    public List<UserDto> getRelatedUsersDtoByAuthentication(Authentication authentication) {
-        List<User> users = userRepository.findPossibleFriendsByUserId(getUserId(authentication));
+    public List<UserDto> getSubscribersByAuthentication(Authentication authentication) {
+        List<User> users = userRepository.findSubscribersByUserId(getUserId(authentication));
         return userMapper.mapEntityToDto(users);
     }
 
     @Transactional
     @Override
-    public boolean addUserToFriendsByAuthentication(Long friendId, Authentication authentication) {
+    public boolean addSubscribeByAuthentication(Long friendId, Authentication authentication) {
         User user = findById(getUserId(authentication));
-        user.getFriends().add(findById(friendId));
+        user.getSubscribes().add(findById(friendId));
         userRepository.save(user);
         return true;
     }
 
     @Transactional
     @Override
-    public boolean deleteUserFromFriendsByAuthentication(Long friendId, Authentication authentication) {
+    public boolean deleteSubscribeByAuthentication(Long friendId, Authentication authentication) {
         User user = findById(getUserId(authentication));
-        user.getFriends().remove(findById(friendId));
+        user.getSubscribes().remove(findById(friendId));
         userRepository.save(user);
         return true;
     }

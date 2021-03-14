@@ -27,8 +27,8 @@ public class Review {
     private Long userId;
 
     //Полное имя автора
-    @Column(name = "user_full_name", nullable = false)
-    private String userFullName;
+    @Column(name = "user_name", nullable = false)
+    private String username;
 
     // Площадка отзыва
     @Column(name = "sportground_id", nullable = false)

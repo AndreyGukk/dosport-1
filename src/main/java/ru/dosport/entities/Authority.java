@@ -29,10 +29,8 @@ public class Authority implements GrantedAuthority {
     private String authority;
 
     @ManyToMany
-    @JoinTable(name = "users_authorities",
-            // Внешний ключ для Authority
+    @JoinTable(name = "user_authorities",
             joinColumns = @JoinColumn(name = "authority_id"),
-            // Внешний ключ для другой стороны, Authority в таблице users_authorities
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users = new ArrayList<>();
 }

@@ -117,7 +117,7 @@ public class SportGroundServiceImp implements SportGroundService {
     }
 
     @Override
-    public List<SportGroundDto> getAllDtoByAuth(Authentication authentication) {
+    public List<SportGroundDto> getFavoriteSportGroundsByAuth(Authentication authentication) {
         List<SportGroundDto> result = new ArrayList<>();
         groundMapper.mapUserSportGroundEntityToDto(userSportGroundRepository
                 .findAllByUserId(userService.getIdByAuthentication(authentication)))
@@ -126,17 +126,17 @@ public class SportGroundServiceImp implements SportGroundService {
     }
 
     @Override
-    public UserSportGroundDto saveUserSportGroundDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto) {
+    public UserSportGroundDto saveFavoriteSportGroundByAuthAndId(Authentication authentication, Long id) {
         UserSportGround userSportGround = UserSportGround.builder()
                 .userId(userService.getIdByAuthentication(authentication))
-                .sportGroundId(sportGroundDto.getSportGroundId())
+                .sportGroundId(id)
                 .build();
         return groundMapper.mapUserSportGroundEntityToDto(userSportGroundRepository.save(userSportGround));
 
     }
 
     @Override
-    public boolean deleteFavoritesBySportGroundId(Long id, Authentication authentication) {
+    public boolean deleteFavoriteSportGroundByAuthAndId(Authentication authentication, Long id) {
         userSportGroundRepository.deleteByUserIdAndSportGroundId(userService.getIdByAuthentication(authentication), id);
         return !userSportGroundRepository.findByUserIdAndSportGroundId(userService.getIdByAuthentication(authentication), id).isPresent();
     }

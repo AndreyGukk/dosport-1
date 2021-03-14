@@ -56,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
             var user = userService.getDtoByAuthentication(authentication);
             var review = Review.builder()
                     .userId(user.getId())
-                    .userFullName(concatenationUserName(user))
+                    .username(user.getUsername())
                     .text(request.getText())
                     .sportGroundId(sportGroundId)
                     .date(LocalDate.now())
@@ -74,7 +74,7 @@ public class ReviewServiceImpl implements ReviewService {
                 var review = findById(reviewId);
                 var user = userService.getDtoByAuthentication(authentication);
                 review.setText(request.getText());
-                review.setUserFullName(concatenationUserName(user));
+                review.setUsername(user.getUsername());
                 return mapper.mapEntityToDto(repository.save(review));
             }
         }
@@ -102,9 +102,5 @@ public class ReviewServiceImpl implements ReviewService {
         if (repository.findByIdAndUserId(reviewId, userService.getIdByAuthentication(authentication)).isPresent()) {
             return true;
         } else throw new AccessDeniedException("Пользователь не является автором отзыва");
-    }
-
-    private String concatenationUserName(UserDto userDto) {
-        return String.format("%s %s", userDto.getFirstName(), userDto.getLastName());
     }
 }

@@ -79,23 +79,23 @@ public interface SportGroundService {
      * @param authentication данные авторизации
      * @return список
      */
-    List<SportGroundDto> getAllDtoByAuth(Authentication authentication);
+    List<SportGroundDto> getFavoriteSportGroundsByAuth(Authentication authentication);
 
     /**
      * Добавление площадки в избранное
-     * @param sportGroundDto площадка
+     * @param id индентификатор площадки
      * @param authentication данные авторизации
      * @return площадка
      */
-    UserSportGroundDto saveUserSportGroundDtoByAuth(Authentication authentication, SportGroundDto sportGroundDto);
+    UserSportGroundDto saveFavoriteSportGroundByAuthAndId(Authentication authentication, Long id);
 
     /**
      * Удаление площадки из избранного
-     * @param id площадка
+     * @param id индентификатор площадки
      * @param authentication данные авторизации
      * @return существует ли площадка
      */
-    boolean deleteFavoritesBySportGroundId(Long id, Authentication authentication);
+    boolean deleteFavoriteSportGroundByAuthAndId(Authentication authentication, Long id);
 
     /**
      * Проверяет существование площадки

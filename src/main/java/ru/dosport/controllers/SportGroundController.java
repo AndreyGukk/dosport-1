@@ -93,31 +93,35 @@ public class SportGroundController {
         return ResponseEntity.ok(sportGroundService.update(id, request, authentication));
     }
 
+    /*
+     * Методы работы с Избранными площадками пользователя
+     */
+
     @ApiOperation("Выводит список избранных площадок пользователя")
     @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @GetMapping ("/my")
-    public ResponseEntity<List<SportGroundDto>> readAllSportGroundsByAuth (Authentication authentication) {
-        return ResponseEntity.ok(sportGroundService.getAllDtoByAuth(authentication));
+    @GetMapping ("/favorites")
+    public ResponseEntity<List<SportGroundDto>> readFavoriteSportGroundsByAuth (Authentication authentication) {
+        return ResponseEntity.ok(sportGroundService.getFavoriteSportGroundsByAuth(authentication));
     }
 
     @ApiOperation("Добавляет площадку в список избранных")
     @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @PostMapping ("/my")
-    public ResponseEntity<UserSportGroundDto> createUserSportGroundsByAuth (@RequestBody SportGroundDto sportGroundDto,
-                                                                            Authentication authentication) {
-        return ResponseEntity.ok(sportGroundService.saveUserSportGroundDtoByAuth(authentication, sportGroundDto));
+    @PostMapping ("/favorites/{id}")
+    public ResponseEntity<UserSportGroundDto> addSportGroundsToFavoritesByAuthAndId (@PathVariable Long id,
+                                                                                     Authentication authentication) {
+        return ResponseEntity.ok(sportGroundService.saveFavoriteSportGroundByAuthAndId(authentication, id));
     }
 
     @ApiOperation("Удаляет площадку из списка избранных по индексу площадки")
     @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @DeleteMapping("/my/{id}")
-    public ResponseEntity<?> deleteBySportGroundId (@PathVariable Long id,
-                                                    Authentication authentication) {
-        return sportGroundService.deleteFavoritesBySportGroundId(id, authentication)?
-                ResponseEntity.badRequest().build() : ResponseEntity.noContent().build();
+    @DeleteMapping("/favorites/{id}")
+    public ResponseEntity<?> deleteSportGroundFromFavoritesAndId (@PathVariable Long id,
+                                                                  Authentication authentication) {
+        return sportGroundService.deleteFavoriteSportGroundByAuthAndId(authentication, id)?
+                ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 
-    /**
+    /*
      * Методы работы с Отзывами пользователя о спортивных площадках
      */
 
@@ -147,7 +151,7 @@ public class SportGroundController {
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @PostMapping("/{sportGroundsId}/review")
+    @PostMapping("/{sportGroundsId}/reviews")
     public ResponseEntity<ReviewDto> createReview(@PathVariable Long sportGroundsId,
                                                   @Valid @RequestBody ReviewRequest request,
                                                   Authentication authentication) {
@@ -161,7 +165,7 @@ public class SportGroundController {
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @PutMapping("/{sportGroundsId}/review/{reviewId}")
+    @PatchMapping("/{sportGroundsId}/reviews/{reviewId}")
     public ResponseEntity<ReviewDto> updateReview(@PathVariable Long sportGroundsId,
                                                   @PathVariable Long reviewId,
                                                   @Valid @RequestBody ReviewRequest request,
@@ -176,7 +180,7 @@ public class SportGroundController {
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @Secured(value = {ROLE_USER, ROLE_ADMIN})
-    @DeleteMapping("/{sportGroundsId}/review/{reviewId}")
+    @DeleteMapping("/{sportGroundsId}/reviews/{reviewId}")
     public ResponseEntity<?> deleteReview(@PathVariable Long sportGroundsId,
                                           @PathVariable Long reviewId,
                                           Authentication authentication) {

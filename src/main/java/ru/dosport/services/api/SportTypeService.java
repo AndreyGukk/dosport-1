@@ -1,6 +1,6 @@
 package ru.dosport.services.api;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportType;
 
@@ -57,4 +57,47 @@ public interface SportTypeService {
      * @return dto вида спорта
      */
     SportTypeDto update(Short id, String tittle);
+
+    /*
+     * Методы, относящиеся к предпочитаемым видам спорта пользователя
+     */
+
+    /**
+     * Выдает список навыков пользователя по id
+     *
+     * @return список навыков пользователя
+     */
+    List<SportTypeDto> getAllDtoByUserId(Long id);
+
+    /**
+     * Выдает список навыков пользователя по аутентификации
+     *
+     * @return список навыков пользователя
+     */
+    List<SportTypeDto> getAllDtoByUserAuthentication(Authentication authentication);
+
+    /**
+     * Создает новый список навыков пользователя по id, если его нет
+     *
+     * @return список навыков пользователя по id
+     */
+    List<SportTypeDto> update(List<SportTypeDto> dtoList, Authentication authentication);
+
+    /**
+     * Создать вид спорта пользователя
+     *
+     * @param userId логин пользователя
+     * @param sportTypeId логин пользователя
+     * @param level логин пользователя
+     * @return новый спорт пользователя, сохраненный в репозиторий
+     */
+    SportTypeDto save(long userId, short sportTypeId, short level);
+
+    /**
+     * Удаление из репозитория видов спорта пользователя
+     *
+     * @param sportTypeId - вид спорта
+     * @return false, если строк по userId не найдено
+     */
+    boolean delete(Authentication authentication, short sportTypeId);
 }
