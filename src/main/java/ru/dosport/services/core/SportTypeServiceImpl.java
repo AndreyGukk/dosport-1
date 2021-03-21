@@ -5,12 +5,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportType;
-import ru.dosport.entities.UserSportType;
+import ru.dosport.entities.User;
 import ru.dosport.exceptions.DataNotFoundException;
-import ru.dosport.exceptions.DataNotSavedException;
 import ru.dosport.mappers.SportTypeMapper;
 import ru.dosport.repositories.SportTypeRepository;
-import ru.dosport.repositories.UserSportTypeRepository;
 import ru.dosport.services.api.SportTypeService;
 import ru.dosport.services.api.UserService;
 
@@ -18,7 +16,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static ru.dosport.helpers.Messages.*;
+import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 
 /**
  * Реализация сервиса Видов спорта.
@@ -27,15 +25,14 @@ import static ru.dosport.helpers.Messages.*;
 @RequiredArgsConstructor
 public class SportTypeServiceImpl implements SportTypeService {
 
-    // Необходимые мапперы и репозитории
+    // Необходимые сервисы, мапперы и репозитории
     private final SportTypeMapper sportTypeMapper;
     private final SportTypeRepository repository;
-    private final UserSportTypeRepository userSportTypeRepository;
     private final UserService userService;
 
     @Override
     public SportTypeDto getSportTypeDtoById(Short id) {
-        return sportTypeMapper.mapEntityToDto(findById(id));
+        return sportTypeMapper.mapEntityToDto(findSportById(id));
     }
 
     @Override
@@ -51,10 +48,11 @@ public class SportTypeServiceImpl implements SportTypeService {
 
     @Transactional
     @Override
-    public SportTypeDto save(String sportTitle) {
+    public SportTypeDto addSportByAuthentication(String sportTitle) {
         Optional<SportType> sport = repository.findByTitle(sportTitle);
         return sport.isPresent() ?
-                sportTypeMapper.mapEntityToDto(sport.get()) : sportTypeMapper.mapEntityToDto(repository.save(new SportType(sportTitle)));
+                sportTypeMapper.mapEntityToDto(sport.get()) :
+                sportTypeMapper.mapEntityToDto(repository.save(new SportType(sportTitle)));
     }
 
     @Override
@@ -65,7 +63,7 @@ public class SportTypeServiceImpl implements SportTypeService {
 
     @Override
     public SportTypeDto update(Short id, String tittle) {
-        SportType sportType = findById(id);
+        SportType sportType = findSportById(id);
         sportType.setTitle(tittle);
         return sportTypeMapper.mapEntityToDto(repository.save(sportType));
     }
@@ -75,57 +73,46 @@ public class SportTypeServiceImpl implements SportTypeService {
      */
 
     @Override
-    public List<SportTypeDto> getAllDtoByUserId(Long id) {
-        return sportTypeMapper.mapUserEntityToDto(userSportTypeRepository.findAllByUserId(id));
+    public List<SportTypeDto> getAllSportDtoByAuthentication(Authentication authentication) {
+        return sportTypeMapper.mapEntityToDto(findUserByAuthentication(authentication).getSports());
     }
 
     @Override
-    public List<SportTypeDto> getAllDtoByUserAuthentication(Authentication authentication) {
-        return sportTypeMapper.mapUserEntityToDto(
-                userSportTypeRepository.findAllByUserId(userService.getIdByAuthentication(authentication)));
+    public List<SportTypeDto> updateSportsByAuthentication(List<SportTypeDto> dtoList, Authentication authentication) {
+        List<SportType> sportTypeList = repository.findAllById(sportTypeMapper.mapDtoToShort(dtoList));
+        User user = findUserByAuthentication(authentication);
+        user.getSports().addAll(sportTypeList);
+        return sportTypeMapper.mapEntityToDto(userService.save(user).getSports());
     }
 
-    // TODO
+    @Transactional
     @Override
-    public List<SportTypeDto> update(List<SportTypeDto> dtoList, Authentication authentication) {
-        return getAllDtoByUserAuthentication(authentication);
+    public List<SportTypeDto> addSportByAuthentication(Short sportTypeId, Authentication authentication) {
+        User user = findUserByAuthentication(authentication);
+        user.getSports().add(findSportById(sportTypeId));
+        return sportTypeMapper.mapEntityToDto(userService.save(user).getSports());
     }
 
-    private UserSportType getByUserIdAndSportTypeId(long userId, short sportTypeId) {
-        return userSportTypeRepository.findByUserIdAndSportTypeId(userId, sportTypeId).orElseThrow(
-                () -> new DataNotFoundException(
-                        String.format(USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE, sportTypeId, userId)));
-    }
-
+    @Transactional
     @Override
-    public SportTypeDto save(long userId, short sportTypeId, short level) {
-        return sportTypeMapper.mapEntityToDto(saveOrUpdate(userId, sportTypeId, level));
-    }
-
-    @Override
-    public boolean delete(Authentication authentication, short sportTypeId) {
-        userSportTypeRepository.deleteBySportTypeId(userService.getIdByAuthentication(authentication), sportTypeId);
-        return getByUserIdAndSportTypeId(userService.getIdByAuthentication(authentication), sportTypeId) == null;
+    public List<SportTypeDto> deleteSportByAuthentication(Short sportTypeId, Authentication authentication) {
+        User user = findUserByAuthentication(authentication);
+        user.getSports().remove(findSportById(sportTypeId));
+        return sportTypeMapper.mapEntityToDto(userService.save(user).getSports());
     }
 
     /**
-     * Сохранить или обновить сущность
+     * Найти вид спорта по идентификатору
      */
-    private UserSportType saveOrUpdate(long userId, short sportTypeId, short level) {
-        if (userSportTypeRepository.findByUserIdAndSportTypeId(userId, sportTypeId).isPresent()) {
-            return userSportTypeRepository.update(userId, sportTypeId, level).orElseThrow(
-                    () -> new DataNotSavedException(DATA_WAS_NOT_SAVED));
-        } else {
-            return userSportTypeRepository.save(userId, sportTypeId, level).orElseThrow(
-                    () -> new DataNotSavedException(DATA_WAS_NOT_SAVED));
-        }
+    private SportType findSportById(Short id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
     }
 
     /**
-     * Найти по идентификатору
+     * Найти пользователя по данным авторизации
      */
-    private SportType findById(Short id) {
-        return repository.findById(id).orElseThrow(
-                () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
+    private User findUserByAuthentication(Authentication authentication) {
+        return userService.getByAuthentication(authentication);
     }
 }

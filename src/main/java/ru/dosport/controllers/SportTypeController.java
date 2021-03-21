@@ -1,36 +1,30 @@
 package ru.dosport.controllers;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.ErrorDto;
 import ru.dosport.dto.SportTypeDto;
 import ru.dosport.services.api.SportTypeService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 import static ru.dosport.helpers.Messages.*;
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
-import static ru.dosport.helpers.Roles.ROLE_USER;
 
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/sporttype", produces = "application/json")
-@Api(value = "/api/v1/profile", tags = {"Контроллер Видов спорта"})
+@Api(value = "/api/v1/profile", tags = {"Контроллер Видов спорта"}, produces = "application/json")
 public class SportTypeController {
 
     // Необходимые сервисы
     private final SportTypeService sportTypeService;
 
-    @ApiOperation(value = "Отображает данные видов спорта")
+    @ApiOperation(value = "Отображает список всех видов спорта")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST)
     })
@@ -44,80 +38,54 @@ public class SportTypeController {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<SportTypeDto> readSportType(@PathVariable Short id) {
-        return ResponseEntity.ok(sportTypeService.getSportTypeDtoById(id));
+    @GetMapping("/{sportTypeId}")
+    public ResponseEntity<SportTypeDto> readSportType(
+            @ApiParam("Идентификатор вида спорта") @PathVariable Short sportTypeId
+    ) {
+        return ResponseEntity.ok(sportTypeService.getSportTypeDtoById(sportTypeId));
     }
 
-    @ApiOperation(value = "Создаёт вид спорта")
+    @ApiOperation(value = "Создаёт вид спорта (только для Администратора)")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
-            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
-    })
-    @PostMapping
-    public ResponseEntity<?> createSportType(@RequestBody String sportTitle) {
-        return sportTypeService.save(sportTitle)  != null ?
-                ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
-    }
-
-    @ApiOperation(value = "Удаляет вид спорта")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
     })
     @Secured(value = {ROLE_ADMIN})
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSportType(@PathVariable Short id) {
-        return sportTypeService.deleteById(id) ?
+    @PostMapping
+    public ResponseEntity<SportTypeDto> createSportType(
+            @ApiParam("Название вида спорта") @RequestBody String sportTitle
+    ) {
+        return ResponseEntity.ok(sportTypeService.addSportByAuthentication(sportTitle));
+    }
+
+    @ApiOperation(value = "Удаляет вид спорта (только для Администратора)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
+    })
+    @Secured(value = {ROLE_ADMIN})
+    @DeleteMapping("/{sportTypeId}")
+    public ResponseEntity<?> deleteSportType(
+            @ApiParam("Идентификатор вида спорта") @PathVariable Short sportTypeId
+    ) {
+        return sportTypeService.deleteById(sportTypeId) ?
                 ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 
-    @ApiOperation(value = "Обновляет вид спорта")
+    @ApiOperation(value = "Обновляет вид спорта (только для Администратора)")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @Secured(value = {ROLE_ADMIN})
-    @PutMapping("/{id}")
-    public ResponseEntity<SportTypeDto> updateSportType(@PathVariable Short id, @RequestBody String tittle) {
-        return ResponseEntity.ok(sportTypeService.update(id, tittle));
-    }
-
-    /*
-     * Методы, относящиеся к предпочитаемым видам спорта пользователя
-     */
-
-    @ApiOperation(value = "Выводит список предпочитаемых видов спорта пользователя")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
-            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class)
-    })
-    @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @GetMapping("/sports")
-    public ResponseEntity<List<SportTypeDto>> readSports(Authentication authentication) {
-        return ResponseEntity.ok(sportTypeService.getAllDtoByUserAuthentication(authentication));
-    }
-
-    @ApiOperation(value = "Выводит список предпочитаемых видов спорта по id пользователя")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
-            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class)
-    })
-    @Secured(value = {ROLE_ADMIN, ROLE_USER})
-    @GetMapping("/sports/{id}")
-    public ResponseEntity<List<SportTypeDto>> readSportsByUserId(@PathVariable("userId") long id) {
-        return ResponseEntity.ok(sportTypeService.getAllDtoByUserId(id));
-    }
-
-    @ApiOperation(value = "Изменяет список предпочитаемых видов спорта пользователя")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
-            @ApiResponse(code = 403, message = ACCESS_DENIED, response = ErrorDto.class)
-    })
-    @Secured(value = {ROLE_USER})
-    @PatchMapping("/sports")
-    public ResponseEntity<List<SportTypeDto>> updateSportsByUserId(@Valid List<SportTypeDto> dtoList,
-                                                                   Authentication authentication) {
-        return ResponseEntity.ok(sportTypeService.update(dtoList, authentication));
+    @PutMapping("/{sportTypeId}")
+    public ResponseEntity<SportTypeDto> updateSportType(
+            @ApiParam("Идентификатор вида спорта") @PathVariable Short sportTypeId,
+            @ApiParam("Название вида спорта") @RequestBody String sportTittle
+    ) {
+        return ResponseEntity.ok(sportTypeService.update(sportTypeId, sportTittle));
     }
 }

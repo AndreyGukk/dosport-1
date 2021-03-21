@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.dosport.entities.UserSportGround;
-import ru.dosport.entities.UserSportType;
 
 import javax.transaction.Transactional;
 import java.util.List;

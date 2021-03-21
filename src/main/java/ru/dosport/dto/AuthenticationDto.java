@@ -5,11 +5,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-
-import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
-
 /**
  * Dto представление Данных авторизации
  */

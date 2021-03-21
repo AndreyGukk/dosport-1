@@ -38,14 +38,6 @@ public interface UserService {
     UserDto getDtoById(Long id);
 
     /**
-     * Найти пользователей по их идентификаторам
-     *
-     * @param idList список идентификаторов пользователей
-     * @return список пользователей
-     */
-    List<UserDto> getAllDtoById(List<Long> idList);
-
-    /**
      * Найти пользователя по данным авторизации
      *
      * @param authentication данные авторизации
@@ -78,13 +70,6 @@ public interface UserService {
     Long getIdByAuthentication(Authentication authentication);
 
     /**
-     * Найти всех пользователей
-     *
-     * @return список пользователей
-     */
-    List<UserDto> getAllDto();
-
-    /**
      * Проверить существование пользователя
      * @return true и false, существует, не существует
      */
@@ -97,6 +82,14 @@ public interface UserService {
      * @return новый пользователь, сохраненный в репозитории
      */
     UserDto save(UserRequest userRequest);
+
+    /**
+     * Сохранить данные пользователя
+     *
+     * @param user пользователь
+     * @return новый пользователь, сохраненный в репозитории
+     */
+    User save(User user);
 
     /**
      * Изменить данные пользователя
@@ -119,7 +112,7 @@ public interface UserService {
      * Удалить пользователя по его идентификатору
      *
      * @param authentication данные авторизации
-     * @return удален ли пользователь
+     * @return существует ли ли пользователь
      */
     boolean deleteByAuthentication(Authentication authentication);
 
@@ -131,13 +124,9 @@ public interface UserService {
      */
     String activateUser(String activationCode);
 
-    /**
-     * Найти список друзей пользователя по данным авторизации
-     *
-     * @param authentication данные авторизации
-     * @return список пользователей
+    /*
+     * Методы относящиеся к подпискам и подписчикам пользователя
      */
-    List<UserDto> getSubscribesByAuthentication(Authentication authentication);
 
     /**
      * Найти список пользователей, которые добавили пользователя в друзья по данным авторизации
@@ -148,16 +137,24 @@ public interface UserService {
     List<UserDto> getSubscribersByAuthentication(Authentication authentication);
 
     /**
+     * Найти список друзей пользователя по данным авторизации
+     *
+     * @param authentication данные авторизации
+     * @return список пользователей
+     */
+    List<UserDto> getSubscriptionsByAuthentication(Authentication authentication);
+
+    /**
      * Добавить пользователя в список его друзей по данным авторизации и id друга
      *
      * @param authentication данные авторизации
      */
-    boolean addSubscribeByAuthentication(Long friendId, Authentication authentication);
+    List<UserDto> addSubscriptionByAuthentication(Long subscriptionId, Authentication authentication);
 
     /**
      * Удалить пользователя из списка его друзей  по данным авторизации и id друга
      *
      * @param authentication данные авторизации
      */
-    boolean deleteSubscribeByAuthentication(Long friendId, Authentication authentication);
+    List<UserDto> deleteSubscriptionByAuthentication(Long subscriptionId, Authentication authentication);
 }

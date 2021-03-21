@@ -46,4 +46,5 @@ public final class Messages {
     public static final String DATA_NOT_FOUND_BY_ID = "Данные c индексом %s не найдены";
     public static final String DATA_WAS_NOT_SAVED = "Данные не сохранены по запросу ";
     public static final String DATA_NOT_FOUND = "Данные не найдены ";
+    public static final String CANNOT_SUBSCRIBE_TO_MYSELF = "Нельзя подписаться на самого себя";
 }

@@ -15,8 +15,8 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ru.dosport.helpers.MessageSwagger.PAR_EVENT_ID;
-import static ru.dosport.helpers.MessageSwagger.PAR_MESSAGE_ID;
+import static ru.dosport.helpers.SwaggerMessages.PAR_EVENT_ID;
+import static ru.dosport.helpers.SwaggerMessages.PAR_MESSAGE_ID;
 import static ru.dosport.helpers.Messages.*;
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
 import static ru.dosport.helpers.Roles.ROLE_USER;

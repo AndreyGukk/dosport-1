@@ -6,9 +6,9 @@ import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportType;
-import ru.dosport.entities.UserSportType;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Маппер, преобразующий классы SportType и SportTypeDto друг в друга
@@ -23,6 +23,8 @@ public interface SportTypeMapper {
 
     List<SportTypeDto> mapEntityToDto(List<SportType> entities);
 
+    List<SportTypeDto> mapEntityToDto(Set<SportType> entities);
+
     @Mappings({
             @Mapping(target = "id", source = "dto.sportTypeId"),
     })
@@ -30,7 +32,9 @@ public interface SportTypeMapper {
 
     List<SportType> mapDtoToEntity(List<SportTypeDto> dtos);
 
-    SportTypeDto mapEntityToDto(UserSportType entity);
+    default Short mapDtoToShort(SportTypeDto dto) {
+        return dto.getSportTypeId();
+    }
 
-    List<SportTypeDto> mapUserEntityToDto(List<UserSportType> entities);
+    List<Short> mapDtoToShort(List<SportTypeDto> entities);
 }

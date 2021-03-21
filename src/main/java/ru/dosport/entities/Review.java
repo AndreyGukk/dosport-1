@@ -23,12 +23,9 @@ public class Review {
     private Long id;
 
     // Автор отзыва
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
-
-    //Полное имя автора
-    @Column(name = "user_name", nullable = false)
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     // Площадка отзыва
     @Column(name = "sportground_id", nullable = false)

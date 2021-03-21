@@ -44,10 +44,6 @@ public class User {
     @Column(name = "birthday_date")
     private LocalDate birthdayDate;
 
-    // Скрыть дату рождения (true - дата не отображается)
-    @Column(name = "hide_birthday_date")
-    private boolean hideBirthdayDate;
-
     // Пол
     @Column(name = "gender")
     @Enumerated(EnumType.ORDINAL)
@@ -71,18 +67,18 @@ public class User {
     // Список подписок - пользователей, на которых подписался данный пользователь
     @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "user_subscribes",
+            name = "user_subscriptions",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "friend_id"))
-    private Set<User> subscribes = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "subscription_id"))
+    private Set<User> subscriptions;
 
     // Список подписчиков - пользователей, которые подписаны на данного пользователя
     @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "user_subscribes",
-            joinColumns = @JoinColumn(name = "friend_id"),
+            name = "user_subscriptions",
+            joinColumns = @JoinColumn(name = "subscription_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> subscribers = new HashSet<>();
+    private Set<User> subscribers;
 
     // Список избранных площадок
     @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
@@ -90,7 +86,7 @@ public class User {
             name = "user_sportgrounds",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "sportground_id"))
-    private Set<SportGround> sportGrounds = new HashSet<>();
+    private Set<SportGround> sportGrounds;
 
     // Список видов спорта
     @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
@@ -98,5 +94,5 @@ public class User {
             name = "user_sports",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "sport_type_id"))
-    private Set<SportGround> sports = new HashSet<>();
+    private Set<SportType> sports;
 }

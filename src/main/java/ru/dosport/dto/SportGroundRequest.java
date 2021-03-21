@@ -62,8 +62,8 @@ public class SportGroundRequest {
     private Integer rentPrice;
 
     @ApiModelProperty(notes = "Является ли площадка открытой (расположена на улице)",
-            dataType = "boolean", example = "true", position = 8)
-    private boolean opened;
+            dataType = "boolean", example = "true", required = true, position = 8)
+    private Boolean opened;
 
     @ApiModelProperty(notes = "Список инфраструктуры площадки, варианты: Не выбрано, " +
             "Раздевалка, Парковка, Трибуны, Душ, Освещение, Камера хранения, Аренда оборудования",

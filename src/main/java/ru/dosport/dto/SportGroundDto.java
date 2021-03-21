@@ -58,8 +58,8 @@ public class SportGroundDto {
     private Integer rentPrice;
 
     @ApiModelProperty(notes = "Является ли площадка открытой (расположена на улице)",
-            dataType = "boolean", example = "true", position = 9)
-    private boolean opened;
+            dataType = "boolean", example = "true", required = true, position = 9)
+    private Boolean opened;
 
     @ApiModelProperty(notes = "Список инфраструктуры площадки, варианты: Не выбрано, " +
             "Раздевалка, Парковка, Трибуны, Душ, Освещение, Камера хранения, Аренда оборудования",

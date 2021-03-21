@@ -14,9 +14,9 @@ public interface ReviewMapper {
 
     @Mappings({
             @Mapping(target = "reviewId", source = "entity.id"),
-            @Mapping(target = "userId", source = "entity.userId"),
+            @Mapping(target = "userId", source = "entity.user.id"),
             @Mapping(target = "text", source = "entity.text"),
-            @Mapping(target = "username", source = "entity.username"),
+            @Mapping(target = "username", source = "entity.user.username"),
             @Mapping(target = "sportGroundId", source = "entity.sportGroundId"),
             @Mapping(target = "date", source = "entity.date", dateFormat = "dd-MM-yyyy")
     })
@@ -26,9 +26,8 @@ public interface ReviewMapper {
 
     @Mappings({
             @Mapping(target = "id", source = "dto.reviewId"),
-            @Mapping(target = "userId", source = "dto.userId"),
+            @Mapping(target = "user", ignore = true),
             @Mapping(target = "text", source = "dto.text"),
-            @Mapping(target = "username", source = "dto.username"),
             @Mapping(target = "sportGroundId", source = "dto.sportGroundId"),
             @Mapping(target = "date", source = "dto.date", dateFormat = "dd-MM-yyyy")
     })

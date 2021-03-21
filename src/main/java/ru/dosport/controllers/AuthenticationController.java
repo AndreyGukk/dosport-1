@@ -1,9 +1,6 @@
 package ru.dosport.controllers;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +26,7 @@ import static ru.dosport.helpers.Messages.*;
 @RestController
 @RequestMapping(value = "/api/v1/auth", consumes = "application/json", produces = "application/json")
 @RequiredArgsConstructor
-@Api(value = "/api/v1/auth", tags = {"Контроллер авторизации пользователя"})
+@Api(value = "/api/v1/auth", tags = {"Контроллер Авторизации и регистрации пользователя"})
 public class AuthenticationController {
 
     // Список необходимых зависимостей
@@ -43,9 +40,11 @@ public class AuthenticationController {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
     })
-    public ResponseEntity<AuthenticationDto> login(@Valid @RequestBody AuthenticationRequest requestDto) {
+    public ResponseEntity<AuthenticationDto> login(
+            @ApiParam("Запрос авторизации") @Valid @RequestBody AuthenticationRequest requestDto
+    ) {
         try {
-            String username = requestDto.getEmail();
+            String username = requestDto.getUsername();
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             JwtUser user = userService.getJwtByUsername(username);
@@ -70,7 +69,9 @@ public class AuthenticationController {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
     })
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserDto> createUser(
+            @ApiParam("Запрос для регистрации нового Пользователя") @Valid @RequestBody UserRequest userRequest
+    ) {
         return ResponseEntity.ok(userService.save(userRequest));
     }
 
@@ -81,7 +82,9 @@ public class AuthenticationController {
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
-    public ResponseEntity<?> activateUser(@PathVariable String activationCode) {
+    public ResponseEntity<?> activateUser(
+            @ApiParam("Код активации") @PathVariable String activationCode
+    ) {
         return ResponseEntity.ok(userService.activateUser(activationCode));
     }
 }

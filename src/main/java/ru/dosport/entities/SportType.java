@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+
+import static javax.persistence.FetchType.LAZY;
 
 /**
  * Сущность Вид спорта
@@ -28,19 +28,19 @@ public class SportType {
     @Column(name = "title", nullable = false, unique = true, length = 150)
     private String title;
 
-    @ManyToMany
+    @ManyToMany(fetch = LAZY)
     @JoinTable(
             name = "sportground_sport_types",
             joinColumns = @JoinColumn(name = "sport_type_id"),
             inverseJoinColumns = @JoinColumn(name = "sportground_id"))
-    private List<SportGround> sportGrounds;
+    private Set<SportGround> sportGrounds;
 
-    @ManyToMany
+    @ManyToMany(fetch = LAZY)
     @JoinTable(
             name = "user_sports",
             joinColumns = @JoinColumn(name = "sport_type_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<SportGround> sports = new HashSet<>();
+    private Set<User> users;
 
     public SportType(String title) {
         this.title = title;

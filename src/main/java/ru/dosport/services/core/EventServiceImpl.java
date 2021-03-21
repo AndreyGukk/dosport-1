@@ -32,7 +32,7 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
-    // Необходимые зависимости
+    // Необходимые сервисы, мапперы и репозитории
     private final EventMapper eventMapper;
     private final EventRepository eventRepository;
     private final UserService userService;

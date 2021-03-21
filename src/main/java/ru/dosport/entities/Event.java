@@ -49,10 +49,6 @@ public class Event {
     @Column(name = "organizer_id", nullable = false)
     private Long organizerId;
 
-    // Список участников мероприятия
-    @OneToMany(mappedBy = "eventId")
-    private Set<EventMember> members;
-
     // Описание мероприятия
     @Column(name = "description", length = 150)
     private String description;
@@ -68,4 +64,8 @@ public class Event {
     // Максимальное количество участников мероприятия
     @Column(name = "maximum_members")
     private Short maximumMembers;
+
+    // Список участников мероприятия
+    @OneToMany(mappedBy = "eventId")
+    private Set<EventMember> members;
 }

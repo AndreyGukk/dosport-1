@@ -26,6 +26,7 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 @RequiredArgsConstructor
 public class EventMessageServiceImpl implements EventMessageService {
 
+    // Необходимые сервисы, мапперы и репозитории
     private final EventMessageRepository messageRepository;
     private final EventMapper eventMapper;
     private final EventMessageMapper messageMapper;

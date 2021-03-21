@@ -12,8 +12,8 @@ import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
 import ru.dosport.entities.Authority;
-import ru.dosport.enums.Gender;
 import ru.dosport.entities.User;
+import ru.dosport.enums.Gender;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.mappers.UserMapper;
@@ -46,11 +46,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<UserDto> getAllDtoById(List<Long> idList) {
-        return userMapper.mapEntityToDto(userRepository.findAllById(idList));
-    }
-
-    @Override
     public UserDto getDtoByAuthentication(Authentication authentication) {
         return userMapper.mapEntityToDto(findById(getUserId(authentication)));
     }
@@ -68,11 +63,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public Long getIdByAuthentication(Authentication authentication) {
         return getUserId(authentication);
-    }
-
-    @Override
-    public List<UserDto> getAllDto() {
-        return userMapper.mapEntityToDto(userRepository.findAll());
     }
 
     @Override
@@ -99,10 +89,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
     public UserDto update(UserDto userDto, Authentication authentication) {
         User user = userMapper.update(findById(getUserId(authentication)), userDto);
         return userMapper.mapEntityToDto(userRepository.save(user));
     }
+
+
 
     @Override
     public boolean updatePassword(PasswordRequest passwordRequest,
@@ -135,33 +132,38 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<UserDto> getSubscribesByAuthentication(Authentication authentication) {
-        User user = findById(getUserId(authentication));
-        return userMapper.mapEntityToDto(user.getSubscribes());
-    }
-
-    @Override
     public List<UserDto> getSubscribersByAuthentication(Authentication authentication) {
         List<User> users = userRepository.findSubscribersByUserId(getUserId(authentication));
         return userMapper.mapEntityToDto(users);
     }
 
-    @Transactional
+    /*
+     * Методы относящиеся к подпискам и подписчикам пользователя
+     */
+
     @Override
-    public boolean addSubscribeByAuthentication(Long friendId, Authentication authentication) {
+    public List<UserDto> getSubscriptionsByAuthentication(Authentication authentication) {
         User user = findById(getUserId(authentication));
-        user.getSubscribes().add(findById(friendId));
-        userRepository.save(user);
-        return true;
+        return userMapper.mapEntityToDto(user.getSubscriptions());
     }
 
     @Transactional
     @Override
-    public boolean deleteSubscribeByAuthentication(Long friendId, Authentication authentication) {
+    public List<UserDto> addSubscriptionByAuthentication(Long subscriptionId, Authentication authentication) {
         User user = findById(getUserId(authentication));
-        user.getSubscribes().remove(findById(friendId));
-        userRepository.save(user);
-        return true;
+        if (user.getId().equals(subscriptionId)) {
+            throw new DataBadRequestException(CANNOT_SUBSCRIBE_TO_MYSELF);
+        }
+        user.getSubscriptions().add(findById(subscriptionId));
+        return userMapper.mapEntityToDto((userRepository.save(user)).getSubscriptions());
+    }
+
+    @Transactional
+    @Override
+    public List<UserDto> deleteSubscriptionByAuthentication(Long subscriptionId, Authentication authentication) {
+        User user = findById(getUserId(authentication));
+        user.getSubscriptions().remove(findById(subscriptionId));
+        return userMapper.mapEntityToDto((userRepository.save(user)).getSubscriptions());
     }
 
     @Override
@@ -189,7 +191,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      * Получить id пользователя по данным аутентификации
      */
     private Long getUserId(Authentication authentication) {
-        if(authentication==null) throw new DataNotFoundException(ACCESS_DENIED);
+        if (authentication==null) throw new DataNotFoundException(ACCESS_DENIED);
         return ((JwtUser) authentication.getPrincipal()).getId();
     }
 }

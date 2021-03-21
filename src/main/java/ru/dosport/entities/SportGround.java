@@ -7,6 +7,7 @@ import ru.dosport.enums.SurfaceType;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Сущность Спортивная площадка
@@ -60,8 +61,8 @@ public class SportGround {
     private Integer rentPrice;
 
     // Является ли площадка открытой (расположена на улице)
-    @Column(name = "opened")
-    private boolean opened;
+    @Column(name = "opened", nullable = false)
+    private Boolean opened;
 
     // Список инфраструктуры площадки
     @ManyToMany
@@ -69,7 +70,7 @@ public class SportGround {
             name = "sportground_infrastructures",
             joinColumns = @JoinColumn(name = "sportground_id"),
             inverseJoinColumns = @JoinColumn(name = "infrastructure_id"))
-    private List<Infrastructure> infrastructures;
+    private Set<Infrastructure> infrastructures;
 
     // Список видов спорта
     @ManyToMany(cascade = CascadeType.ALL)
@@ -77,7 +78,15 @@ public class SportGround {
             name = "sportground_sport_types",
             joinColumns = @JoinColumn(name = "sportground_id"),
             inverseJoinColumns = @JoinColumn(name = "sport_type_id"))
-    private List<SportType> sportTypes;
+    private Set<SportType> sportTypes;
+
+    // Список избранных площадок пользователя
+    @ManyToMany
+    @JoinTable(
+            name = "user_sportgrounds",
+            joinColumns = @JoinColumn(name = "sportground_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> users;
 
     // Список мероприятий на площадке
     @OneToMany(mappedBy = "sportGround")

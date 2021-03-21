@@ -1,8 +1,8 @@
 INSERT INTO users
 (user_name, password, enabled, birthday_date, gender, info, photo_link)
 VALUES
-('admin', '$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS', true, '2001-02-03', 2, 'Инфо об админе', 'myfoto.png'),
-('user', '$2a$10$7v8.w1xVYIu6TKY3a58CX.xcmSXPpW6mVLTqB11kAn10jezppGdE2', true, '2003-04-05', 1, 'Инфо о пользователе', 'katya.png');
+('admin', '$2a$10$RPw43x59Msn0V3XizeZxJOxBgN9wroljntTNNkGEGvIr5/5DAtL9G', true, '2001-02-03', 2, 'Инфо об админе', 'myfoto.png'),
+('user', '$2a$10$hbCJ1KExJubHBMYc1DVqXeqNggg.zFOhqBBb1efCFoFrT1KPuQjeW', true, '2003-04-05', 1, 'Инфо о пользователе', 'katya.png');
 
 INSERT INTO authorities
 (authority)
@@ -14,6 +14,7 @@ INSERT INTO user_authorities
 (user_id, authority_id)
 VALUES
 (1, 1),
+(1, 2),
 (2, 2);
 
 INSERT INTO infrastructures

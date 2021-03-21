@@ -40,7 +40,7 @@ public interface SportTypeService {
      * @param sportTitle название нового вида спорта на добавление
      * @return вид спорта, сохраненный в репозитории
      */
-    SportTypeDto save(String sportTitle);
+    SportTypeDto addSportByAuthentication(String sportTitle);
 
     /**
      * Удаляет вид спорта по id
@@ -52,6 +52,7 @@ public interface SportTypeService {
 
     /**
      * Обновляет данные вида спорта
+     *
      * @param id индентификатор вида спорта
      * @param tittle название вида спорта
      * @return dto вида спорта
@@ -63,41 +64,36 @@ public interface SportTypeService {
      */
 
     /**
-     * Выдает список навыков пользователя по id
+     * Выдаёт список предпочитаемых видов спорта пользователя по данным авторизации
      *
-     * @return список навыков пользователя
+     * @param authentication данные авторизации
+     * @return список пользователей
      */
-    List<SportTypeDto> getAllDtoByUserId(Long id);
+    List<SportTypeDto> getAllSportDtoByAuthentication(Authentication authentication);
 
     /**
-     * Выдает список навыков пользователя по аутентификации
+     * Изменяет список предпочитаемых видов спорта пользователя
      *
-     * @return список навыков пользователя
+     * @param authentication данные авторизации
+     * @return список видов спорта,сохраненный в репозитории
      */
-    List<SportTypeDto> getAllDtoByUserAuthentication(Authentication authentication);
+    List<SportTypeDto> updateSportsByAuthentication(List<SportTypeDto> dtoList, Authentication authentication);
 
     /**
-     * Создает новый список навыков пользователя по id, если его нет
+     * Добавляет вид спорта пользователя в список предпочитаемых видов спорта пользователя
      *
-     * @return список навыков пользователя по id
+     * @param sportTypeId идентификатор вида спорта
+     * @param authentication данные авторизации
+     * @return список предпочитаемых видов спорта
      */
-    List<SportTypeDto> update(List<SportTypeDto> dtoList, Authentication authentication);
+    List<SportTypeDto> addSportByAuthentication(Short sportTypeId, Authentication authentication);
 
     /**
-     * Создать вид спорта пользователя
+     * Удаляет вид спорта из списка предпочитаемых видов спорта пользователя
      *
-     * @param userId логин пользователя
-     * @param sportTypeId логин пользователя
-     * @param level логин пользователя
-     * @return новый спорт пользователя, сохраненный в репозиторий
+     * @param sportTypeId идентификатор вида спорта
+     * @param authentication данные авторизации
+     * @return список предпочитаемых видов спорта
      */
-    SportTypeDto save(long userId, short sportTypeId, short level);
-
-    /**
-     * Удаление из репозитория видов спорта пользователя
-     *
-     * @param sportTypeId - вид спорта
-     * @return false, если строк по userId не найдено
-     */
-    boolean delete(Authentication authentication, short sportTypeId);
+    List<SportTypeDto> deleteSportByAuthentication(Short sportTypeId, Authentication authentication);
 }

@@ -1,14 +1,12 @@
 package ru.dosport.services.core;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dosport.dto.ReviewDto;
 import ru.dosport.dto.ReviewRequest;
-import ru.dosport.dto.UserDto;
 import ru.dosport.entities.Review;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
@@ -28,10 +26,9 @@ import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
+    // Необходимые сервисы, мапперы и репозитории
     private final ReviewRepository repository;
-
     private final ReviewMapper mapper;
-
     private final UserService userService;
     private final SportGroundService groundService;
 
@@ -53,10 +50,9 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewDto saveReview(Long sportGroundId, ReviewRequest request, Authentication authentication) {
         if (groundService.exists(sportGroundId)) {
-            var user = userService.getDtoByAuthentication(authentication);
+            var user = userService.getByAuthentication(authentication);
             var review = Review.builder()
-                    .userId(user.getId())
-                    .username(user.getUsername())
+                    .user(user)
                     .text(request.getText())
                     .sportGroundId(sportGroundId)
                     .date(LocalDate.now())
@@ -72,9 +68,9 @@ public class ReviewServiceImpl implements ReviewService {
         if (groundService.exists(sportGroundId) && repository.existsById(reviewId)) {
             if (isAuthorReview(reviewId, authentication)) {
                 var review = findById(reviewId);
-                var user = userService.getDtoByAuthentication(authentication);
+                var user = userService.getByAuthentication(authentication);
                 review.setText(request.getText());
-                review.setUsername(user.getUsername());
+                review.setUser(user);
                 return mapper.mapEntityToDto(repository.save(review));
             }
         }
