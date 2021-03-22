@@ -46,6 +46,14 @@ public interface UserService {
     UserDto getDtoByAuthentication(Authentication authentication);
 
     /**
+     * Найти пользователя по его идентификатору
+     *
+     * @param id идентификатор пользователя
+     * @return пользователь
+     */
+    User getById(Long id);
+
+    /**
      * Найти пользователя по данным авторизации
      *
      * @param authentication данные авторизации
@@ -68,12 +76,6 @@ public interface UserService {
      * @return id Пользователя
      */
     Long getIdByAuthentication(Authentication authentication);
-
-    /**
-     * Проверить существование пользователя
-     * @return true и false, существует, не существует
-     */
-    boolean existsById(Long id);
 
     /**
      * Создать нового пользователя
@@ -148,13 +150,15 @@ public interface UserService {
      * Добавить пользователя в список его друзей по данным авторизации и id друга
      *
      * @param authentication данные авторизации
+     * @return добавлен ли пользователь в список
      */
-    List<UserDto> addSubscriptionByAuthentication(Long subscriptionId, Authentication authentication);
+    boolean addSubscriptionByAuthentication(Long subscriptionId, Authentication authentication);
 
     /**
-     * Удалить пользователя из списка его друзей  по данным авторизации и id друга
+     * Удалить пользователя из списка его друзей по данным авторизации и id пользователя
      *
      * @param authentication данные авторизации
+     * @return удален ли пользователь из списка
      */
-    List<UserDto> deleteSubscriptionByAuthentication(Long subscriptionId, Authentication authentication);
+    boolean deleteSubscriptionByAuthentication(Long subscriptionId, Authentication authentication);
 }

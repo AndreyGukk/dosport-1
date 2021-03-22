@@ -2,12 +2,12 @@ package ru.dosport.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.dosport.entities.EventMessage;
+import ru.dosport.entities.Message;
 
 import java.util.List;
 
 @Repository
-public interface EventMessageRepository extends JpaRepository<EventMessage, Long> {
+public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    List<EventMessage> findAllByEventId(Long eventId);
+    List<Message> findAllByEventId(Long eventId);
 }

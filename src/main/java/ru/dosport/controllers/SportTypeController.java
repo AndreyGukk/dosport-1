@@ -11,8 +11,10 @@ import ru.dosport.services.api.SportTypeService;
 
 import java.util.List;
 
-import static ru.dosport.helpers.Messages.*;
+import static ru.dosport.helpers.InformationMessages.*;
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
+import static ru.dosport.helpers.SwaggerMessages.PAR_SPORT_TYPE_ID;
+import static ru.dosport.helpers.SwaggerMessages.PAR_SPORT_TYPE_NAME;
 
 @CrossOrigin
 @RestController
@@ -40,7 +42,7 @@ public class SportTypeController {
     })
     @GetMapping("/{sportTypeId}")
     public ResponseEntity<SportTypeDto> readSportType(
-            @ApiParam("Идентификатор вида спорта") @PathVariable Short sportTypeId
+            @ApiParam(PAR_SPORT_TYPE_ID) @PathVariable Short sportTypeId
     ) {
         return ResponseEntity.ok(sportTypeService.getSportTypeDtoById(sportTypeId));
     }
@@ -54,7 +56,7 @@ public class SportTypeController {
     @Secured(value = {ROLE_ADMIN})
     @PostMapping
     public ResponseEntity<SportTypeDto> createSportType(
-            @ApiParam("Название вида спорта") @RequestBody String sportTitle
+            @ApiParam(PAR_SPORT_TYPE_NAME) @RequestBody String sportTitle
     ) {
         return ResponseEntity.ok(sportTypeService.addSportByAuthentication(sportTitle));
     }
@@ -68,7 +70,7 @@ public class SportTypeController {
     @Secured(value = {ROLE_ADMIN})
     @DeleteMapping("/{sportTypeId}")
     public ResponseEntity<?> deleteSportType(
-            @ApiParam("Идентификатор вида спорта") @PathVariable Short sportTypeId
+            @ApiParam(PAR_SPORT_TYPE_ID) @PathVariable Short sportTypeId
     ) {
         return sportTypeService.deleteById(sportTypeId) ?
                 ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
@@ -83,8 +85,8 @@ public class SportTypeController {
     @Secured(value = {ROLE_ADMIN})
     @PutMapping("/{sportTypeId}")
     public ResponseEntity<SportTypeDto> updateSportType(
-            @ApiParam("Идентификатор вида спорта") @PathVariable Short sportTypeId,
-            @ApiParam("Название вида спорта") @RequestBody String sportTittle
+            @ApiParam(PAR_SPORT_TYPE_ID) @PathVariable Short sportTypeId,
+            @ApiParam(PAR_SPORT_TYPE_ID) @RequestBody String sportTittle
     ) {
         return ResponseEntity.ok(sportTypeService.update(sportTypeId, sportTittle));
     }

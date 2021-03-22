@@ -3,7 +3,8 @@ package ru.dosport.services.api;
 import org.springframework.security.core.Authentication;
 import ru.dosport.dto.EventDto;
 import ru.dosport.dto.EventRequest;
-import ru.dosport.dto.UserEventDto;
+import ru.dosport.dto.UserDto;
+import ru.dosport.entities.Event;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,112 +24,196 @@ public interface EventService {
     EventDto getDtoById(Long id);
 
     /**
-     * Возвращает все мероприятия
+     * Возвращает мероприятие по его идентификатору
      *
-     * @return список dto мероприятий
+     * @param id идентификатор мероприятия
+     * @return dto мероприятия
      */
-    List<EventDto> getAllDto();
+    Event getById(Long id);
 
     /**
-     * Сделать мероприятие приватным/публичным (только для организатора)
+     * Возвращает список мероприятий за определенный интервал времени
      *
-     * @param eventId идентификатор мероприятия
-     * @return true/false
-     */
-    boolean isPrivate(Long eventId, Authentication authentication);
-
-    /**
-     * Получить всех мероприятий за определенный интервал времени
      * @param from дата начала интервала времени, за который показывают мероприятия
-     * @param to дата конца интервала времени
+     * @param to   дата конца интервала времени
      * @return список мероприятий
      */
     List<EventDto> getAllDtoByTimeFromTo(LocalDateTime from, LocalDateTime to);
 
     /**
-     * Получить список мероприятий для определенной площадки
+     * Возвращает список мероприятий, имеющие определенные параметры поиска
+     *
+     * @return список мероприятий
+     */
+    List<EventDto> getAllDtoByParams(
+            LocalDate fromDate, LocalDate toDate, Short sportTypeId, Long sportGroundId, Long organizerId);
+
+    /**
+     * Возвращает список мероприятий для определенной площадки по идентификатору площадки
+     *
      * @param sportGroundId идентификатор площадки, для которой получаем список мероприятий
      * @return список мероприятий
      */
     List<EventDto> getAllDtoBySportGroundId(Long sportGroundId);
 
     /**
-     * Возвращает все мероприятия, имеющие определенные параметры поиска
+     * Возвращает существует ли мероприятие
      *
-     * @return список dto мероприятий
+     * @param eventId идентификатор мероприятия
+     * @return существует ли мероприятие
      */
-    List<EventDto> getAllDtoByParams(
-            LocalDate fromDate, LocalDate toDate, Short sportTypeId, Long sportGroundId, Long organizerId);
+    boolean existById(Long eventId);
 
     /**
-     * Создать новое мероприятие
+     * Создает новое мероприятие.
      *
-     * @param eventRequest запрос, содержащий данные мероприятия
+     * @param eventRequest   запрос, содержащий данные мероприятия
      * @param authentication данные авторизации
      * @return новое мероприятие, сохраненное в репозитории
      */
     EventDto save(EventRequest eventRequest, Authentication authentication);
 
     /**
-     * Изменить данные мероприятия по его id
+     * Изменяет данные мероприятия по его идентификатору.
      *
-     * @param eventRequest мероприятие с измененными данными
-     * @param eventId индекс мероприятия
+     * @param eventRequest   мероприятие с измененными данными
+     * @param eventId        индекс мероприятия
      * @param authentication данные авторизации
      */
     EventDto update(EventRequest eventRequest, Long eventId, Authentication authentication);
 
     /**
-     * Удалить мероприятие по его идентификатору
+     * Удаляет мероприятие по его идентификатору.
      *
-     * @param id идентификатор мероприятия
+     * @param id             идентификатор мероприятия
      * @param authentication данные авторизации
      * @return удалено ли мероприятие
      */
     boolean deleteById(Long id, Authentication authentication);
 
-    /**
-     * Проверяет существует ли сущность.
-     * @param eventId идентификатор мероприятия
-     * @return true/false
+    /*
+     * Методы, работающие с мероприятиями пользователя
      */
-    boolean exist(Long eventId);
-
-//    /**
-//     * Получить всех участников мероприятия.
-//     * @param eventId идентификатор мероприятия
-//     * @return список dto участников
-//     */
-//    List<MemberDto> getAllMembers(Long eventId);
 
     /**
-     * Возращает список мероприятий по списку идентификатора
-     * @param idList списк идентификаторов
+     * Возвращает список мероприятий, где пользователь является участником по аутентификации.
+     *
+     * @param authentication данные авторизации
      * @return список мероприятий
      */
-    List<EventDto> findAllEventDtoById(List<Long> idList);
+    List<EventDto> getAllUserEventsByAuthentication(Authentication authentication);
 
     /**
-     * Возвращает мероприятия пользователя по аутентификации и за заданный интервал времени с заданной даты
+     * Возращает список мероприятий в которых участвует пользователь по идентификатору пользователя.
      *
-     * @param from дата начала интервала времени, за который показывают мероприятия
-     * @param timeInterval интервал времени в днях, за который показывается мероприятия (1/7/31)
+     * @param userId идентификатор пользователя
+     * @return список мероприятий
      */
-    List<UserEventDto> getAllDtoByAuthTimeInterval(Authentication authentication, LocalDate from, byte timeInterval);
-
-
-    /**
-     * Возвращает мероприятия пользователя по аутентификации и за заданный интервал времени с заданной даты
-     *
-     * @param from дата начала интервала времени, за который показывают мероприятия
-     * @param to дата конца интервала времени
-     */
-    List<UserEventDto> getAllDtoByAuthFromTo(Authentication authentication, LocalDate from, LocalDate to);
+    List<EventDto> getAllUserEventsByUserId(Long userId);
 
     /**
-     * Возвращает все мероприятия пользователя по аутентификации
+     * Возвращает список мероприятий, где пользователь является участником по аутентификации
+     * в интервал времени с даты начала интервала по дату конца интервала.
      *
-     * @return список dto мероприятий
+     * @param fromDate дата начала интервала времени
+     * @param toDate   дата конца интервала времени
+     * @return список мероприятий
      */
-    List<UserEventDto> getAllDtoByAuth(Authentication authentication);
+    List<EventDto> getAllUserEventsByAuthAndDateInterval(
+            Authentication authentication, LocalDate fromDate, LocalDate toDate);
+
+    /*
+     * Методы, работающие с участниками мероприятий
+     */
+
+    /**
+     * Возращает список участников мероприятия.
+     *
+     * @param eventId идентификатор мероприятия
+     * @return список участников
+     */
+    List<UserDto> getParticipantsByEventId(Long eventId);
+
+    /**
+     * Добавляет пользователя в список участников по идентификатору мероприятия и данным авторизации
+     *
+     * @param eventId        идентификатор мероприятия
+     * @param authentication данные авторизации
+     * @return добавлен ли пользователь в список участников
+     */
+    boolean addParticipantByAuthentication(Long eventId, Authentication authentication);
+
+    /**
+     * Удаляет пользователя из списка участников мероприятия по идентификатору мероприятия
+     * и идентификатору пользователя. Доступно для организатора мероприятия или Администратора.
+     *
+     * @param eventId        идентификатор мероприятия
+     * @param userId         идентификатор пользователя
+     * @param authentication данные авторизации
+     * @return удален ли пользователь из списка участников
+     */
+    boolean deleteParticipantByUserId(Long eventId, Long userId, Authentication authentication);
+
+    /**
+     * Удаляет пользователя из списка участников мероприятия по данным авторизации.
+     *
+     * @param eventId        идентификатор мероприятия
+     * @param authentication данные авторизации
+     * @return удален ли пользователь из списка участников
+     */
+    boolean deleteParticipantByAuthentication(Long eventId, Authentication authentication);
+
+    /*
+     * Методы, работающие с приглашениями на мероприятия
+     */
+
+    /**
+     * Возращает список приглашенных по идентификатору мероприятия
+     *
+     * @param eventId        идентификатор мероприятия
+     * @param authentication данные авторизации
+     * @return список приглашенных
+     */
+    List<UserDto> getAllInvitationsByEventId(Long eventId, Authentication authentication);
+
+    /**
+     * Добавляет пользователя в список приглашенных по идентификатору мероприятия и идентификатору пользователя
+     *
+     * @param eventId        идентификатор мероприятия
+     * @param userId         идентификатор пользователя
+     * @param authentication данные авторизации
+     * @return добавлен ли пользователь в список приглашенных
+     */
+    boolean addInvitationByUserId(Long eventId, Long userId, Authentication authentication);
+
+    /**
+     * Удаляет пользователя из списка приглашенных по идентификатору мероприятия и идентификатору пользователя.
+     * Доступно для организатора мероприятия или Администратора.
+     *
+     * @param eventId        идентификатор мероприятия
+     * @param userId         идентификатор пользователя
+     * @param authentication данные авторизации
+     * @return удален ли пользователь из списка приглашенных
+     */
+    boolean deleteInvitationByUserId(Long eventId, Long userId, Authentication authentication);
+
+    /**
+     * Принимает пользователем приглашение на участие в мероприятии.
+     * Переносит пользователя из списка приглашенных в список участников мероприятия.
+     *
+     * @param eventId        идентификатор мероприятия
+     * @param authentication данные авторизации
+     * @return перенесен ли пользователь из списка приглашенных в список участников
+     */
+    boolean acceptInvitationByAuthentication(Long eventId, Authentication authentication);
+
+    /**
+     * Отклоняет пользователем приглашение на участие в мероприятии.
+     * Удаляет пользователя из списка приглашенных по идентификатору мероприятия и данным авторизации пользователя.
+     *
+     * @param eventId        идентификатор мероприятия
+     * @param authentication данные авторизации
+     * @return удален ли пользователь из списка приглашенных
+     */
+    boolean rejectInvitationByAuthentication(Long eventId, Authentication authentication);
 }

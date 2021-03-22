@@ -8,7 +8,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
+import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
 
 /**
  * Dto представление сущности Вид спорта
@@ -22,9 +22,9 @@ public class SportTypeDto {
             dataType = "Long", example = "1", required = true, position = 0)
     private Short sportTypeId;
 
-    @Size(max = 255)
+    @Size(max = 150)
     @NotBlank(message = DATA_NOT_BLANK + "Название")
-    @ApiModelProperty(notes = "Название вида спорта, до 255 символов",
-            dataType = "String", example = "Бокс",  required = true, position = 1)
+    @ApiModelProperty(notes = "Название вида спорта, до 150 символов",
+            dataType = "String", example = "Бокс", required = true, position = 1)
     private String title;
 }

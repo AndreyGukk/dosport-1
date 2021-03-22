@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.dosport.entities.Event;
-import ru.dosport.entities.UserEvent;
+import ru.dosport.entities.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,12 +17,12 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     /**
-     * Найти список UserEvent по идентификатору пользователя, начальной и конечной датам
+     * Найти список User по идентификатору пользователя, начальной и конечной датам
      *
      * @param userId id пользователя
      * @param from дата начала интервала времени
      * @param to дата конца интервала времени
-     * @return список UserEvent
+     * @return список User
      */
     @Query(value = "SELECT s FROM events e JOIN event_users m " +
             "ON e.id = m.event_id " +
@@ -30,7 +30,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "ON s.id = e.sportType " +
             "WHERE m.user_id = :userId " +
             "AND e.date BETWEEN  :from  AND  :to ", nativeQuery = true)
-    List <UserEvent> findAllByUserIdAndTimeFromTo(Long userId, LocalDate from, LocalDate to);
+    List <User> findAllByUserIdAndTimeFromTo(Long userId, LocalDate from, LocalDate to);
 
     /**
      * Найти список событий по определенным параметрам поиска
@@ -54,17 +54,17 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             LocalDate from, LocalDate to, Short sportTypeId, Long sportGroundId, Long organizerId);
 
     /**
-     * Найти список UserEvent по идентификатору пользователя
+     * Найти список User по идентификатору пользователя
      *
      * @param userId id пользователя
-     * @return список UserEvent
+     * @return список User
      */
     @Query(value = "SELECT s FROM events e JOIN event_users m " +
             "ON e.id = m.event_id " +
             "JOIN sport_types s " +
             "ON s.id = e.sportType " +
             "WHERE m.user_id = :userId ", nativeQuery = true)
-    List <UserEvent> findAllByUserId(Long userId);
+    List <User> findAllByUserId(Long userId);
 
     @Query(value = "SELECT s FROM events e JOIN event_users m " +
             "AND e.date BETWEEN  :from  AND  :to ", nativeQuery = true)

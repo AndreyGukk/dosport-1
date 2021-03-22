@@ -14,6 +14,6 @@ import lombok.Data;
 public class ErrorDto {
 
     @ApiModelProperty(notes = "Сообщение об ошибке",
-            dataType = "String", position = 0)
+            dataType = "String", required = true, position = 0)
     private final String message;
 }

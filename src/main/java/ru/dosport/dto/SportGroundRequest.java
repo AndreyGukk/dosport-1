@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
+import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
 
 /**
  * Запрос для регистрации новой Спортивной площадки

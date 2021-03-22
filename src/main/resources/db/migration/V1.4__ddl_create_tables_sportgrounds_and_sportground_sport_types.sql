@@ -22,6 +22,6 @@ create table sportground_sport_types
 	sportground_id  bigint not null,
 	sport_type_id   smallint not null,
 	PRIMARY KEY (sportground_id, sport_type_id),
-    FOREIGN KEY (sportground_id) REFERENCES sportgrounds (id),
-    FOREIGN KEY (sport_type_id) REFERENCES sport_types (id)
+    FOREIGN KEY (sportground_id) REFERENCES sportgrounds (id) ON DELETE CASCADE,
+    FOREIGN KEY (sport_type_id) REFERENCES sport_types (id) ON DELETE CASCADE
 );

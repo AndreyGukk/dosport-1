@@ -24,7 +24,7 @@ public class Review {
 
     // Автор отзыва
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     // Площадка отзыва

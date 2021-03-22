@@ -20,7 +20,7 @@ import ru.dosport.services.api.UserService;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
+import static ru.dosport.helpers.InformationMessages.DATA_NOT_FOUND_BY_ID;
 
 @Service
 @RequiredArgsConstructor

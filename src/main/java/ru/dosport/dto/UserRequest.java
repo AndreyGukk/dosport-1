@@ -8,7 +8,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import static ru.dosport.helpers.Messages.*;
+import static ru.dosport.helpers.InformationMessages.*;
 
 /**
  * Запрос для регистрации нового Пользователя
@@ -18,19 +18,19 @@ import static ru.dosport.helpers.Messages.*;
 @ApiModel(description = "Запрос для регистрации нового Пользователя")
 public class UserRequest {
 
-    @Size(min=4, max=50, message = INVALID_USERNAME_LENGTH)
+    @Size(min = 4, max = 50, message = INVALID_USERNAME_LENGTH)
     @NotBlank(message = DATA_NOT_BLANK + "Никнейм")
     @ApiModelProperty(notes = "Никнейм, от 4 до 50 символов",
             dataType = "String", example = "Nickname", required = true, position = 0)
     private String username;
 
-    @Size(min=6, max=25, message = INVALID_PASSWORD_LENGTH)
+    @Size(min = 6, max = 25, message = INVALID_PASSWORD_LENGTH)
     @NotBlank(message = DATA_NOT_BLANK + "Пароль")
     @ApiModelProperty(notes = "Пароль пользователя, от 6 до 25 символов",
             dataType = "String", required = true, position = 1)
     private String password;
 
-    @Size(min=6, max=25, message = INVALID_PASSWORD_CONFIRM_LENGTH)
+    @Size(min = 6, max = 25, message = INVALID_PASSWORD_CONFIRM_LENGTH)
     @NotBlank(message = DATA_NOT_BLANK + "Подтверждение пароля")
     @ApiModelProperty(notes = "Подтверждение пароля, от 6 до 25 символов",
             dataType = "String", required = true, position = 2)

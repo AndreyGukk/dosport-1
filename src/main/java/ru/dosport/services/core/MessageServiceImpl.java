@@ -4,53 +4,53 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.dosport.dto.EventMessageDto;
-import ru.dosport.dto.EventMessageRequest;
-import ru.dosport.entities.EventMessage;
+import ru.dosport.dto.MessageDto;
+import ru.dosport.dto.MessageRequest;
+import ru.dosport.entities.Message;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.EventMapper;
-import ru.dosport.mappers.EventMessageMapper;
-import ru.dosport.repositories.EventMessageRepository;
-import ru.dosport.services.api.EventMessageService;
+import ru.dosport.mappers.MessageMapper;
+import ru.dosport.repositories.MessageRepository;
+import ru.dosport.services.api.MessageService;
 import ru.dosport.services.api.EventService;
 import ru.dosport.services.api.UserService;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
+import static ru.dosport.helpers.InformationMessages.DATA_NOT_FOUND_BY_ID;
 
 @Service
 @RequiredArgsConstructor
-public class EventMessageServiceImpl implements EventMessageService {
+public class MessageServiceImpl implements MessageService {
 
     // Необходимые сервисы, мапперы и репозитории
-    private final EventMessageRepository messageRepository;
+    private final MessageRepository messageRepository;
     private final EventMapper eventMapper;
-    private final EventMessageMapper messageMapper;
+    private final MessageMapper messageMapper;
     private final EventService eventService;
     private final UserService userService;
 
     @Override
-    public EventMessageDto getDtoById(Long id) {
-        return messageMapper.mapEntityToDto(findById(id));
+    public MessageDto getDtoById(Long messageId) {
+        return messageMapper.mapEntityToDto(findById(messageId));
     }
 
     @Override
-    public List<EventMessageDto> getAllDtoByEventId(Long id) {
-        return messageMapper.mapEntityToDto(messageRepository.findAllByEventId(id));
+    public List<MessageDto> getAllDtoByEventId(Long eventId) {
+        return messageMapper.mapEntityToDto(messageRepository.findAllByEventId(eventId));
     }
 
     @Transactional
     @Override
-    public EventMessageDto save(Long eventId, EventMessageRequest request, Authentication authentication) {
+    public MessageDto save(Long eventId, MessageRequest request, Authentication authentication) {
         checkExistEvent(eventId);
 
         var event = eventMapper.mapDtoToEntity(eventService.getDtoById(eventId));
         var user = userService.getByAuthentication(authentication);
-        var message = EventMessage.builder()
+        var message = Message.builder()
                 .event(event)
                 .user(user)
                 .text(request.getText())
@@ -59,7 +59,7 @@ public class EventMessageServiceImpl implements EventMessageService {
     }
 
     @Override
-    public EventMessageDto update(Long messageId , Long eventId, EventMessageRequest request, Authentication authentication) {
+    public MessageDto update(Long eventId, Long messageId, MessageRequest request, Authentication authentication) {
         checkExistEvent(eventId);
 
         var event = eventService.getDtoById(eventId);
@@ -75,9 +75,9 @@ public class EventMessageServiceImpl implements EventMessageService {
 
     @Transactional
     @Override
-    public boolean deleteById(Long id, Long eventId, Authentication authentication) {
+    public boolean deleteById(Long eventId, Long messageId, Authentication authentication) {
         checkExistEvent(eventId);
-        var message = findById(id);
+        var message = findById(messageId);
 
         if (!message.getUser().equals(userService.getIdByAuthentication(authentication))) {
             if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
@@ -86,17 +86,17 @@ public class EventMessageServiceImpl implements EventMessageService {
         }
 
         messageRepository.delete(message);
-        return !messageRepository.existsById(id);
+        return !messageRepository.existsById(messageId);
     }
 
-    private EventMessage findById(Long id) {
+    private Message findById(Long id) {
         return messageRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id))
         );
     }
 
     private void checkExistEvent(Long eventId) {
-        if (!eventService.exist(eventId)) {
+        if (!eventService.existById(eventId)) {
             throw new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, eventId));
         }
     }

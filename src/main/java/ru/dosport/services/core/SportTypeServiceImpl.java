@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static ru.dosport.helpers.Messages.DATA_NOT_FOUND_BY_ID;
+import static ru.dosport.helpers.InformationMessages.DATA_NOT_FOUND_BY_ID;
 
 /**
  * Реализация сервиса Видов спорта.
@@ -87,18 +87,20 @@ public class SportTypeServiceImpl implements SportTypeService {
 
     @Transactional
     @Override
-    public List<SportTypeDto> addSportByAuthentication(Short sportTypeId, Authentication authentication) {
+    public boolean addSportByAuthentication(Short sportTypeId, Authentication authentication) {
         User user = findUserByAuthentication(authentication);
-        user.getSports().add(findSportById(sportTypeId));
-        return sportTypeMapper.mapEntityToDto(userService.save(user).getSports());
+        SportType sportType = findSportById(sportTypeId);
+        user.getSports().add(sportType);
+        return userService.save(user).getSports().contains(sportType);
     }
 
     @Transactional
     @Override
-    public List<SportTypeDto> deleteSportByAuthentication(Short sportTypeId, Authentication authentication) {
+    public boolean deleteSportByAuthentication(Short sportTypeId, Authentication authentication) {
         User user = findUserByAuthentication(authentication);
-        user.getSports().remove(findSportById(sportTypeId));
-        return sportTypeMapper.mapEntityToDto(userService.save(user).getSports());
+        SportType sportType = findSportById(sportTypeId);
+        user.getSports().remove(sportType);
+        return !userService.save(user).getSports().contains(sportType);
     }
 
     /**

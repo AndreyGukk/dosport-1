@@ -6,10 +6,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
+import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
 
 /**
  * Запрос на создание сущности Отзывв о спортивной площадке

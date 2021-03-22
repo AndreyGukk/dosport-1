@@ -25,3 +25,29 @@ INSERT INTO sport_types (title)
 VALUES
 ('Хоккей'), ('Футбол'), ('Баскетбол'), ('Волейбол'), ('Бег'), ('Воркаут'), ('Теннис'), ('Тренажерный зал'),
 ('Бокс'), ('Йога'), ('Танцы'), ('Единоборства'), ('Каток'), ('Сквош'), ('Гимнастика'), ('Гандбол'), ('Групповые трени'), ('Другое');
+
+INSERT INTO sportgrounds
+(city, address, title, latitude, longitude, metro_station, surface_type, rent_price, opened)
+VALUES
+('Москва', 'Московская', 'Открытая площадка', '0.1', '0.2', '1', '1', '100', true),
+('Санкт Петербург', 'Петербургская', 'Спортзал Заря', '0.15', '0.35', '2', '3', '3000', false);
+
+INSERT INTO sportground_sport_types
+(sportground_id, sport_type_id)
+VALUES
+(1, 1), (1,2), (2,3), (2,4);
+
+INSERT INTO sportground_infrastructures
+(sportground_id, infrastructure_id)
+VALUES
+(1, 1), (1,2), (2,3), (2,4);
+
+INSERT INTO user_sportgrounds
+(user_id, sportground_id)
+VALUES
+(1, 1), (2,2);
+
+insert into user_sports
+(user_id, sport_type_id)
+values
+(1 , 1), (1, 2), (2, 3), (2, 4);

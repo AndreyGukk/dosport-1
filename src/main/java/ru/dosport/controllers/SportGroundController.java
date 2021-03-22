@@ -16,7 +16,7 @@ import ru.dosport.services.api.SportGroundService;
 import javax.validation.Valid;
 import java.util.List;
 
-import static ru.dosport.helpers.Messages.*;
+import static ru.dosport.helpers.InformationMessages.*;
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
 import static ru.dosport.helpers.Roles.ROLE_USER;
 

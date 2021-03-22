@@ -95,4 +95,20 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "sport_type_id"))
     private Set<SportType> sports;
+
+    // Список мероприятий в которых участвует пользователь
+    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "event_participants",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
+    private Set<Event> events;
+
+    // Список мероприятий в которые пользователь был приглашен
+    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "event_invitations",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
+    private Set<Event> eventInvitations;
 }

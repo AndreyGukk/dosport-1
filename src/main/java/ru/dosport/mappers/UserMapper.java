@@ -36,11 +36,14 @@ public interface UserMapper {
             @Mapping(target="id", ignore = true),
             @Mapping(target="password", ignore = true),
             @Mapping(target="enabled", ignore = true),
+            @Mapping(target="photoLink", ignore = true),
             @Mapping(target="authorities", ignore = true),
-//            @Mapping(target="subscribes", ignore = true),
+            @Mapping(target="subscriptions", ignore = true),
             @Mapping(target="subscribers", ignore = true),
             @Mapping(target="sportGrounds", ignore = true),
-//            @Mapping(target="sports", ignore = true),
+            @Mapping(target="sports", ignore = true),
+            @Mapping(target="events", ignore = true),
+            @Mapping(target="eventInvitations", ignore = true),
             @Mapping(target="birthdayDate", source="dto.birthdayDate", dateFormat = "dd-MM-yyyy")
     })
     User update(@MappingTarget User entity, UserDto dto);

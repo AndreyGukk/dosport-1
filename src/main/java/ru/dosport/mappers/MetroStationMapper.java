@@ -17,9 +17,6 @@ public interface MetroStationMapper {
     default MetroStation mapStringToEnum(String string) {
         MetroStation entity;
         switch (string) {
-            case "Не выбран":
-                entity = MetroStation.NOT_SELECTED;
-                break;
             case "Сокольники":
                 entity = MetroStation.SOKOLNIKI;
                 break;

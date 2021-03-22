@@ -24,7 +24,7 @@ import ru.dosport.services.api.UserService;
 
 import java.util.List;
 
-import static ru.dosport.helpers.Messages.*;
+import static ru.dosport.helpers.InformationMessages.*;
 import static ru.dosport.helpers.Roles.ROLE_USER;
 
 /**
@@ -51,6 +51,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public User getById(Long id) {
+        return findById(id);
+    }
+
+    @Override
     public User getByAuthentication(Authentication authentication) {
         return findById(getUserId(authentication));
     }
@@ -63,11 +68,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public Long getIdByAuthentication(Authentication authentication) {
         return getUserId(authentication);
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return userRepository.existsById(id);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean deleteByAuthentication(Authentication authentication) {
         Long id = getUserId(authentication);
         userRepository.deleteById(id);
-        return userRepository.existsById(id);
+        return !userRepository.existsById(id);
     }
 
     @Transactional
@@ -149,21 +149,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Transactional
     @Override
-    public List<UserDto> addSubscriptionByAuthentication(Long subscriptionId, Authentication authentication) {
+    public boolean addSubscriptionByAuthentication(Long subscriptionId, Authentication authentication) {
         User user = findById(getUserId(authentication));
         if (user.getId().equals(subscriptionId)) {
             throw new DataBadRequestException(CANNOT_SUBSCRIBE_TO_MYSELF);
         }
-        user.getSubscriptions().add(findById(subscriptionId));
-        return userMapper.mapEntityToDto((userRepository.save(user)).getSubscriptions());
+        User subscription = findById(subscriptionId);
+        user.getSubscriptions().add(subscription);
+        return userRepository.save(user).getSubscriptions().contains(subscription);
     }
 
     @Transactional
     @Override
-    public List<UserDto> deleteSubscriptionByAuthentication(Long subscriptionId, Authentication authentication) {
+    public boolean deleteSubscriptionByAuthentication(Long subscriptionId, Authentication authentication) {
         User user = findById(getUserId(authentication));
-        user.getSubscriptions().remove(findById(subscriptionId));
-        return userMapper.mapEntityToDto((userRepository.save(user)).getSubscriptions());
+        User subscription = findById(subscriptionId);
+        user.getSubscriptions().remove(subscription);
+        return !userRepository.save(user).getSubscriptions().contains(subscription);
     }
 
     @Override

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
+import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
 
 /**
  * Dto представление сущности Отзыв о площадке
@@ -41,10 +41,9 @@ public class ReviewDto {
 
     @FutureOrPresent
     @NotBlank(message = DATA_NOT_BLANK + "Дата")
-    @DateTimeFormat(pattern="yyyy.MM.dd")
+    @DateTimeFormat(pattern = "yyyy.MM.dd")
     @ApiModelProperty(notes = "Дата проведения Мероприятия", dataType = "LocalDate", example = "2007-12-03", required = true, position = 4)
     private LocalDate date;
-
 
     @Size(min = 5, max = 300)
     @NotBlank(message = DATA_NOT_BLANK + "Текст отзыва")

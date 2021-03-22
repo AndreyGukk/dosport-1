@@ -80,7 +80,7 @@ public class SportGround {
             inverseJoinColumns = @JoinColumn(name = "sport_type_id"))
     private Set<SportType> sportTypes;
 
-    // Список избранных площадок пользователя
+    // Список пользователей для которых площадка является избранной
     @ManyToMany
     @JoinTable(
             name = "user_sportgrounds",
@@ -92,7 +92,7 @@ public class SportGround {
     @OneToMany(mappedBy = "sportGround")
     private List<Event> events;
 
-    // Список отзывов
+    // Список отзывов о площадке
     @OneToMany(mappedBy = "sportGroundId")
     private List<Review> reviews;
 }

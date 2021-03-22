@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import static javax.persistence.FetchType.LAZY;
+
 /**
  * Сущность Мероприятие
  */
@@ -46,8 +48,9 @@ public class Event {
     private SportGround sportGround;
 
     // Организатор мероприятия
-    @Column(name = "organizer_id", nullable = false)
-    private Long organizerId;
+    @ManyToOne
+    @JoinColumn(name = "organizer_id", nullable = false)
+    private User organizer;
 
     // Описание мероприятия
     @Column(name = "description", length = 150)
@@ -61,11 +64,31 @@ public class Event {
     @Column(name = "price")
     private Integer price;
 
-    // Максимальное количество участников мероприятия
-    @Column(name = "maximum_members")
-    private Short maximumMembers;
+    // Максимальное количество участников
+    @Column(name = "maximum_users")
+    private Short maximumUsers;
 
-    // Список участников мероприятия
-    @OneToMany(mappedBy = "eventId")
-    private Set<EventMember> members;
+    // Текущее количество участников
+    @Column(name = "users_amount")
+    private Short usersAmount;
+
+    // Текущее количество сообщений
+    @Column(name = "messages_amount")
+    private Short messagesAmount;
+
+    // Список участников
+    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "event_participants",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> participants;
+
+    // Список приглашенных
+    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "event_invitations",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> invitations;
 }

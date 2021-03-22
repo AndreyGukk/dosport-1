@@ -86,7 +86,7 @@ public interface SportTypeService {
      * @param authentication данные авторизации
      * @return список предпочитаемых видов спорта
      */
-    List<SportTypeDto> addSportByAuthentication(Short sportTypeId, Authentication authentication);
+    boolean addSportByAuthentication(Short sportTypeId, Authentication authentication);
 
     /**
      * Удаляет вид спорта из списка предпочитаемых видов спорта пользователя
@@ -95,5 +95,5 @@ public interface SportTypeService {
      * @param authentication данные авторизации
      * @return список предпочитаемых видов спорта
      */
-    List<SportTypeDto> deleteSportByAuthentication(Short sportTypeId, Authentication authentication);
+    boolean deleteSportByAuthentication(Short sportTypeId, Authentication authentication);
 }

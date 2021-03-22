@@ -19,7 +19,7 @@ import ru.dosport.services.api.UserService;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
 
-import static ru.dosport.helpers.Messages.*;
+import static ru.dosport.helpers.InformationMessages.*;
 
 @Log4j2
 @CrossOrigin

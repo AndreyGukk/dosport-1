@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static ru.dosport.helpers.Messages.SWAGGER_WAS_STARTED;
+import static ru.dosport.helpers.InformationMessages.SWAGGER_WAS_STARTED;
 
 /**
  * Класс конфигурации Swagger

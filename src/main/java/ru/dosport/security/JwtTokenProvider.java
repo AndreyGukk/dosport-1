@@ -8,15 +8,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import ru.dosport.exceptions.JwtAuthenticationException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-
-import static ru.dosport.helpers.Messages.JWT_TOKEN_NOT_VALID;
 
 /**
  * Утилитный класс провайдера JWT токенов, генерирующий и валидирующий JWT токены.

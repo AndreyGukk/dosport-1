@@ -9,7 +9,8 @@ import java.util.List;
 /**
  * Маппер, преобразующий классы Review и ReviewDto друг в друга
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        uses = {UserMapper.class})
 public interface ReviewMapper {
 
     @Mappings({

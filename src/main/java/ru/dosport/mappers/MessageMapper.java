@@ -4,13 +4,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
-import ru.dosport.dto.EventMessageDto;
-import ru.dosport.entities.EventMessage;
+import ru.dosport.dto.MessageDto;
+import ru.dosport.entities.Message;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface EventMessageMapper {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        uses = {UserMapper.class, EventMapper.class})
+public interface MessageMapper {
 
     @Mappings({
             @Mapping(target = "messageId", source = "entity.id"),
@@ -20,7 +21,7 @@ public interface EventMessageMapper {
             @Mapping(target = "photoLink", source = "entity.user.photoLink"),
             @Mapping(target = "text", source = "entity.text"),
     })
-    EventMessageDto mapEntityToDto(EventMessage entity);
+    MessageDto mapEntityToDto(Message entity);
 
-    List<EventMessageDto> mapEntityToDto(List<EventMessage> entities);
+    List<MessageDto> mapEntityToDto(List<Message> entities);
 }

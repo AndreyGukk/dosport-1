@@ -17,10 +17,6 @@ public interface GenderMapper {
     default Gender mapStringToEnum(String string) {
         Gender entity;
         switch (string) {
-            case "Не выбран":
-            case "0":
-                entity = Gender.NOT_SELECTED;
-                break;
             case "Женский":
             case "1":
                 entity = Gender.FEMALE;
@@ -30,7 +26,8 @@ public interface GenderMapper {
                 entity = Gender.MALE;
                 break;
             default:
-                throw new IllegalStateException("Неверное значение поля Пол: " + string);
+                entity = Gender.NOT_SELECTED;
+                break;
         }
         return entity;
     }

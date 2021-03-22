@@ -7,8 +7,8 @@ import lombok.Data;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 
-import static ru.dosport.helpers.Messages.BAD_REQUEST;
-import static ru.dosport.helpers.Messages.USER_NOT_FOUND_BY_ID;
+import static ru.dosport.helpers.InformationMessages.BAD_REQUEST;
+import static ru.dosport.helpers.InformationMessages.USER_NOT_FOUND_BY_ID;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

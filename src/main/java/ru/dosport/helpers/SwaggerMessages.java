@@ -5,6 +5,8 @@ package ru.dosport.helpers;
  */
 public final class SwaggerMessages {
 
+    private SwaggerMessages () {}
+
     public static final String PAR_USER_DTO = "Данные профиля пользователя";
     public static final String PAR_USER_ID = "Идентификатор пользователя";
     public static final String PAR_EVENT_ID = "Идентификатор мероприятия";
@@ -17,7 +19,8 @@ public final class SwaggerMessages {
     public static final String PAR_MESSAGE_DTO = "Данные сообщения";
     public static final String PAR_SPORT_TYPE_ID = "Идентификатор вида спорта";
     public static final String PAR_SPORT_TYPE_NAME = "Название вида спорта";
-    public static final String PAR_SPORT_TYPE_DTO = "Данные вида спарта";
+    public static final String PAR_SPORT_TYPE_DTO = "Данные вида спорта";
+    public static final String PAR_SPORT_TYPE_LIST = "Список данных видов спорта";
     public static final String PAR_SPORTGROUND_ID = "Идентификатор спортивной площадки";
     public static final String PAR_SPORTGROUND_DTO = "Данные спортивной площадки";
     public static final String PAR__ID = "";

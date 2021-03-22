@@ -7,13 +7,13 @@ import lombok.Data;
 
 import javax.validation.constraints.Size;
 
-import static ru.dosport.helpers.Messages.INVALID_USERNAME_LENGTH;
+import static ru.dosport.helpers.InformationMessages.INVALID_USERNAME_LENGTH;
 
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel(description = "Сообщение о спортивном событии для пользователя")
-public class EventMessageDto {
+public class MessageDto {
 
     @ApiModelProperty(notes = "Id сообщения",
             dataType = "Long", example = "1", required = true, position = 0)

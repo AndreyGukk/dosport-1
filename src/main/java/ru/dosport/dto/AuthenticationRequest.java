@@ -8,8 +8,8 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import static ru.dosport.helpers.Messages.DATA_NOT_BLANK;
-import static ru.dosport.helpers.Messages.INVALID_USERNAME_LENGTH;
+import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
+import static ru.dosport.helpers.InformationMessages.INVALID_USERNAME_LENGTH;
 
 /**
  * Запрос авторизации
@@ -19,7 +19,7 @@ import static ru.dosport.helpers.Messages.INVALID_USERNAME_LENGTH;
 @ApiModel(description = "Запрос авторизации")
 public class AuthenticationRequest {
 
-    @Size(min=4, max=50, message = INVALID_USERNAME_LENGTH)
+    @Size(min = 4, max = 50, message = INVALID_USERNAME_LENGTH)
     @NotBlank(message = DATA_NOT_BLANK + "Никнейм")
     @ApiModelProperty(notes = "Никнейм, от 4 до 50 символов",
             dataType = "String", example = "admin", required = true, position = 0)

@@ -19,7 +19,7 @@ import ru.dosport.dto.ErrorDto;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 
-import static ru.dosport.helpers.Messages.*;
+import static ru.dosport.helpers.InformationMessages.*;
 
 /**
  * Контроллер - глобальный обработчик исключений.
@@ -51,42 +51,42 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         FieldError fieldError = ex.getFieldError();
         String message = fieldError != null ?
-            String.format(INVALID_VALUE, fieldError.getField(), fieldError.getRejectedValue()) : BAD_REQUEST;
+                String.format(INVALID_VALUE, fieldError.getField(), fieldError.getRejectedValue()) : BAD_REQUEST;
         log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(message), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({ IllegalArgumentException.class })
+    @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<ErrorDto> handleIllegalArgument(Exception ex, WebRequest request) {
         log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({ IllegalStateException.class })
+    @ExceptionHandler({IllegalStateException.class})
     public ResponseEntity<ErrorDto> handIllegalState(Exception ex, WebRequest request) {
         log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({ AccessDeniedException.class })
+    @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<ErrorDto> handleAccessDenied(Exception ex, WebRequest request) {
         log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(ACCESS_DENIED), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler({ UsernameNotFoundException.class, BadCredentialsException.class})
+    @ExceptionHandler({UsernameNotFoundException.class, BadCredentialsException.class})
     public ResponseEntity<ErrorDto> handleUsernameNotFound(Exception ex, WebRequest request) {
         log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({ DataNotFoundException.class })
+    @ExceptionHandler({DataNotFoundException.class})
     public ResponseEntity<ErrorDto> handleDataNotFound(Exception ex, WebRequest request) {
         log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({ DataBadRequestException.class })
+    @ExceptionHandler({DataBadRequestException.class})
     public ResponseEntity<ErrorDto> handleDataBadRequest(Exception ex, WebRequest request) {
         log.debug(ex);
         return new ResponseEntity<>(new ErrorDto(ex.getMessage()), HttpStatus.BAD_REQUEST);

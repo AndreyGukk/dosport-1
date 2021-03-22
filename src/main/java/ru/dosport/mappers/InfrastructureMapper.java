@@ -17,9 +17,6 @@ public interface InfrastructureMapper {
     default Infrastructure mapStringToEnum(String string) {
         Infrastructure entity;
         switch (string) {
-            case "Не выбран":
-                entity = Infrastructure.NOT_SELECTED;
-                break;
             case "Раздевалка":
                 entity = Infrastructure.LOCKER_ROOM;
                 break;
