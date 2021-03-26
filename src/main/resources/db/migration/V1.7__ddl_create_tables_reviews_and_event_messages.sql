@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS reviews;
 create table reviews
 (
 	id              bigserial NOT NULL UNIQUE,
-	date            date NOT NULL,
+	date            timestamp NOT NULL,
 	sportground_id  bigint NOT NULL,
 	user_id         bigint,
 	text            varchar(255) NOT NULL,

@@ -25,7 +25,7 @@ public class Event {
     @Column(name = "id")
     private Long id;
 
-    // Дата проведения мероприятия
+    // Дата создания мероприятия
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDateTime;
 
@@ -43,9 +43,8 @@ public class Event {
     private SportType sportType;
 
     // Игровая площадка
-    @ManyToOne
-    @JoinColumn(name = "sportground_id", nullable = false)
-    private SportGround sportGround;
+    @Column(name = "sportground_id", nullable = false)
+    private Long sportGround;
 
     // Организатор мероприятия
     @ManyToOne

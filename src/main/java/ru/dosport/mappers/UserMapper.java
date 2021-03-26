@@ -9,6 +9,8 @@ import ru.dosport.entities.User;
 import java.util.List;
 import java.util.Set;
 
+import static ru.dosport.helpers.Patterns.LOCAL_DATE_PATTERN;
+
 /**
  * Маппер, преобразующий классы User и UserDto друг в друга
  */
@@ -17,7 +19,7 @@ import java.util.Set;
 public interface UserMapper {
 
     @Mappings({
-            @Mapping(target="birthdayDate", source = "entity.birthdayDate", dateFormat = "dd-MM-yyyy")
+            @Mapping(target="birthdayDate", source = "entity.birthdayDate", dateFormat = LOCAL_DATE_PATTERN)
     })
     UserDto mapEntityToDto(User entity);
 
@@ -44,7 +46,7 @@ public interface UserMapper {
             @Mapping(target="sports", ignore = true),
             @Mapping(target="events", ignore = true),
             @Mapping(target="eventInvitations", ignore = true),
-            @Mapping(target="birthdayDate", source="dto.birthdayDate", dateFormat = "dd-MM-yyyy")
+            @Mapping(target="birthdayDate", source="dto.birthdayDate", dateFormat = LOCAL_DATE_PATTERN)
     })
     User update(@MappingTarget User entity, UserDto dto);
 }

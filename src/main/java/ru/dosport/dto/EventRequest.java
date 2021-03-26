@@ -1,16 +1,19 @@
 package ru.dosport.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDateTime;
 
-import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
-import static ru.dosport.helpers.InformationMessages.NUMBER_MUST_BE_POSITIVE;
+import static ru.dosport.helpers.InformationMessages.*;
+import static ru.dosport.helpers.Patterns.*;
 
 /**
  * Запрос для регистрации нового Мероприятия
@@ -21,18 +24,18 @@ import static ru.dosport.helpers.InformationMessages.NUMBER_MUST_BE_POSITIVE;
 public class EventRequest {
 
     @NotNull(message = DATA_NOT_BLANK + "Дата и время начала")
-//    @FutureOrPresent
-//    @DateTimeFormat(pattern="dd-MM-yyyy HH:mm")
-    @ApiModelProperty(notes = "Дата и время начала проведения Мероприятия",
-            dataType = "LocalDateTime", example = "03-10-2020 10:30", required = true, position = 0)
-    private String startDateTime;
+    @FutureOrPresent(message = DATE_MUST_BE_IN_FUTURE + "Дата и время начала")
+    @JsonFormat(pattern = LOCAL_DATE_TIME_PATTERN)
+    @ApiModelProperty(notes = "Дата и время начала Мероприятия в формате " + LOCAL_DATE_TIME_PATTERN,
+            dataType = LOCAL_DATE_TIME_TYPE, example = LOCAL_DATE_TIME_EXAMPLE_1, required = true, position = 0)
+    private LocalDateTime startDateTime;
 
-    @NotNull(message = DATA_NOT_BLANK + "Дата и время начала")
-//    @FutureOrPresent
-//    @DateTimeFormat(pattern="dd-MM-yyyy HH:mm")
-    @ApiModelProperty(notes = "Дата и время окончания проведения Мероприятия",
-            dataType = "LocalDateTime", example = "03-10-2020 10:30", required = true, position = 1)
-    private String endDateTime;
+    @NotNull(message = DATA_NOT_BLANK + "Дата и время окончания")
+    @FutureOrPresent(message = DATE_MUST_BE_IN_FUTURE + "Дата и время окончания")
+    @JsonFormat(pattern = LOCAL_DATE_TIME_PATTERN)
+    @ApiModelProperty(notes = "Дата и время окончания Мероприятия в формате " + LOCAL_DATE_TIME_PATTERN,
+            dataType = LOCAL_DATE_TIME_TYPE, example = LOCAL_DATE_TIME_EXAMPLE_2, required = true, position = 1)
+    private LocalDateTime endDateTime;
 
     @NotEmpty(message = DATA_NOT_BLANK + "Вид спорта")
     @ApiModelProperty(notes = "Вид спорта",
@@ -51,12 +54,12 @@ public class EventRequest {
 
     @NotNull(message = DATA_NOT_BLANK + "Приватность мероприятия")
     @ApiModelProperty(notes = "Приватность мероприятия, true - закрытое",
-            dataType = "Boolean", example = "true", required = true, position = 5)
+            dataType = "Boolean", example = "false", required = true, position = 5)
     private Boolean isPrivate;
 
     @PositiveOrZero(message = NUMBER_MUST_BE_POSITIVE + "Цена участия")
     @ApiModelProperty(notes = "Цена участия",
-            dataType = "Integer", example = "100", position = 6)
+            dataType = "Integer", example = "0", position = 6)
     private Integer price;
 
     @PositiveOrZero(message = NUMBER_MUST_BE_POSITIVE + "Максимальное количество участников")

@@ -3,10 +3,9 @@ DROP TABLE IF EXISTS events;
 create table events
 (
 	id              bigserial NOT NULL UNIQUE,
-	chat_id         bigint,
-	creation_date   date not null,
-	start_date      date not null,
-	end_date        date not null,
+	creation_date   timestamp with time zone not null,
+	start_date      timestamp with time zone not null,
+	end_date        timestamp with time zone not null,
 	sport_type_id   smallint not null,
 	sportground_id  bigint not null,
 	organizer_id    bigint not null,

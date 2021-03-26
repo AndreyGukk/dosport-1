@@ -42,7 +42,7 @@ public interface InfrastructureMapper {
                 entity = Infrastructure.SAUNA;
                 break;
             default:
-                entity = Infrastructure.NOT_SELECTED;
+                entity = null;
                 break;
         }
         return entity;

@@ -26,7 +26,7 @@ public interface GenderMapper {
                 entity = Gender.MALE;
                 break;
             default:
-                entity = Gender.NOT_SELECTED;
+                entity = null;
                 break;
         }
         return entity;

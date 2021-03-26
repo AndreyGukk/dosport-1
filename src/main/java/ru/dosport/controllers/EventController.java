@@ -2,6 +2,7 @@ package ru.dosport.controllers;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -9,12 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.*;
 import ru.dosport.services.api.EventService;
 import ru.dosport.services.api.MessageService;
+import ru.dosport.specifications.EventSearchCriteria;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static ru.dosport.helpers.InformationMessages.*;
+import static ru.dosport.helpers.Patterns.*;
 import static ru.dosport.helpers.Roles.ROLE_ADMIN;
 import static ru.dosport.helpers.Roles.ROLE_USER;
 import static ru.dosport.helpers.SwaggerMessages.*;
@@ -30,21 +33,48 @@ public class EventController {
     private final EventService eventService;
     private final MessageService messageService;
 
-    @ApiOperation(value = "Отображает данные всех мероприятий площадки с заданными параметрами")
+    @ApiOperation(value = "Отображает данные всех мероприятий с заданными критериями поиска \n" +
+            "по 15 объектов на каждой странице поиска.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     @GetMapping("")
-    public ResponseEntity<List<EventDto>> readAllEventsByParams(
-            @ApiParam(value = PAR_FROM_DATE_ID) @RequestParam(required = false) LocalDate fromDate,
-            @ApiParam(value = PAR_TO_DATE_ID) @RequestParam(required = false) LocalDate toDate,
+    public ResponseEntity<List<EventDto>> readAllEventsBySearchCriteria(
+            @ApiParam(value = PAR_CREATION_DATE_FROM, example = LOCAL_DATE_TIME_EXAMPLE_1) @RequestParam(required = false)
+                @DateTimeFormat(pattern = LOCAL_DATE_TIME_PATTERN) LocalDateTime creationDateTimeFrom,
+            @ApiParam(value = PAR_CREATION_DATE_TO, example = LOCAL_DATE_TIME_EXAMPLE_2) @RequestParam(required = false)
+                @DateTimeFormat(pattern = LOCAL_DATE_TIME_PATTERN) LocalDateTime creationDateTimeTo,
+            @ApiParam(value = PAR_START_DATE_FROM, example = LOCAL_DATE_TIME_EXAMPLE_1) @RequestParam(required = false)
+                @DateTimeFormat(pattern = LOCAL_DATE_TIME_PATTERN) LocalDateTime startDateTimeFrom,
+            @ApiParam(value = PAR_END_DATE_ID, example = LOCAL_DATE_TIME_EXAMPLE_2) @RequestParam(required = false)
+                @DateTimeFormat(pattern = LOCAL_DATE_TIME_PATTERN) LocalDateTime endDateTimeTo,
             @ApiParam(value = PAR_SPORT_TYPE_ID) @RequestParam(required = false) Short sportTypeId,
             @ApiParam(value = PAR_SPORTGROUND_ID) @RequestParam(required = false) Long sportGroundId,
-            @ApiParam(value = PAR_ORGANIZER_ID) @RequestParam(required = false) Long organizerId
+            @ApiParam(value = PAR_ORGANIZER_ID) @RequestParam(required = false) Long organizerId,
+            @ApiParam(value = PAR_PRIVATE, example = "false") @RequestParam(required = false) Boolean isPrivate,
+            @ApiParam(value = PAR_PRICE_MIN) @RequestParam(required = false) Integer minPrice,
+            @ApiParam(value = PAR_PRICE_MAX) @RequestParam(required = false) Integer maxPrice,
+            @ApiParam(value = PAR_PAGE_NUMBER, defaultValue = "0") @RequestParam(required = false, defaultValue = "0") Integer pageNumber
     ) {
         return ResponseEntity.ok(eventService
-                .getAllDtoByParams(fromDate, toDate, sportTypeId, sportGroundId, organizerId));
+                .getAllDtoBySearchCriteria(
+                        EventSearchCriteria.builder()
+                        .creationDateTimeFrom(creationDateTimeFrom)
+                        .creationDateTimeTo(creationDateTimeTo)
+                        .startDateTimeFrom(startDateTimeFrom)
+                        .endDateTimeTo(endDateTimeTo)
+                        .sportTypeId(sportTypeId)
+                        .sportGroundId(sportGroundId)
+                        .organizerId(organizerId)
+                        .isPrivate(isPrivate)
+                        .minPrice(minPrice)
+                        .maxPrice(maxPrice)
+                        .build(),
+                        pageNumber
+                )
+        );
     }
 
     @ApiOperation(value = "Изменяет данные мероприятия (для организатора или Администратора)")

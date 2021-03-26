@@ -47,4 +47,6 @@ public final class InformationMessages {
     public static final String USER_IS_NOT_EVENT_ORGANIZER = "Пользователь не является организатором мероприятия";
     public static final String CANNOT_PARTICIPATE_IN_PRIVATE_EVENT =
             "Нельзя принять участие в приватном мероприятии без приглашения";
+    public static final String DATE_MUST_BE_IN_FUTURE = "Допустимо только будущее время для параметра ";
+    public static final String INVALID_DATE_TIME_FORMAT = "Неверный формат даты и времени параметра ";
 }

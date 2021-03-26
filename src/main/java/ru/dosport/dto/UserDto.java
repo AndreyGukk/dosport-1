@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 
 import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
 import static ru.dosport.helpers.InformationMessages.INVALID_USERNAME_LENGTH;
+import static ru.dosport.helpers.Patterns.*;
 
 /**
  * Dto представление сущности Пользователь
@@ -32,13 +33,13 @@ public class UserDto {
             dataType = "String", example = "Nickname", required = true, position = 1)
     private String username;
 
-    @ApiModelProperty(notes = "Дата рождения пользователя в формате dd-MM-yyyy",
-            dataType = "String", example = "31-01-2001", position = 2)
+    @ApiModelProperty(notes = "Дата рождения пользователя в формате " + LOCAL_DATE_PATTERN,
+            dataType = LOCAL_DATE_TYPE, example = LOCAL_DATE_EXAMPLE_1, position = 2)
     private String birthdayDate;
 
     @NotBlank(message = DATA_NOT_BLANK + "Пол пользователя")
-    @ApiModelProperty(notes = "Пол пользователя, значения: 'Не выбран', 'Женский', 'Мужской'",
-            dataType = "String", example = "Мужской", required = true, position = 3)
+    @ApiModelProperty(notes = "Пол пользователя, значения: 'Женский', 'Мужской'",
+            dataType = "String", example = "Мужской", position = 3)
     private String gender;
 
     @ApiModelProperty(notes = "Личная информация о пользователе, до 150 символов",

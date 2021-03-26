@@ -17,10 +17,6 @@ public interface SurfaceTypeMapper {
     default SurfaceType mapStringToEnum(String string) {
         SurfaceType entity;
         switch (string) {
-            case "Не выбран":
-            case "":
-                entity = SurfaceType.NOT_SELECTED;
-                break;
             case "Грунт":
                 entity = SurfaceType.SOIL;
                 break;
@@ -55,7 +51,7 @@ public interface SurfaceTypeMapper {
                 entity = SurfaceType.POOL;
                 break;
             default:
-                entity = SurfaceType.NOT_SELECTED;
+                entity = null;
                 break;
         }
         return entity;

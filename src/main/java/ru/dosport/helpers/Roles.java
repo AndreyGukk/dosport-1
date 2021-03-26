@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
- * Класс, хранящий имена ролей пользователей
+ * Имена ролей пользователей и методы работы с ними
  */
 public final class Roles {
 

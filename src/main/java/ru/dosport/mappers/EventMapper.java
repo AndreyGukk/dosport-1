@@ -8,6 +8,8 @@ import ru.dosport.entities.Event;
 import java.util.List;
 import java.util.Set;
 
+import static ru.dosport.helpers.Patterns.LOCAL_DATE_TIME_PATTERN;
+
 /**
  * Маппер, преобразующий классы Event и EventDto друг в друга
  */
@@ -17,7 +19,10 @@ public interface EventMapper {
 
     @Mappings({
             @Mapping(target = "eventId", source = "entity.id"),
-            @Mapping(target = "sportGroundId", source = "entity.sportGround.id")
+            @Mapping(target = "sportGroundId", source = "entity.sportGround"),
+            @Mapping(target = "creationDateTime", source = "entity.creationDateTime", dateFormat = LOCAL_DATE_TIME_PATTERN),
+            @Mapping(target = "startDateTime", source = "entity.startDateTime", dateFormat = LOCAL_DATE_TIME_PATTERN),
+            @Mapping(target = "endDateTime", source = "entity.endDateTime", dateFormat = LOCAL_DATE_TIME_PATTERN)
     })
     EventDto mapEntityToDto(Event entity);
 
@@ -39,8 +44,8 @@ public interface EventMapper {
             @Mapping(target = "messagesAmount", ignore = true),
             @Mapping(target = "participants", ignore = true),
             @Mapping(target = "invitations", ignore = true),
-            @Mapping(target = "startDateTime", source = "dto.startDateTime", dateFormat = "dd-MM-yyyy HH:mm"),
-            @Mapping(target = "endDateTime", source = "dto.endDateTime", dateFormat = "dd-MM-yyyy HH:mm")
+            @Mapping(target = "startDateTime", source = "dto.startDateTime", dateFormat = LOCAL_DATE_TIME_PATTERN),
+            @Mapping(target = "endDateTime", source = "dto.endDateTime", dateFormat = LOCAL_DATE_TIME_PATTERN)
     })
     Event update(@MappingTarget Event entity, EventRequest dto);
 }

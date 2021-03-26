@@ -4,10 +4,9 @@ import org.springframework.security.core.Authentication;
 import ru.dosport.dto.EventDto;
 import ru.dosport.dto.EventRequest;
 import ru.dosport.dto.UserDto;
-import ru.dosport.entities.Event;
+import ru.dosport.specifications.EventSearchCriteria;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,29 +23,13 @@ public interface EventService {
     EventDto getDtoById(Long id);
 
     /**
-     * Возвращает мероприятие по его идентификатору
+     * Возвращает список мероприятий, имеющие определенные критерии поиска
      *
-     * @param id идентификатор мероприятия
-     * @return dto мероприятия
-     */
-    Event getById(Long id);
-
-    /**
-     * Возвращает список мероприятий за определенный интервал времени
-     *
-     * @param from дата начала интервала времени, за который показывают мероприятия
-     * @param to   дата конца интервала времени
+     * @param searchCriteria критерии поиска
+     * @param pageNumber номер страницы
      * @return список мероприятий
      */
-    List<EventDto> getAllDtoByTimeFromTo(LocalDateTime from, LocalDateTime to);
-
-    /**
-     * Возвращает список мероприятий, имеющие определенные параметры поиска
-     *
-     * @return список мероприятий
-     */
-    List<EventDto> getAllDtoByParams(
-            LocalDate fromDate, LocalDate toDate, Short sportTypeId, Long sportGroundId, Long organizerId);
+    List<EventDto> getAllDtoBySearchCriteria(EventSearchCriteria searchCriteria, Integer pageNumber);
 
     /**
      * Возвращает список мероприятий для определенной площадки по идентификатору площадки
@@ -54,7 +37,7 @@ public interface EventService {
      * @param sportGroundId идентификатор площадки, для которой получаем список мероприятий
      * @return список мероприятий
      */
-    List<EventDto> getAllDtoBySportGroundId(Long sportGroundId);
+    List<EventDto> getAllDtoBySportGroundId(Long sportGroundId, Integer pageNumber);
 
     /**
      * Возвращает существует ли мероприятие
@@ -102,14 +85,6 @@ public interface EventService {
      * @return список мероприятий
      */
     List<EventDto> getAllUserEventsByAuthentication(Authentication authentication);
-
-    /**
-     * Возращает список мероприятий в которых участвует пользователь по идентификатору пользователя.
-     *
-     * @param userId идентификатор пользователя
-     * @return список мероприятий
-     */
-    List<EventDto> getAllUserEventsByUserId(Long userId);
 
     /**
      * Возвращает список мероприятий, где пользователь является участником по аутентификации

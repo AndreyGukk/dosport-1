@@ -1,6 +1,9 @@
 package ru.dosport.services.core;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,19 +19,21 @@ import ru.dosport.mappers.EventMapper;
 import ru.dosport.mappers.UserMapper;
 import ru.dosport.repositories.EventRepository;
 import ru.dosport.services.api.EventService;
-import ru.dosport.services.api.SportGroundService;
 import ru.dosport.services.api.SportTypeService;
 import ru.dosport.services.api.UserService;
+import ru.dosport.specifications.EventSearchCriteria;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static ru.dosport.helpers.InformationMessages.*;
+import static ru.dosport.helpers.Patterns.EVENT_SORT_BY_DATE;
+import static ru.dosport.helpers.Patterns.PAGE_SIZE;
+import static ru.dosport.specifications.EventSpecifications.eventHasSearchCriteria;
 
 /**
  * Сервис Мероприятий
@@ -43,10 +48,6 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserService userService;
     private final SportTypeService sportTypeService;
-    private final SportGroundService sportGroundService;
-
-    // Паттерн форматирования даты и времени
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     @Override
     public EventDto getDtoById(Long id) {
@@ -54,26 +55,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event getById(Long id) {
-        return findEventById(id);
+    public List<EventDto> getAllDtoBySearchCriteria(EventSearchCriteria searchCriteria, Integer pageNumber) {
+        return eventMapper.mapEntityToDto(eventRepository
+                .findAll(eventHasSearchCriteria(searchCriteria), getPageable(pageNumber)).toList());
     }
 
     @Override
-    public List<EventDto> getAllDtoByTimeFromTo(LocalDateTime from, LocalDateTime to) {
-        return eventMapper.mapEntityToDto(eventRepository.findAllByTimeFromTo(from, to));
-    }
-
-    @Override
-    public List<EventDto> getAllDtoByParams(
-            LocalDate from, LocalDate to, Short sportTypeId, Long sportGroundId, Long organizerId
-    ) {
-        return eventMapper.mapEntityToDto(
-                eventRepository.findAllByParams(from, to, sportTypeId, sportGroundId, organizerId));
-    }
-
-    @Override
-    public List<EventDto> getAllDtoBySportGroundId(Long sportGroundId) {
-        return eventMapper.mapEntityToDto(eventRepository.findAllBySportGroundId(sportGroundId));
+    public List<EventDto> getAllDtoBySportGroundId(Long sportGroundId, Integer pageNumber) {
+        return eventMapper.mapEntityToDto(eventRepository.findAllBySportGround(sportGroundId, getPageable(pageNumber)));
     }
 
     @Override
@@ -86,10 +75,10 @@ public class EventServiceImpl implements EventService {
     public EventDto save(EventRequest eventRequest, Authentication authentication) {
         Event event = Event.builder()
                 .creationDateTime(LocalDateTime.now())
-                .startDateTime(LocalDateTime.parse(eventRequest.getStartDateTime(), formatter))
-                .endDateTime(LocalDateTime.parse(eventRequest.getEndDateTime(), formatter))
+                .startDateTime(eventRequest.getStartDateTime())
+                .endDateTime(eventRequest.getEndDateTime())
                 .sportType(sportTypeService.getSportTypeByTitle(eventRequest.getSportTypeTitle()))
-                .sportGround(sportGroundService.getById(eventRequest.getSportGroundId()))
+                .sportGround(eventRequest.getSportGroundId())
                 .organizer(userService.getByAuthentication(authentication))
                 .description(eventRequest.getDescription())
                 .isPrivate(eventRequest.getIsPrivate())
@@ -126,11 +115,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDto> getAllUserEventsByAuthentication(Authentication authentication) {
         return eventMapper.mapEntityToDto(userService.getByAuthentication(authentication).getEvents());
-    }
-
-    @Override
-    public List<EventDto> getAllUserEventsByUserId(Long userId) {
-        return eventMapper.mapEntityToDto(userService.getById(userId).getEvents());
     }
 
     @Override
@@ -289,4 +273,16 @@ public class EventServiceImpl implements EventService {
             return true;
         }
     }
+
+    /**
+     * Возвращает объект сортировки страниц поиска мероприятий
+     *
+     * @return объект сортировки
+     */
+    private Pageable getPageable(Integer pageNumber) {
+        return pageNumber != null ?
+                PageRequest.of(pageNumber, PAGE_SIZE, Sort.Direction.ASC, EVENT_SORT_BY_DATE) :
+                PageRequest.of(0, PAGE_SIZE, Sort.Direction.ASC, EVENT_SORT_BY_DATE);
+    }
 }
+

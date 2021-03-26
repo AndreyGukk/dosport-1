@@ -4,13 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.Set;
 
 import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
 import static ru.dosport.helpers.InformationMessages.NUMBER_MUST_BE_POSITIVE;
+import static ru.dosport.helpers.Patterns.*;
 
 /**
  * Dto представление сущности Мероприятие
@@ -25,24 +28,24 @@ public class EventDto {
     private Long eventId;
 
     @NotNull(message = DATA_NOT_BLANK + "Дата создания")
-//    @FutureOrPresent
-//    @DateTimeFormat(pattern="dd-MM-yyyy HH:mm")
+    @FutureOrPresent
+    @DateTimeFormat(pattern=LOCAL_DATE_TIME_PATTERN)
     @ApiModelProperty(notes = "Дата и время создания Мероприятия",
-            dataType = "LocalDateTime", example = "03-10-2020 10:30", required = true, position = 0)
+            dataType = LOCAL_DATE_TIME_TYPE, example = LOCAL_DATE_EXAMPLE_1, required = true, position = 0)
     private String creationDateTime;
 
     @NotNull(message = DATA_NOT_BLANK + "Дата и время начала")
-//    @FutureOrPresent
-//    @DateTimeFormat(pattern="dd-MM-yyyy HH:mm")
+    @FutureOrPresent
+    @DateTimeFormat(pattern=LOCAL_DATE_TIME_PATTERN)
     @ApiModelProperty(notes = "Дата и время начала проведения Мероприятия",
-            dataType = "LocalDateTime", example = "03-10-2020 10:30", required = true, position = 1)
+            dataType = LOCAL_DATE_TIME_TYPE, example = LOCAL_DATE_TIME_EXAMPLE_1, required = true, position = 1)
     private String startDateTime;
 
     @NotNull(message = DATA_NOT_BLANK + "Дата и время начала")
-//    @FutureOrPresent
-//    @DateTimeFormat(pattern="dd-MM-yyyy HH:mm")
+    @FutureOrPresent
+    @DateTimeFormat(pattern=LOCAL_DATE_TIME_PATTERN)
     @ApiModelProperty(notes = "Дата и время окончания проведения Мероприятия",
-            dataType = "LocalDateTime", example = "03-10-2020 10:30", required = true, position = 2)
+            dataType = LOCAL_DATE_TIME_TYPE, example = LOCAL_DATE_TIME_EXAMPLE_2, required = true, position = 2)
     private String endDateTime;
 
     @ApiModelProperty(notes = "Вид спорта",

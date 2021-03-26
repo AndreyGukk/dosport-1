@@ -51,3 +51,10 @@ insert into user_sports
 (user_id, sport_type_id)
 values
 (1 , 1), (1, 2), (2, 3), (2, 4);
+
+insert into events
+(creation_date, start_date, end_date, sport_type_id, sportground_id, organizer_id, description, is_private, price, maximum_users)
+values
+('2021-03-24 17:00:00+03', '2021-03-24 17:30:00+03', '2021-03-24 19:00:00+03', 1, 1, 1, 'Первое мероприятие', false, 0, 10),
+('2021-03-25 10:00:00+03', '2021-03-25 13:30:00+03', '2021-03-25 14:00:00+03', 2, 1, 1, 'Второе мероприятие', true, 10, 2),
+('2021-03-26 20:00:00+03', '2021-03-26 22:30:00+03', '2021-03-26 23:30:00+03', 3, 1, 2, 'Третье мероприятие', false, 100, 5);
