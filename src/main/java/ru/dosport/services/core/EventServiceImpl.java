@@ -92,7 +92,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDto update(EventRequest eventRequest, Long eventId, Authentication authentication) {
         Event event = findEventById(eventId);
-        checkUserIsOrganizerOrAdmin(event, authentication);
+        checkUserIsEventOrganizerOrAdmin(event, authentication);
         eventMapper.update(event, eventRequest);
         if (!event.getSportType().getTitle().equals(eventRequest.getSportTypeTitle())) {
             event.setSportType(sportTypeService.getSportTypeByTitle(eventRequest.getSportTypeTitle()));
@@ -103,7 +103,7 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public boolean deleteById(Long id, Authentication authentication) {
-        checkUserIsOrganizerOrAdmin(findEventById(id), authentication);
+        checkUserIsEventOrganizerOrAdmin(findEventById(id), authentication);
         eventRepository.deleteById(id);
         return !eventRepository.existsById(id);
     }
@@ -159,7 +159,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public boolean deleteParticipantByUserId(Long eventId, Long userId, Authentication authentication) {
         Event event = findEventById(eventId);
-        checkUserIsOrganizerOrAdmin(event, authentication);
+        checkUserIsEventOrganizerOrAdmin(event, authentication);
         return checkUserAndDeleteFromParticipants(event, userService.getById(userId));
     }
 
@@ -184,7 +184,7 @@ public class EventServiceImpl implements EventService {
     public boolean addInvitationByUserId(Long eventId, Long userId, Authentication authentication) {
         Event event = findEventById(eventId);
         User user = userService.getById(userId);
-        checkUserIsParticipantOrOrganizer(event, user);
+        checkIfUserIsEventParticipantOrOrganizer(event, user);
         event.getInvitations().add(user);
         return eventRepository.save(event).getInvitations().contains(user);
     }
@@ -193,7 +193,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public boolean deleteInvitationByUserId(Long eventId, Long userId, Authentication authentication) {
         Event event = findEventById(eventId);
-        checkUserIsOrganizerOrAdmin(event, authentication);
+        checkUserIsEventOrganizerOrAdmin(event, authentication);
         return checkUserAndDeleteFromInvitations(event, userService.getById(userId));
     }
 
@@ -228,19 +228,22 @@ public class EventServiceImpl implements EventService {
     /**
      * Возвращает является ли пользователь организатором мероприятия или Администратором
      */
-    private void checkUserIsOrganizerOrAdmin(Event event, Authentication authentication) {
-        if (!(userService.getIdByAuthentication(authentication).equals(event.getOrganizer().getId()) |
-                Roles.hasAuthenticationRoleAdmin(authentication))) {
-            throw new DataBadRequestException(USER_IS_NOT_EVENT_ORGANIZER);
+    private void checkUserIsEventOrganizerOrAdmin(Event event, Authentication authentication) {
+        Long userId = userService.getIdByAuthentication(authentication);
+        if (!(userId.equals(event.getOrganizer().getId()) |
+                !Roles.hasAuthenticationRoleAdmin(authentication))) {
+            throw new DataBadRequestException(String.format(USER_IS_NOT_EVENT_ORGANIZER, userId, event.getId()));
         }
     }
 
     /**
-     * Возвращает является ли пользователь организатором или участником мероприятия
+     * Проверяет является ли пользователь организатором или участником мероприятия
      */
-    private void checkUserIsParticipantOrOrganizer(Event event, User user) {
-        if (!(user.getId().equals(event.getOrganizer().getId()) | event.getParticipants().contains(user))) {
-            throw new DataBadRequestException(USER_IS_NOT_EVENT_ORGANIZER);
+    private void checkIfUserIsEventParticipantOrOrganizer(Event event, User user) {
+        Long userId = user.getId();
+        if (!(userId.equals(event.getOrganizer().getId()) |
+                !event.getParticipants().contains(user))) {
+            throw new DataBadRequestException(String.format(USER_IS_NOT_EVENT_ORGANIZER, userId, event.getId()));
         }
     }
 

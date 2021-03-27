@@ -46,14 +46,14 @@ public class EventController {
                 @DateTimeFormat(pattern = LOCAL_DATE_TIME_PATTERN) LocalDateTime creationDateTimeFrom,
             @ApiParam(value = PAR_CREATION_DATE_TO, example = LOCAL_DATE_TIME_EXAMPLE_2) @RequestParam(required = false)
                 @DateTimeFormat(pattern = LOCAL_DATE_TIME_PATTERN) LocalDateTime creationDateTimeTo,
-            @ApiParam(value = PAR_START_DATE_FROM, example = LOCAL_DATE_TIME_EXAMPLE_1) @RequestParam(required = false)
+            @ApiParam(value = PAR_START_DATE) @RequestParam(required = false)
                 @DateTimeFormat(pattern = LOCAL_DATE_TIME_PATTERN) LocalDateTime startDateTimeFrom,
-            @ApiParam(value = PAR_END_DATE_ID, example = LOCAL_DATE_TIME_EXAMPLE_2) @RequestParam(required = false)
+            @ApiParam(value = PAR_END_DATE) @RequestParam(required = false)
                 @DateTimeFormat(pattern = LOCAL_DATE_TIME_PATTERN) LocalDateTime endDateTimeTo,
             @ApiParam(value = PAR_SPORT_TYPE_ID) @RequestParam(required = false) Short sportTypeId,
             @ApiParam(value = PAR_SPORTGROUND_ID) @RequestParam(required = false) Long sportGroundId,
             @ApiParam(value = PAR_ORGANIZER_ID) @RequestParam(required = false) Long organizerId,
-            @ApiParam(value = PAR_PRIVATE, example = "false") @RequestParam(required = false) Boolean isPrivate,
+            @ApiParam(value = PAR_PRIVATE) @RequestParam(required = false) Boolean isPrivate,
             @ApiParam(value = PAR_PRICE_MIN) @RequestParam(required = false) Integer minPrice,
             @ApiParam(value = PAR_PRICE_MAX) @RequestParam(required = false) Integer maxPrice,
             @ApiParam(value = PAR_PAGE_NUMBER, defaultValue = "0") @RequestParam(required = false, defaultValue = "0") Integer pageNumber

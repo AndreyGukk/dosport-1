@@ -15,7 +15,7 @@ public interface MessageMapper {
 
     @Mappings({
             @Mapping(target = "messageId", source = "entity.id"),
-            @Mapping(target = "eventId", source = "entity.event.id"),
+            @Mapping(target = "eventId", source = "entity.eventId"),
             @Mapping(target = "userId", source = "entity.user.id"),
             @Mapping(target = "username", source = "entity.user.username"),
             @Mapping(target = "photoLink", source = "entity.user.photoLink"),

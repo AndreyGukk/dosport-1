@@ -31,11 +31,6 @@ public interface EventMapper {
     List<EventDto> mapEntityToDto(Set<Event> entities);
 
     @Mappings({
-            @Mapping(target = "id", source = "dto.eventId")
-    })
-    Event mapDtoToEntity(EventDto dto);
-
-    @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "creationDateTime", ignore = true),
             @Mapping(target = "sportGround", ignore = true),

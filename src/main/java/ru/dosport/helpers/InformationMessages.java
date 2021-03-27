@@ -30,6 +30,7 @@ public final class InformationMessages {
      */
     public static final String ACCESS_DENIED = "Ошибка авторизации пользователя";
     public static final String BAD_REQUEST = "Запрос содержит ошибочные данные";
+    public static final String WRONG_PATH = "Неверный путь запроса";
     public static final String INVALID_VALUE = "Значение поля %s неверное: %s";
     public static final String INVALID_USERNAME_LENGTH = "Поле Никнейм должно содержать от 4 до 50 символов";
     public static final String DATA_NOT_BLANK = "Должно быть не пустым поле ";
@@ -43,10 +44,21 @@ public final class InformationMessages {
     public static final String DATA_NOT_FOUND_BY_ID = "Данные c индексом %s не найдены";
     public static final String DATA_WAS_NOT_SAVED = "Данные не сохранены по запросу ";
     public static final String DATA_NOT_FOUND = "Данные не найдены ";
-    public static final String CANNOT_SUBSCRIBE_TO_MYSELF = "Нельзя подписаться на самого себя";
-    public static final String USER_IS_NOT_EVENT_ORGANIZER = "Пользователь не является организатором мероприятия";
-    public static final String CANNOT_PARTICIPATE_IN_PRIVATE_EVENT =
-            "Нельзя принять участие в приватном мероприятии без приглашения";
     public static final String DATE_MUST_BE_IN_FUTURE = "Допустимо только будущее время для параметра ";
     public static final String INVALID_DATE_TIME_FORMAT = "Неверный формат даты и времени параметра ";
+
+    // Нарушение прав доступа
+    public static final String MESSAGE_DOES_NOT_BELONG_TO_EVENT =
+            "Сообщение c индексом %s не принадлежит событию с индексом %s";
+    public static final String USER_IS_NOT_MESSAGE_AUTHOR =
+            "Пользователь с индексом %s не является автором сообщения c индексом %s или администратором";
+    public static final String USER_IS_NOT_EVENT_ORGANIZER =
+            "Пользователь с индексом %s не является организатором мероприятия c индексом %s или администратором";
+    public static final String CANNOT_PARTICIPATE_IN_PRIVATE_EVENT =
+            "Нельзя принять участие в приватном мероприятии без приглашения";
+    public static final String CANNOT_SUBSCRIBE_TO_MYSELF = "Нельзя подписаться на самого себя";
+
+    // Отсутствие данных по индексу
+    public static final String EVENT_NOT_FOUND_BY_ID = "Мероприятие c индексом %s не найдено";
+    public static final String MESSAGE_NOT_FOUND_BY_ID = "Сообщение c индексом %s не найдено";
 }

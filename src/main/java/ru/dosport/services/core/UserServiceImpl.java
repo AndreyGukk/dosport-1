@@ -193,7 +193,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      * Получить id пользователя по данным аутентификации
      */
     private Long getUserId(Authentication authentication) {
-        if (authentication==null) throw new DataNotFoundException(ACCESS_DENIED);
+        if (authentication==null) {
+            throw new DataNotFoundException(ACCESS_DENIED);
+        }
         return ((JwtUser) authentication.getPrincipal()).getId();
     }
 }

@@ -6,14 +6,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.Set;
 
-import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
-import static ru.dosport.helpers.InformationMessages.NUMBER_MUST_BE_POSITIVE;
 import static ru.dosport.helpers.Patterns.*;
+import static ru.dosport.helpers.SwaggerMessages.*;
 
 /**
  * Dto представление сущности Мероприятие
@@ -23,74 +19,62 @@ import static ru.dosport.helpers.Patterns.*;
 @ApiModel(description = "Dto представление сущности Мероприятие")
 public class EventDto {
 
-    @ApiModelProperty(notes = "Уникальный идентификатор Мероприятия",
+    @ApiModelProperty(notes = PAR_EVENT_ID,
             dataType = "Long", example = "1", required = true, position = 0)
     private Long eventId;
 
-    @NotNull(message = DATA_NOT_BLANK + "Дата создания")
-    @FutureOrPresent
     @DateTimeFormat(pattern=LOCAL_DATE_TIME_PATTERN)
-    @ApiModelProperty(notes = "Дата и время создания Мероприятия",
+    @ApiModelProperty(notes = PAR_CREATION_DATE_FORMAT,
             dataType = LOCAL_DATE_TIME_TYPE, example = LOCAL_DATE_EXAMPLE_1, required = true, position = 0)
     private String creationDateTime;
 
-    @NotNull(message = DATA_NOT_BLANK + "Дата и время начала")
-    @FutureOrPresent
     @DateTimeFormat(pattern=LOCAL_DATE_TIME_PATTERN)
-    @ApiModelProperty(notes = "Дата и время начала проведения Мероприятия",
+    @ApiModelProperty(notes = PAR_START_DATE_FORMAT,
             dataType = LOCAL_DATE_TIME_TYPE, example = LOCAL_DATE_TIME_EXAMPLE_1, required = true, position = 1)
     private String startDateTime;
 
-    @NotNull(message = DATA_NOT_BLANK + "Дата и время начала")
-    @FutureOrPresent
     @DateTimeFormat(pattern=LOCAL_DATE_TIME_PATTERN)
-    @ApiModelProperty(notes = "Дата и время окончания проведения Мероприятия",
+    @ApiModelProperty(notes = PAR_END_DATE_FORMAT,
             dataType = LOCAL_DATE_TIME_TYPE, example = LOCAL_DATE_TIME_EXAMPLE_2, required = true, position = 2)
     private String endDateTime;
 
-    @ApiModelProperty(notes = "Вид спорта",
+    @ApiModelProperty(notes = PAR_SPORT_TYPE_DTO,
             dataType = "SportTypeDto", required = true, position = 3)
     private SportTypeDto sportType;
 
-    @NotNull(message = DATA_NOT_BLANK + "Спортивная площадки")
-    @ApiModelProperty(notes = "Идентификатор спортивной площадки для проведения Мероприятия",
+    @ApiModelProperty(notes = PAR_SPORTGROUND_ID,
             dataType = "Long", example = "1", required = true, position = 4)
     private Long sportGroundId;
 
-    @ApiModelProperty(notes = "Организатор Мероприятия",
+    @ApiModelProperty(notes = PAR_ORGANIZER_DTO,
             dataType = "UserDto", required = true, position = 5)
     private UserDto organizer;
 
-    @ApiModelProperty(notes = "Список участников Мероприятия",
+    @ApiModelProperty(notes = PAR_PARTICIPANTS,
             dataType = "Set<UserDto>", required = true, position = 6)
     private Set<UserDto> participants;
 
-    @ApiModelProperty(notes = "Описание мероприятияб до 150 символов",
+    @ApiModelProperty(notes = PAR_EVENT_DESCRIPTION,
             dataType = "String", example = "Классное мероприятие", required = true, position = 7)
     private String description;
 
-    @NotNull(message = DATA_NOT_BLANK + "Приватность мероприятия")
-    @ApiModelProperty(notes = "Приватность мероприятия, true - закрытое",
+    @ApiModelProperty(notes = PAR_PRIVATE,
             dataType = "Boolean", example = "true", required = true, position = 8)
     private Boolean isPrivate;
 
-    @PositiveOrZero(message = NUMBER_MUST_BE_POSITIVE + "Цена участия в мероприятии")
-    @ApiModelProperty(notes = "Цена участия в мероприятии",
+    @ApiModelProperty(notes = PAR_PRICE,
             dataType = "Integer", example = "100", position = 9)
     private Integer price;
 
-    @PositiveOrZero(message = NUMBER_MUST_BE_POSITIVE + "Максимальное количество участников")
-    @ApiModelProperty(notes = "Максимальное количество участников",
+    @ApiModelProperty(notes = PAR_MAX_USERS,
             dataType = "Short", example = "10", position = 10)
     private Short maximumUsers;
 
-    @PositiveOrZero(message = NUMBER_MUST_BE_POSITIVE + "Количество участников")
-    @ApiModelProperty(notes = "Количество участников",
+    @ApiModelProperty(notes = PAR_USERS_COUNT,
             dataType = "Short", example = "1", position = 11)
     private Short usersAmount;
 
-    @PositiveOrZero(message = NUMBER_MUST_BE_POSITIVE + "Количество сообщений")
-    @ApiModelProperty(notes = "Количество сообщений",
+    @ApiModelProperty(notes = PAR_MESSAGES_COUNT,
             dataType = "Short", example = "1", position = 12)
     private Short messagesAmount;
 }

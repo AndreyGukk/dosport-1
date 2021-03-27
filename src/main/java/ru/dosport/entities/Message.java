@@ -20,10 +20,9 @@ public class Message {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "event_id", nullable = false)
-    private Event event;
+    @Column(name = "event_id", nullable = false)
+    private Long eventId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
