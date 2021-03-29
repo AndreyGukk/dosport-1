@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers(MAIN_ENDPOINT).permitAll()
                 .antMatchers(SWAGGER_ENDPOINT).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .formLogin().disable()
                 .logout().disable()
