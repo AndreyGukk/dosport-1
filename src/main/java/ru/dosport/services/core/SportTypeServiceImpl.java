@@ -15,6 +15,7 @@ import ru.dosport.services.api.UserService;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static ru.dosport.helpers.InformationMessages.DATA_NOT_FOUND_BY_ID;
 
@@ -44,6 +45,11 @@ public class SportTypeServiceImpl implements SportTypeService {
     public SportType getSportTypeByTitle(String title) {
         return repository.findByTitle(title).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, title)));
+    }
+
+    @Override
+    public Set<SportType> getAllSportTypesByTitle(Set<String> titles) {
+        return repository.findAllByTitleIn(titles);
     }
 
     @Transactional

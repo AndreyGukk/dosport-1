@@ -19,6 +19,7 @@ import ru.dosport.mappers.EventMapper;
 import ru.dosport.mappers.UserMapper;
 import ru.dosport.repositories.EventRepository;
 import ru.dosport.services.api.EventService;
+import ru.dosport.services.api.SportGroundService;
 import ru.dosport.services.api.SportTypeService;
 import ru.dosport.services.api.UserService;
 import ru.dosport.specifications.EventSearchCriteria;
@@ -26,6 +27,7 @@ import ru.dosport.specifications.EventSearchCriteria;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,6 +50,10 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserService userService;
     private final SportTypeService sportTypeService;
+    private final SportGroundService sportGroundService;
+
+    // Паттерн форматирования даты и времени
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     @Override
     public EventDto getDtoById(Long id) {
@@ -62,7 +68,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventDto> getAllDtoBySportGroundId(Long sportGroundId, Integer pageNumber) {
-        return eventMapper.mapEntityToDto(eventRepository.findAllBySportGround(sportGroundId, getPageable(pageNumber)));
+        return eventMapper.mapEntityToDto(eventRepository
+                .findAllBySportGround(sportGroundId, getPageable(pageNumber)));
     }
 
     @Override
@@ -148,7 +155,7 @@ public class EventServiceImpl implements EventService {
             User user = userService.getByAuthentication(authentication);
             Set<User> participants = event.getParticipants();
             participants.add(user);
-            event.setUsersAmount((short)participants.size());
+            event.setUsersAmount((short) participants.size());
             return eventRepository.save(event).getParticipants().contains(user);
         } else {
             throw new DataBadRequestException(CANNOT_PARTICIPATE_IN_PRIVATE_EVENT);
@@ -256,7 +263,7 @@ public class EventServiceImpl implements EventService {
         if (event.getParticipants().contains(user)) {
             Set<User> participants = event.getParticipants();
             participants.remove(user);
-            event.setUsersAmount((short)participants.size());
+            event.setUsersAmount((short) participants.size());
             return !eventRepository.save(event).getParticipants().contains(user);
         } else {
             return true;

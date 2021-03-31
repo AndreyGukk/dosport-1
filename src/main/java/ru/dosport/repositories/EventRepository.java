@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import ru.dosport.entities.Event;
 
+
 import java.util.List;
 
 /**

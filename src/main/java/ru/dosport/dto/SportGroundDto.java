@@ -6,7 +6,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
+
+import static ru.dosport.helpers.Patterns.*;
+import static ru.dosport.helpers.SwaggerMessages.*;
 
 
 /**
@@ -17,56 +22,74 @@ import java.util.List;
 @ApiModel(description = "Представление сущности Площадка для расписания.")
 public class SportGroundDto {
 
-    @ApiModelProperty(notes = "Уникальный идентификатор Площадки",
+    @ApiModelProperty(notes = PAR_SPORTGROUND_ID,
             dataType = "Long", example = "1", required = true, position = 0)
     private Long sportGroundId;
 
     @Size(max = 100)
-    @ApiModelProperty(notes = "Город, в котором расположена Площадка, до 100 символов",
+    @ApiModelProperty(notes = PAR_SPORTGROUND_CITY,
             dataType = "String", example = "Москва", required = true, position = 1)
     private String city;
 
     @Size(max = 255)
-    @ApiModelProperty(notes = "Адрес Площадки, до 255 символов",
+    @ApiModelProperty(notes = PAR_SPORTGROUND_ADDRESS,
             dataType = "String", example = "ул. Ленинская, 25", required = true, position = 2)
     private String address;
 
     @Size(max = 150)
-    @ApiModelProperty(notes = "Название Площадки, до 150 символов",
+    @ApiModelProperty(notes = PAR_SPORTGROUND_NAME,
             dataType = "String", example = "Площадка во дворе дома", required = true, position = 3)
     private String title;
 
-    @ApiModelProperty(notes = "Широта",
+    @ApiModelProperty(notes = PAR_SPORTGROUND_LATITUDE,
             dataType = "Double", required = true, position = 4)
     private Double latitude;
 
-    @ApiModelProperty(notes = "Долгота",
+    @ApiModelProperty(notes = PAR_SPORTGROUND_LONGITUDE,
             dataType = "String", required = true, position = 5)
     private Double longitude ;
 
-    @ApiModelProperty(notes = "Станция метро, варианты: Не выбрано",
+    @ApiModelProperty(notes = PAR_SPORTGROUND_METRO,
             dataType = "String", position = 6)
     private String metroStation;
 
-    @ApiModelProperty(notes = "Тип покрытия, варианты: Не выбрано, Грунт, Песок, Асфальт, Резина, " +
-            "Искуственный газон, Натуральный газон, Паркет, Лед, Хард, Маты, Бассейн",
+    @ApiModelProperty(notes = PAR_SPORTGROUND_SURFACE,
             dataType = "String", position = 7)
     private String surfaceType;
 
-    @ApiModelProperty(notes = "Стоимость аренды в час",
+    @ApiModelProperty(notes = PAR_PRICE,
             dataType = "Integer", example = "1000", position = 8)
     private Integer rentPrice;
 
-    @ApiModelProperty(notes = "Является ли площадка открытой (расположена на улице)",
-            dataType = "boolean", example = "true", required = true, position = 9)
+    @ApiModelProperty(notes = PAR_SPORTGROUND_OPENED,
+            dataType = "Boolean", example = "true", position = 9)
     private Boolean opened;
 
-    @ApiModelProperty(notes = "Список инфраструктуры площадки, варианты: Не выбрано, " +
-            "Раздевалка, Парковка, Трибуны, Душ, Освещение, Камера хранения, Аренда оборудования",
-            dataType = "List<String>", position = 10)
-    private List<String> infrastructures;
+    @ApiModelProperty(notes = PAR_SPORTGROUND_INFRASTRUCTURES,
+            dataType = "Set<String>", position = 10)
+    private Set<String> infrastructures;
 
-    @ApiModelProperty(notes = "Список видов спорта",
-            dataType = "List<SportTypeDto>",  position = 11)
-    private List<SportTypeDto> sportTypes;
+    @ApiModelProperty(notes = PAR_SPORT_TYPE_LIST,
+            dataType = "Set<SportTypeDto>",  position = 11)
+    private Set<SportTypeDto> sportTypes;
+
+    @ApiModelProperty(notes = PAR_SPORTGROUND_SUBSCRIBERS,
+            dataType = "Set<UserDto>",  position = 12)
+    private Set<UserDto> subscribers;
+
+    @ApiModelProperty(notes = PAR_SPORTGROUND_REVIEWS,
+            dataType = "List<SportGroundReviewDto>",  position = 13)
+    private List<SportGroundReviewDto> reviews;
+
+    @ApiModelProperty(notes = PAR_SPORTGROUND_EVENTS,
+            dataType = "List<EventDto>",  position = 14)
+    private List<EventDto> events;
+
+    @ApiModelProperty(notes = PAR_SPORTGROUND_OPENING_TIME,
+            dataType = LOCAL_TIME_TYPE, example = LOCAL_TIME_EXAMPLE_1, position = 15)
+    private LocalTime openingTime;
+
+    @ApiModelProperty(notes = PAR_SPORTGROUND_CLOSING_TIME,
+            dataType = LOCAL_TIME_TYPE, example = LOCAL_TIME_EXAMPLE_2, position = 16)
+    private LocalTime closingTime;
 }

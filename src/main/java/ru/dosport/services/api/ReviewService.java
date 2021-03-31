@@ -17,14 +17,14 @@ public interface ReviewService {
      * @exception DataNotFoundException, не найдена площадка
      * @return ReviewDto
      */
-    ReviewDto readReviewDtoById(Long reviewId, Long sportGroundId);
+    SportGroundReviewDto readReviewDtoById(Long reviewId, Long sportGroundId);
 
     /**
      * Возращает рецензии по идентификатору площадки
      * @param sportGroundId идентификатор площадки
      * @return List<ReviewDto>
      */
-    List<ReviewDto> readAllReviewsDtoBySportGround(Long sportGroundId);
+    List<SportGroundReviewDto> readAllReviewsDtoBySportGround(Long sportGroundId);
 
     /**
      * Сохраняет новую рецензию
@@ -34,7 +34,7 @@ public interface ReviewService {
      * @exception DataBadRequestException, не найдена спортивная площадка
      * @return dto новой рецензии
      */
-    ReviewDto saveReview(Long sportGroundId, ReviewRequest request, Authentication authentication);
+    SportGroundReviewDto saveReview(Long sportGroundId, ReviewRequest request, Authentication authentication);
 
     /**
      * Обновляет рецензию (текст, имя юзера)
@@ -45,7 +45,7 @@ public interface ReviewService {
      * @exception DataNotFoundException, не получилось найти рецензию
      * @return dto обновлённой рецензии
      */
-    ReviewDto updateReview(Long reviewId, Long sportGroundId, ReviewRequest request, Authentication authentication);
+    SportGroundReviewDto updateReview(Long reviewId, Long sportGroundId, ReviewRequest request, Authentication authentication);
 
     /**
      * Удаление рецензии (только автор рецензии)

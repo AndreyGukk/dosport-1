@@ -4,6 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import ru.dosport.enums.MetroStation;
 
+import java.util.Set;
+
 /**
  * Маппер, преобразующий классы MetroStation и String друг в друга
  */
@@ -11,7 +13,11 @@ import ru.dosport.enums.MetroStation;
 public interface MetroStationMapper {
 
     default String mapEnumToString(MetroStation entity) {
-        return entity.getDescription();
+        if (entity != null) {
+            return entity.getDescription();
+        } else {
+            return null;
+        }
     }
 
     default MetroStation mapStringToEnum(String string) {
@@ -21,9 +27,13 @@ public interface MetroStationMapper {
                 entity = MetroStation.SOKOLNIKI;
                 break;
             default:
-                entity = MetroStation.NOT_SELECTED;
+                entity = null;
                 break;
         }
         return entity;
     }
+
+    Set<MetroStation> mapStringToEnum(Set<String> stringSet);
+
+    Set<String> mapEnumToString(Set<MetroStation> stringSet);
 }

@@ -15,7 +15,7 @@ import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(description = "Запрос на создание сущности Отзывв о спортивной площадке")
+@ApiModel(description = "Запрос на создание сущности Отзыва о спортивной площадке")
 public class ReviewRequest {
 
     @Size(min = 5, max = 300)

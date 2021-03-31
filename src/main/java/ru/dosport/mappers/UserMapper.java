@@ -27,6 +27,8 @@ public interface UserMapper {
 
     List<UserDto> mapEntityToDto(Set<User> entities);
 
+    Set<UserDto> mapSetEntityToDto(Set<User> entities);
+
     JwtUser mapEntityToJwt(User entity);
 
     @Mappings({

@@ -3,11 +3,12 @@ package ru.dosport.mappers;
 import org.mapstruct.*;
 import ru.dosport.dto.SportGroundDto;
 import ru.dosport.dto.SportGroundRequest;
-import ru.dosport.dto.UserSportGroundDto;
 import ru.dosport.entities.SportGround;
-import ru.dosport.entities.UserSportGround;
 
 import java.util.List;
+import java.util.Set;
+
+import static ru.dosport.helpers.Patterns.LOCAL_TIME_PATTERN;
 
 /**
  * Маппер, преобразующий классы SportGround и SportGroundDto друг в друга
@@ -17,28 +18,28 @@ import java.util.List;
                 InfrastructureMapper.class, MetroStationMapper.class})
 public interface SportGroundMapper {
 
+    @Mappings({
+            @Mapping(target = "sportGroundId", source = "entity.id"),
+            @Mapping(target = "openingTime", source = "entity.openingTime", dateFormat = LOCAL_TIME_PATTERN),
+            @Mapping(target = "closingTime", source = "entity.closingTime", dateFormat = LOCAL_TIME_PATTERN)
+    })
     SportGroundDto mapEntityToDto(SportGround entity);
 
-    List<SportGroundDto> mapEntityToDto(List<SportGround> entities);
-
     @Mappings({
-            @Mapping(target = "id", source = "dto.sportGroundId"),
+            @Mapping(target = "sportTypes", ignore = true),
+            @Mapping(target = "openingTime", source = "dto.openingTime", dateFormat = LOCAL_TIME_PATTERN),
+            @Mapping(target = "closingTime", source = "dto.closingTime", dateFormat = LOCAL_TIME_PATTERN)
     })
-    SportGround mapDtoToEntity(SportGroundDto dto);
-
-    SportGround mapRequestToEntity(SportGroundRequest request);
+    SportGround mapDtoToEntity(SportGroundRequest dto);
 
     @Mappings({
+            @Mapping(target = "sportTypes", ignore = true),
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "events", ignore = true)
     })
     SportGround update(@MappingTarget SportGround entity, SportGroundRequest request);
 
-    UserSportGround mapUserSportGroundDtoToEntity(UserSportGroundDto dto);
+    List<SportGroundDto> mapEntityToDto(List<SportGround> entities);
 
-    UserSportGroundDto mapUserSportGroundEntityToDto(UserSportGround entity);
-
-    List<UserSportGround> mapUserSportGroundDtoToEntity(List<UserSportGroundDto> dto);
-
-    List<UserSportGroundDto> mapUserSportGroundEntityToDto(List<UserSportGround> entities);
+    Set<SportGroundDto> mapEntityToDto(Set<SportGround> entities);
 }

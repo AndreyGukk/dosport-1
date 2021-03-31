@@ -4,6 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import ru.dosport.enums.Infrastructure;
 
+import java.util.Set;
+
 /**
  * Маппер, преобразующий классы Infrastructure и String друг в друга
  */
@@ -11,7 +13,11 @@ import ru.dosport.enums.Infrastructure;
 public interface InfrastructureMapper {
 
     default String mapEnumToString(Infrastructure entity) {
-        return entity.getDescription();
+        if (entity != null) {
+            return entity.getDescription();
+        } else {
+            return null;
+        }
     }
 
     default Infrastructure mapStringToEnum(String string) {
@@ -47,4 +53,8 @@ public interface InfrastructureMapper {
         }
         return entity;
     }
+
+    Set<Infrastructure> mapStringToEnum(Set<String> stringSet);
+
+    Set<String> mapEnumToString(Set<Infrastructure> stringSet);
 }

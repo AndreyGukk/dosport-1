@@ -11,18 +11,20 @@ import ru.dosport.enums.Gender;
 public interface GenderMapper {
 
     default String mapEnumToString(Gender entity) {
-        return entity.getDescription();
+        if (entity != null) {
+            return entity.getDescription();
+        } else {
+            return null;
+        }
     }
 
     default Gender mapStringToEnum(String string) {
         Gender entity;
         switch (string) {
             case "Женский":
-            case "1":
                 entity = Gender.FEMALE;
                 break;
             case "Мужской":
-            case "2":
                 entity = Gender.MALE;
                 break;
             default:

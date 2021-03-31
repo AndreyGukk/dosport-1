@@ -6,7 +6,9 @@ import ru.dosport.dto.EventRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.specifications.EventSearchCriteria;
 
+import java.awt.print.Pageable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -35,9 +37,10 @@ public interface EventService {
      * Возвращает список мероприятий для определенной площадки по идентификатору площадки
      *
      * @param sportGroundId идентификатор площадки, для которой получаем список мероприятий
+     * @param page страница
      * @return список мероприятий
      */
-    List<EventDto> getAllDtoBySportGroundId(Long sportGroundId, Integer pageNumber);
+    List<EventDto> getAllDtoBySportGroundId(Long sportGroundId, Integer page);
 
     /**
      * Возвращает существует ли мероприятие

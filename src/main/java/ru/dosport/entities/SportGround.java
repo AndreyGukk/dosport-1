@@ -6,6 +6,7 @@ import ru.dosport.enums.MetroStation;
 import ru.dosport.enums.SurfaceType;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
@@ -65,11 +66,12 @@ public class SportGround {
     private Boolean opened;
 
     // Список инфраструктуры площадки
-    @ManyToMany
+    @ElementCollection(targetClass=Infrastructure.class)
+    @Enumerated(EnumType.ORDINAL)
     @JoinTable(
             name = "sportground_infrastructures",
-            joinColumns = @JoinColumn(name = "sportground_id"),
-            inverseJoinColumns = @JoinColumn(name = "infrastructure_id"))
+            joinColumns = @JoinColumn(name = "sportground_id"))
+    @Column(name="infrastructure_id")
     private Set<Infrastructure> infrastructures;
 
     // Список видов спорта
@@ -86,7 +88,7 @@ public class SportGround {
             name = "user_sportgrounds",
             joinColumns = @JoinColumn(name = "sportground_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users;
+    private Set<User> subscribers;
 
     // Список мероприятий на площадке
     @OneToMany(mappedBy = "sportGround")
@@ -94,5 +96,13 @@ public class SportGround {
 
     // Список отзывов о площадке
     @OneToMany(mappedBy = "sportGroundId")
-    private List<Review> reviews;
+    private List<SportGroundReview> reviews;
+
+    //Время открытия площадки
+    @Column(name = "opening_time")
+    private LocalTime openingTime;
+
+    //Время закрытия площадки
+    @Column(name = "closing_time")
+    private LocalTime closingTime;
 }

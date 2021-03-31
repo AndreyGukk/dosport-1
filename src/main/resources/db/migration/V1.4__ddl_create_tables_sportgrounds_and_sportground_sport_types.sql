@@ -4,7 +4,7 @@ create table sportgrounds
 (
 	id              bigserial not null UNIQUE,
 	city            varchar(100) not null,
-	address         varchar(255) not null unique,
+	address         varchar(255) not null,
 	title           varchar(150) not null,
     latitude        double precision not null,
 	longitude       double precision not null,
@@ -12,6 +12,8 @@ create table sportgrounds
 	surface_type    smallint,
 	rent_price      integer,
 	opened          boolean not null,
+    opening_time    time with time zone,
+    closing_time    time with time zone,
 	PRIMARY KEY (id)
 );
 

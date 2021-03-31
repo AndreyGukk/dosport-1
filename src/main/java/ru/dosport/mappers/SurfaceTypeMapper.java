@@ -4,6 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import ru.dosport.enums.SurfaceType;
 
+import java.util.Set;
+
 /**
  * Маппер, преобразующий классы SurfaceType и String друг в друга
  */
@@ -11,7 +13,11 @@ import ru.dosport.enums.SurfaceType;
 public interface SurfaceTypeMapper {
 
     default String mapEnumToString(SurfaceType entity) {
-        return entity.getDescription();
+        if (entity != null) {
+            return entity.getDescription();
+        } else {
+            return null;
+        }
     }
 
     default SurfaceType mapStringToEnum(String string) {
@@ -56,4 +62,8 @@ public interface SurfaceTypeMapper {
         }
         return entity;
     }
+
+    Set<SurfaceType> mapStringToEnum(Set<String> stringSet);
+
+    Set<String> mapEnumToString(Set<SurfaceType> stringSet);
 }

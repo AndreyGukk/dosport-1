@@ -17,6 +17,11 @@ public class Patterns {
     public static final String LOCAL_DATE_TIME_EXAMPLE_1 = "2021-03-23 11:22";
     public static final String LOCAL_DATE_TIME_EXAMPLE_2 = "2021-05-25 22:33";
 
+    public static final String LOCAL_TIME_PATTERN = "HH:mm";
+    public static final String LOCAL_TIME_TYPE = "LocalTime";
+    public static final String LOCAL_TIME_EXAMPLE_1 = "11:22";
+    public static final String LOCAL_TIME_EXAMPLE_2 = "22:33";
+
     public static final String EVENT_SORT_BY_DATE = "creationDateTime";
     public static final int PAGE_SIZE = 15;
 

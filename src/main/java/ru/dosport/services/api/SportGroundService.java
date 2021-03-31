@@ -1,12 +1,11 @@
 package ru.dosport.services.api;
 
 import org.springframework.security.core.Authentication;
-import ru.dosport.dto.SportGroundDto;
-import ru.dosport.dto.SportGroundRequest;
-import ru.dosport.dto.UserSportGroundDto;
-import ru.dosport.entities.SportGround;
+import ru.dosport.dto.*;
+import ru.dosport.specifications.SportGroundSearchCriteria;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Сервис Спортивных площадок.
@@ -27,28 +26,14 @@ public interface SportGroundService {
     List<SportGroundDto> getAllDto();
 
     /**
-     * Возращает площадки из списка индетификаторов
-     * @param idList список идентификаторов площадок
-     * @return список dto площадок
+     * Возвращает список площадок, имеющие определенные критерии поиска
+     *
+     * @param searchCriteria критерии поиска
+     * @param pageNumber номер страницы
+     * @return список площадок
      */
-    List<SportGroundDto> getAllDtoByIdList(List<Long> idList);
+    List<SportGroundDto> getAllDtoBySearchCriteria(SportGroundSearchCriteria searchCriteria, Integer pageNumber);
 
-
-    /**
-     * Возвращает все площадки города с заданным видом спорта
-     * 
-     * @param city город
-     * @param sportTypeId идентификатор вида спорта
-     * @return список dto площадок
-     */
-    List<SportGroundDto> getAllDtoByCityAndSportTypeId(String city, Short sportTypeId);
-
-    /**
-     * Возвращает площадку по идентификатору
-     * @param id идентификатор площадки
-     * @return сущность площадки
-     */
-    SportGround getById(Long id);
 
     /**
      * Создаёт площадку
@@ -79,15 +64,15 @@ public interface SportGroundService {
      * @param authentication данные авторизации
      * @return список
      */
-    List<SportGroundDto> getFavoriteSportGroundsByAuth(Authentication authentication);
+    Set<SportGroundDto> getFavoriteSportGroundsByAuth(Authentication authentication);
 
     /**
      * Добавление площадки в избранное
      * @param id индентификатор площадки
      * @param authentication данные авторизации
-     * @return площадка
+     * @return появилась ли площадка
      */
-    UserSportGroundDto saveFavoriteSportGroundByAuthAndId(Authentication authentication, Long id);
+    boolean addFavoriteSportGroundByAuthAndId(Authentication authentication, Long id);
 
     /**
      * Удаление площадки из избранного
@@ -103,4 +88,24 @@ public interface SportGroundService {
      * @return true, false
      */
     boolean exists(Long sportGroundId);
+
+    /**
+     * Возвращает список людей, подписанных на площадку
+     * @param id идентификатор площадки
+     */
+    Set<UserDto> getSubscribersBySportGroundId(Long id);
+
+
+    /**
+     * Возвращает список мероприятий на площадке
+     * @param id идентификатор площадки
+     * @param page номер страницы
+     */
+    List<EventDto> getEventsBySportGroundId(Long id, Integer page);
+
+    /**
+     * Возвращает список инфраструктуры на площадке
+     * @param id идентификатор площадки
+     */
+    Set<String> getInfrastructuresBySportGroundId(Long id);
 }

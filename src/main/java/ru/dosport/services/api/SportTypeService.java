@@ -5,6 +5,7 @@ import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportType;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Сервис Видов спорта.
@@ -33,6 +34,14 @@ public interface SportTypeService {
      * @return dto вид спорта
      */
     SportType getSportTypeByTitle(String title);
+
+    /**
+     * Выдаёт видов спорта по списку названий
+     *
+     * @param titles название вида спорта
+     * @return dto вид спорта
+     */
+    Set<SportType> getAllSportTypesByTitle(Set<String> titles);
 
     /**
      * Добавляет вид спорта

@@ -1,8 +1,8 @@
 package ru.dosport.mappers;
 
 import org.mapstruct.*;
-import ru.dosport.dto.ReviewDto;
-import ru.dosport.entities.Review;
+import ru.dosport.dto.SportGroundReviewDto;
+import ru.dosport.entities.SportGroundReview;
 
 import java.util.List;
 
@@ -17,22 +17,13 @@ public interface ReviewMapper {
 
     @Mappings({
             @Mapping(target = "reviewId", source = "entity.id"),
-            @Mapping(target = "userId", source = "entity.user.id"),
-            @Mapping(target = "text", source = "entity.text"),
             @Mapping(target = "username", source = "entity.user.username"),
             @Mapping(target = "sportGroundId", source = "entity.sportGroundId"),
-            @Mapping(target = "date", source = "entity.date", dateFormat = LOCAL_DATE_PATTERN)
+            @Mapping(target = "date", source = "entity.date", dateFormat = LOCAL_DATE_PATTERN),
+            @Mapping(target = "text", source = "entity.text"),
     })
-    ReviewDto mapEntityToDto(Review entity);
+    SportGroundReviewDto mapEntityToDto(SportGroundReview entity);
 
-    List<ReviewDto> mapEntityToDto(List<Review> entities);
+    List<SportGroundReviewDto> mapEntityToDto(List<SportGroundReview> entities);
 
-    @Mappings({
-            @Mapping(target = "id", source = "dto.reviewId"),
-            @Mapping(target = "user", ignore = true),
-            @Mapping(target = "text", source = "dto.text"),
-            @Mapping(target = "sportGroundId", source = "dto.sportGroundId"),
-            @Mapping(target = "date", source = "dto.date", dateFormat = LOCAL_DATE_PATTERN)
-    })
-    Review mapDtoToEntity(ReviewDto dto);
 }

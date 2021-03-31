@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.dosport.entities.User;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
@@ -19,19 +22,21 @@ import static ru.dosport.helpers.Patterns.*;
  * Dto представление сущности Отзыв о площадке
  */
 @Data
+@Setter
+@Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel(description = "Dto представление сущности Отзыв о площадке")
-public class ReviewDto {
+public class SportGroundReviewDto {
 
     @NotNull(message = DATA_NOT_BLANK + "Индентификатор отзыва")
     @ApiModelProperty(notes = "Идентификатор отзыва",
             dataType = "Long", example = "1", required = true, position = 0)
     private Long reviewId;
 
-    @NotNull(message = DATA_NOT_BLANK + "Индентификатор пользователя")
-    @ApiModelProperty(notes = "Уникальный идентификатор пользователя",
-            dataType = "Long", example = "1", required = true, position = 1)
-    private Long userId;
+//    @NotNull(message = DATA_NOT_BLANK + "Индентификатор пользователя")
+//    @ApiModelProperty(notes = "Уникальный идентификатор пользователя",
+//            dataType = "Long", example = "1", required = true, position = 1)
+//    private User user;
 
     @Size(min = 2, max = 50)
     @NotBlank(message = DATA_NOT_BLANK + "Полное имя пользователя")

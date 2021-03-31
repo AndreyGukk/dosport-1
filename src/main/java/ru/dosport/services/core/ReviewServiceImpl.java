@@ -5,13 +5,16 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.dosport.dto.ReviewDto;
+import ru.dosport.dto.SportGroundReviewDto;
 import ru.dosport.dto.ReviewRequest;
-import ru.dosport.entities.Review;
+import ru.dosport.dto.UserDto;
+import ru.dosport.entities.SportGroundReview;
+import ru.dosport.entities.User;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.helpers.Roles;
 import ru.dosport.mappers.ReviewMapper;
+import ru.dosport.mappers.UserMapper;
 import ru.dosport.repositories.ReviewRepository;
 import ru.dosport.services.api.ReviewService;
 import ru.dosport.services.api.SportGroundService;
@@ -26,14 +29,14 @@ import static ru.dosport.helpers.InformationMessages.DATA_NOT_FOUND_BY_ID;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
-    // Необходимые сервисы, мапперы и репозитории
     private final ReviewRepository repository;
     private final ReviewMapper mapper;
     private final UserService userService;
     private final SportGroundService groundService;
+    private final UserMapper userMapper;
 
     @Override
-    public ReviewDto readReviewDtoById(Long reviewId, Long sportGroundId) {
+    public SportGroundReviewDto readReviewDtoById(Long reviewId, Long sportGroundId) {
         var review = findById(reviewId);
         if (!review.getSportGroundId().equals(sportGroundId)) {
             throw new DataBadRequestException("Спортивная площадка указана не корректно");
@@ -42,17 +45,16 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewDto> readAllReviewsDtoBySportGround(Long sportGroundId) {
+    public List<SportGroundReviewDto> readAllReviewsDtoBySportGround(Long sportGroundId) {
         return mapper.mapEntityToDto(repository.findAllBySportGroundId(sportGroundId));
     }
 
     @Transactional
     @Override
-    public ReviewDto saveReview(Long sportGroundId, ReviewRequest request, Authentication authentication) {
+    public SportGroundReviewDto saveReview(Long sportGroundId, ReviewRequest request, Authentication authentication) {
         if (groundService.exists(sportGroundId)) {
-            var user = userService.getByAuthentication(authentication);
-            var review = Review.builder()
-                    .user(user)
+            var review = SportGroundReview.builder()
+                    .user(userService.getByAuthentication(authentication))
                     .text(request.getText())
                     .sportGroundId(sportGroundId)
                     .date(LocalDate.now())
@@ -64,13 +66,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     @Override
-    public ReviewDto updateReview(Long reviewId, Long sportGroundId, ReviewRequest request, Authentication authentication) {
+    public SportGroundReviewDto updateReview(Long reviewId, Long sportGroundId, ReviewRequest request, Authentication authentication) {
         if (groundService.exists(sportGroundId) && repository.existsById(reviewId)) {
             if (isAuthorReview(reviewId, authentication)) {
                 var review = findById(reviewId);
-                var user = userService.getByAuthentication(authentication);
+                var user = userService.getDtoByAuthentication(authentication);
                 review.setText(request.getText());
-                review.setUser(user);
                 return mapper.mapEntityToDto(repository.save(review));
             }
         }
@@ -89,7 +90,7 @@ public class ReviewServiceImpl implements ReviewService {
         throw new DataNotFoundException("Отзыв не найлен");
     }
 
-    private Review findById(Long id) {
+    private SportGroundReview findById(Long id) {
         return repository.findById(id).orElseThrow(
                 () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
     }

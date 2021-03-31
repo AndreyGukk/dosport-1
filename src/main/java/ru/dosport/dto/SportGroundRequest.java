@@ -8,9 +8,10 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.Set;
 
 import static ru.dosport.helpers.InformationMessages.DATA_NOT_BLANK;
+import static ru.dosport.helpers.Patterns.*;
 
 /**
  * Запрос для регистрации новой Спортивной площадки
@@ -34,7 +35,7 @@ public class SportGroundRequest {
 
     @Size(max = 150)
     @NotEmpty(message = DATA_NOT_BLANK + "Название")
-    @ApiModelProperty(notes = "Название Площадки, до 255 символов",
+    @ApiModelProperty(notes = "Название Площадки, до 150 символов",
             dataType = "String", example = "Ледовый Дворец ЦСКА", required = true, position = 2)
     private String title;
 
@@ -62,15 +63,23 @@ public class SportGroundRequest {
     private Integer rentPrice;
 
     @ApiModelProperty(notes = "Является ли площадка открытой (расположена на улице)",
-            dataType = "boolean", example = "true", required = true, position = 8)
+            dataType = "Boolean", example = "true", required = true, position = 8)
     private Boolean opened;
 
     @ApiModelProperty(notes = "Список инфраструктуры площадки, варианты: Не выбрано, " +
             "Раздевалка, Парковка, Трибуны, Душ, Освещение, Камера хранения, Аренда оборудования",
-            dataType = "List<String>", position = 9)
-    private List<String> infrastructures;
+            dataType = "Set<String>", position = 9)
+    private Set<String> infrastructures;
 
-    @ApiModelProperty(notes = "Список видов спорта",
-            dataType = "List<SportTypeDto>", position = 10)
-    private List<SportTypeDto> sportTypes;
+    @ApiModelProperty(notes = "Список названий видов спорта",
+            dataType = "Set<String>", position = 10)
+    private Set<String> sportTypes;
+
+    @ApiModelProperty(notes = "Время открытия площадки в формате " + LOCAL_TIME_PATTERN,
+            dataType = "String", example = LOCAL_TIME_EXAMPLE_1, position = 11)
+    private String openingTime;
+
+    @ApiModelProperty(notes = "Время закрытия площадки в формате " + LOCAL_TIME_PATTERN,
+            dataType = "String", example = LOCAL_TIME_EXAMPLE_2, position = 12)
+    private String closingTime;
 }

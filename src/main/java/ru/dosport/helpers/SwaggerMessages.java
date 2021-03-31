@@ -54,7 +54,31 @@ public final class SwaggerMessages {
 
     // Спортивные площадки
     public static final String PAR_SPORTGROUND_ID = "Идентификатор спортивной площадки";
+    public static final String PAR_SPORTGROUND_CITY = "Город, в котором расположена площадка, до 100 символов";
+    public static final String PAR_SPORTGROUND_ADDRESS = "Адрес площадки, до 255 символов";
+    public static final String PAR_SPORTGROUND_NAME = "Название Площадки, до 150 символов";
+    public static final String PAR_SPORTGROUND_LATITUDE = "Широта";
+    public static final String PAR_SPORTGROUND_LATITUDE_MAX = "Максимальная широта зоны поиска";
+    public static final String PAR_SPORTGROUND_LATITUDE_MIN = "Минимальная широта зоны поиска";
+    public static final String  PAR_SPORTGROUND_LONGITUDE = "Долгота";
+    public static final String  PAR_SPORTGROUND_LONGITUDE_MAX = "Максимальная долгота зоны поиска";
+    public static final String  PAR_SPORTGROUND_LONGITUDE_MIN = "Минимальная долгота зоны поиска";
+    public static final String  PAR_SPORTGROUND_METRO = "Станция метро, варианты: Не выбрано";
+    public static final String  PAR_SPORTGROUND_SUBSCRIBERS = "Список подписчиков площадки";
+    public static final String  PAR_SPORTGROUND_REVIEWS = "Список отзывов о площадке";
+    public static final String  PAR_SPORTGROUND_EVENTS = "Список мероприятий на площадке";
+    public static final String  PAR_SPORTGROUND_OPENING_TIME = "Время начала работы площадки";
+    public static final String  PAR_SPORTGROUND_CLOSING_TIME = "Время окончания работы площадки";
+    public static final String  PAR_SPORTGROUND_INFRASTRUCTURES = "Список инфраструктуры площадки, варианты: Не выбрано, " +
+            "Раздевалка, Парковка, Трибуны, Душ, Освещение, Камера хранения, Аренда оборудования";
+    public static final String  PAR_SPORTGROUND_OPENED = "Является ли площадка открытой (расположена на улице)";
+    public static final String  PAR_SPORTGROUND_SURFACE = "Тип покрытия, варианты: Не выбрано, Грунт, Песок, Асфальт, Резина, " +
+            "Искуственный газон, Натуральный газон, Паркет, Лед, Хард, Маты, Бассейн";
     public static final String PAR_SPORTGROUND_DTO = "Данные спортивной площадки";
+
+    // Отзывы
+    public static final String  PAR_REVIEWS_ID = "Идентификатор отзыва";
+    public static final String PAR_REVIEWS_DTO = "Данные отзыва";
 
     public static final String PAR__ID = "";
 }
