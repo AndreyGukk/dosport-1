@@ -20,6 +20,8 @@ import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 import static ru.dosport.helpers.InformationMessages.*;
+import static ru.dosport.helpers.SwaggerMessages.PAR_USER_REQUEST;
+import static ru.dosport.helpers.SwaggerMessages.PAR_UUID;
 
 @Log4j2
 @CrossOrigin
@@ -63,16 +65,28 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping(value = "/register")
-    @ApiOperation(value = "Создает новый профиль пользователя")
+    @PostMapping(value = "/register/password")
+    @ApiOperation(value = "Создает новый профиль пользователя по никнейму и паролю")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
     })
-    public ResponseEntity<UserDto> createUser(
-            @ApiParam("Запрос для регистрации нового Пользователя") @Valid @RequestBody UserRequest userRequest
+    public ResponseEntity<UserDto> createUserByPassword(
+            @ApiParam(PAR_USER_REQUEST) @Valid @RequestBody UserPasswordRequest request
     ) {
-        return ResponseEntity.ok(userService.save(userRequest));
+        return ResponseEntity.ok(userService.save(request));
+    }
+
+    @PostMapping(value = "/register/email")
+    @ApiOperation(value = "Создает новый профиль пользователя по никнейму и адресу электронной почты")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
+            @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class)
+    })
+    public ResponseEntity<String> createUserByEmail(
+            @ApiParam(PAR_USER_REQUEST) @Valid @RequestBody UserEmailRequest request
+    ) {
+        return ResponseEntity.ok(userService.save(request));
     }
 
     @PostMapping(value = "/activate/{activationCode}")
@@ -83,8 +97,11 @@ public class AuthenticationController {
             @ApiResponse(code = 404, message = DATA_NOT_FOUND, response = ErrorDto.class)
     })
     public ResponseEntity<?> activateUser(
-            @ApiParam("Код активации") @PathVariable String activationCode
+            @ApiParam(PAR_UUID) @PathVariable String activationCode
     ) {
-        return ResponseEntity.ok(userService.activateUser(activationCode));
+        JwtUser user = userService.activateUser(activationCode);
+        String token = jwtTokenProvider.createToken(user.getUsername(), user.getId(),
+                user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        return ResponseEntity.ok(new AuthenticationDto(token));
     }
 }

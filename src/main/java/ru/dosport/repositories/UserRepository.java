@@ -32,6 +32,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
     /**
+     * Найти пользователя по его UUID
+     */
+    Optional<User> findByUuid(String uuid);
+
+    /**
      * Найти список пользователей, которые добавили пользователя в друзья
      */
     @Query (value = "SELECT * FROM users u JOIN user_subscriptions us " +

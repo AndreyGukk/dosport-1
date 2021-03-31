@@ -3,8 +3,8 @@ package ru.dosport.mappers;
 import org.mapstruct.*;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
-import ru.dosport.security.JwtUser;
 import ru.dosport.entities.User;
+import ru.dosport.security.JwtUser;
 
 import java.util.List;
 import java.util.Set;

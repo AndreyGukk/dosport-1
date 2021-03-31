@@ -24,6 +24,7 @@ public final class InformationMessages {
     public static final String JWT_TOKEN_NOT_VALID = "Токен авторизации неверный либо истек его срок";
     public static final String BAD_CREDENTIALS = "Введен неверный логин или пароль";
     public static final String OLD_PASSWORD_INVALID = "Текущий пароль введен неверно";
+    public static final String BAD_ACTIVATION_CODE = "Введен неверный код активации";
 
     /**
      * Иные сообщения об ошибках логики и полей запросов
@@ -32,13 +33,14 @@ public final class InformationMessages {
     public static final String BAD_REQUEST = "Запрос содержит ошибочные данные";
     public static final String WRONG_PATH = "Неверный путь запроса";
     public static final String INVALID_VALUE = "Значение поля %s неверное: %s";
-    public static final String INVALID_USERNAME_LENGTH = "Поле Никнейм должно содержать от 4 до 50 символов";
+    public static final String INVALID_USERNAME_LENGTH = "Никнейм должен содержать от 4 до 50 символов";
     public static final String DATA_NOT_BLANK = "Должно быть не пустым поле ";
     public static final String NUMBER_MUST_BE_POSITIVE = "Должно быть положительным значение поля ";
     public static final String PASSWORDS_MISMATCH = "Значения полей Пароль и Подтверждение пароля должны совпадать";
-    public static final String INVALID_PASSWORD_LENGTH = "Поле Пароль должно содержать от 6 до 25 символов";
+    public static final String INVALID_PASSWORD_LENGTH = "Пароль должен содержать от 6 до 25 символов";
+    public static final String INVALID_EMAIL_LENGTH = "Адрес электронной почты должен содержать от 6 до 25 символов";
     public static final String INVALID_PASSWORD_CONFIRM_LENGTH =
-            "Поле Подтверждение пароля должно содержать от 6 до 25 символов";
+            "Подтверждение пароля должно содержать от 6 до 25 символов";
     public static final String USER_SPORT_NOT_FOUND_BY_USER_AND_SPORT_TYPE =
             "Вид спорта c индексом %s для пользователя c индексом %s не найден";
     public static final String DATA_NOT_FOUND_BY_ID = "Данные c индексом %s не найдены";

@@ -1,9 +1,7 @@
 package ru.dosport.services.api;
 
 import org.springframework.security.core.Authentication;
-import ru.dosport.dto.PasswordRequest;
-import ru.dosport.dto.UserDto;
-import ru.dosport.dto.UserRequest;
+import ru.dosport.dto.*;
 import ru.dosport.entities.User;
 import ru.dosport.security.JwtUser;
 
@@ -78,12 +76,20 @@ public interface UserService {
     Long getIdByAuthentication(Authentication authentication);
 
     /**
-     * Создать нового пользователя
+     * Создать нового пользователя по никнейму и паролю
      *
      * @param userRequest запрос с данными пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    UserDto save(UserRequest userRequest);
+    UserDto save(UserPasswordRequest userRequest);
+
+    /**
+     * Создать нового пользователя по никнейму и адресу электронной почты
+     *
+     * @param userRequest запрос с данными пользователя
+     * @return код для валидации нового пользователя
+     */
+    String save(UserEmailRequest userRequest);
 
     /**
      * Сохранить данные пользователя
@@ -124,7 +130,7 @@ public interface UserService {
      * @param activationCode значение строки запроса валидации
      * @return значение активен ли пользователь
      */
-    String activateUser(String activationCode);
+    JwtUser activateUser(String activationCode);
 
     /*
      * Методы относящиеся к подпискам и подписчикам пользователя

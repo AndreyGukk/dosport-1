@@ -12,9 +12,12 @@ public final class SwaggerMessages {
     // Пользователи
     public static final String PAR_PAGE_NUMBER = "Номер страницы результатов поиска. По умолчанию - 0";
     public static final String PAR_USER_DTO = "Данные профиля пользователя";
+    public static final String PAR_USER_REQUEST = "Запрос для регистрации нового Пользователя";
     public static final String PAR_USER_ID = "Идентификатор пользователя";
     public static final String PAR_USERNAME = "Никнейм пользователя";
     public static final String PAR_USER_PHOTO = "Ссылка на файл фото";
+    public static final String PAR_EMAIL = "Адрес электронной почты";
+    public static final String PAR_UUID = "Уникальный идентификатор UUID";
 
     // Мероприятия
     public static final String PAR_EVENT_DTO = "Данные мероприятия";

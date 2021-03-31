@@ -57,6 +57,14 @@ public class User {
     @Column(name = "photo_link", length = 150)
     private String photoLink;
 
+    // Адрес электронной почты
+    @Column(name = "email", length = 100)
+    private String email;
+
+    // UUID
+    @Column(name = "uuid", length = 100)
+    private String uuid;
+
     // Список ролей
     @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_authorities",

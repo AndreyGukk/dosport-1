@@ -20,4 +20,7 @@ public class Patterns {
     public static final String EVENT_SORT_BY_DATE = "creationDateTime";
     public static final int PAGE_SIZE = 15;
 
+    public static final String MY_EMAIL = "yourEmail@gmail.com";
+    public static final String MY_PASSWORD = "yourPass";
+    public static final String FRIEND_EMAIL = "yourFriend@gmail.com";
 }
