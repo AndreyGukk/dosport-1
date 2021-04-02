@@ -9,10 +9,11 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-import ru.dosport.chat.models.ChatMessage;
+import ru.dosport.chat.entities.ChatMessage;
+import ru.dosport.chat.enums.MessageType;
 
 /**
- * Created by rajeevkumarsingh on 25/07/17.
+ * Слушатель событий вебсокетов
  */
 @Component
 public class WebSocketEventListener {
@@ -36,7 +37,7 @@ public class WebSocketEventListener {
             logger.info("User Disconnected : " + username);
 
             ChatMessage chatMessage = new ChatMessage();
-            chatMessage.setType(ChatMessage.MessageType.LEAVE);
+            chatMessage.setType(MessageType.LEAVE);
             chatMessage.setSender(username);
 
             messagingTemplate.convertAndSend("/topic/public", chatMessage);

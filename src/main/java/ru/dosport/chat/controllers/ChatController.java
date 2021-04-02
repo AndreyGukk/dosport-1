@@ -5,10 +5,10 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import ru.dosport.chat.models.ChatMessage;
+import ru.dosport.chat.entities.ChatMessage;
 
 /**
- * Created by rajeevkumarsingh on 24/07/17.
+ * Контроллер чата
  */
 @Controller
 public class ChatController {
