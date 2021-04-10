@@ -39,8 +39,8 @@ public class EventDto {
     private String endDateTime;
 
     @ApiModelProperty(notes = PAR_SPORT_TYPE_DTO,
-            dataType = "SportTypeDto", required = true, position = 3)
-    private SportTypeDto sportType;
+            dataType = "String", required = true, position = 3)
+    private String sportType;
 
     @ApiModelProperty(notes = PAR_SPORTGROUND_ID,
             dataType = "Long", example = "1", required = true, position = 4)

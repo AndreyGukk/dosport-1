@@ -71,7 +71,7 @@ public class SportGroundDto {
 
     @ApiModelProperty(notes = PAR_SPORT_TYPE_LIST,
             dataType = "Set<SportTypeDto>",  position = 11)
-    private Set<SportTypeDto> sportTypes;
+    private Set<String> sportTypes;
 
     @ApiModelProperty(notes = PAR_SPORTGROUND_SUBSCRIBERS,
             dataType = "Set<UserDto>",  position = 12)

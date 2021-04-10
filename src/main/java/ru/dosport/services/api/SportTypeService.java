@@ -1,10 +1,8 @@
 package ru.dosport.services.api;
 
 import org.springframework.security.core.Authentication;
-import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportType;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,20 +10,20 @@ import java.util.Set;
  */
 public interface SportTypeService {
 
-    /**
-     * Выдаёт вид спорта по его id
-     *
-     * @param id вида спорта
-     * @return dto вид спорта
-     */
-    SportTypeDto getSportTypeDtoById(Short id);
+//    /**
+//     * Выдаёт вид спорта по его id
+//     *
+//     * @param id вида спорта
+//     * @return dto вид спорта
+//     */
+//    SportTypeDto getSportTypeDtoById(Short id);
 
     /**
      * Выдает список всех видов спорта
      *
      * @return список видов спорта
      */
-    List<SportTypeDto> getAllSportTypeDto();
+    Set<String> getAllSportType();
 
     /**
      * Выдаёт вид спорта по его названию
@@ -49,24 +47,15 @@ public interface SportTypeService {
      * @param sportTitle название нового вида спорта на добавление
      * @return вид спорта, сохраненный в репозитории
      */
-    SportTypeDto addSportByAuthentication(String sportTitle);
+    Boolean addSportType(String sportTitle);
 
     /**
      * Удаляет вид спорта по id
      *
-     * @param id запрос на добавление вида спорта
+     * @param title наименование вида спорта
      * @return вид спорта, сохраненный в репозитории
      */
-    Boolean deleteById(Short id);
-
-    /**
-     * Обновляет данные вида спорта
-     *
-     * @param id индентификатор вида спорта
-     * @param tittle название вида спорта
-     * @return dto вида спорта
-     */
-    SportTypeDto update(Short id, String tittle);
+    Boolean deleteByTitle(String title);
 
     /*
      * Методы, относящиеся к предпочитаемым видам спорта пользователя
@@ -78,31 +67,23 @@ public interface SportTypeService {
      * @param authentication данные авторизации
      * @return список пользователей
      */
-    List<SportTypeDto> getAllSportDtoByAuthentication(Authentication authentication);
-
-    /**
-     * Изменяет список предпочитаемых видов спорта пользователя
-     *
-     * @param authentication данные авторизации
-     * @return список видов спорта,сохраненный в репозитории
-     */
-    List<SportTypeDto> updateSportsByAuthentication(List<SportTypeDto> dtoList, Authentication authentication);
+    Set<String> getAllSportTypeByAuthentication(Authentication authentication);
 
     /**
      * Добавляет вид спорта пользователя в список предпочитаемых видов спорта пользователя
      *
-     * @param sportTypeId идентификатор вида спорта
+     * @param sportTypeTitle название вида спорта
      * @param authentication данные авторизации
      * @return список предпочитаемых видов спорта
      */
-    boolean addSportByAuthentication(Short sportTypeId, Authentication authentication);
+    boolean addSportTypeToFavorite(String  sportTypeTitle, Authentication authentication);
 
     /**
      * Удаляет вид спорта из списка предпочитаемых видов спорта пользователя
      *
-     * @param sportTypeId идентификатор вида спорта
+     * @param sportTypeTitle идентификатор вида спорта
      * @param authentication данные авторизации
      * @return список предпочитаемых видов спорта
      */
-    boolean deleteSportByAuthentication(Short sportTypeId, Authentication authentication);
+    boolean deleteSportByAuthentication(String sportTypeTitle, Authentication authentication);
 }

@@ -30,11 +30,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Найти пользователя по его логину
      */
     Optional<User> findByUsername(String username);
-
-    /**
-     * Найти список пользователей, которые добавили пользователя в друзья
-     */
-    @Query (value = "SELECT * FROM users u JOIN user_subscriptions us " +
-            "ON u.id = us.user_id WHERE us.subscription_id = ?1", nativeQuery = true)
-    List<User> findSubscribersByUserId(long userId);
 }

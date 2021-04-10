@@ -3,7 +3,6 @@ package ru.dosport.services.core;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportType;
 import ru.dosport.entities.User;
 import ru.dosport.exceptions.DataNotFoundException;
@@ -13,11 +12,9 @@ import ru.dosport.services.api.SportTypeService;
 import ru.dosport.services.api.UserService;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
-import static ru.dosport.helpers.InformationMessages.DATA_NOT_FOUND_BY_ID;
+import static ru.dosport.helpers.InformationMessages.DATA_NOT_FOUND_BY_TITLE;
 
 /**
  * Реализация сервиса Видов спорта.
@@ -31,20 +28,16 @@ public class SportTypeServiceImpl implements SportTypeService {
     private final SportTypeRepository repository;
     private final UserService userService;
 
-    @Override
-    public SportTypeDto getSportTypeDtoById(Short id) {
-        return sportTypeMapper.mapEntityToDto(findSportById(id));
-    }
 
     @Override
-    public List<SportTypeDto> getAllSportTypeDto() {
-        return sportTypeMapper.mapEntityToDto(repository.findAll());
+    public Set<String> getAllSportType() {
+        return sportTypeMapper.mapEntityToString(repository.findAll());
     }
 
     @Override
     public SportType getSportTypeByTitle(String title) {
         return repository.findByTitle(title).orElseThrow(
-                () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, title)));
+                () -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_TITLE, title)));
     }
 
     @Override
@@ -54,24 +47,18 @@ public class SportTypeServiceImpl implements SportTypeService {
 
     @Transactional
     @Override
-    public SportTypeDto addSportByAuthentication(String sportTitle) {
-        Optional<SportType> sport = repository.findByTitle(sportTitle);
-        return sport.isPresent() ?
-                sportTypeMapper.mapEntityToDto(sport.get()) :
-                sportTypeMapper.mapEntityToDto(repository.save(new SportType(sportTitle)));
+    public Boolean addSportType(String sportTitle) {
+        if (!repository.existsByTitle(sportTitle)) {
+            repository.save(new SportType(sportTitle));
+        }
+        return true;
     }
 
+    @Transactional
     @Override
-    public Boolean deleteById(Short id) {
-        repository.deleteById(id);
-        return repository.existsById(id);
-    }
-
-    @Override
-    public SportTypeDto update(Short id, String tittle) {
-        SportType sportType = findSportById(id);
-        sportType.setTitle(tittle);
-        return sportTypeMapper.mapEntityToDto(repository.save(sportType));
+    public Boolean deleteByTitle(String sportTitle) {
+        repository.deleteByTitle(sportTitle);
+        return repository.existsByTitle(sportTitle);
     }
 
     /*
@@ -79,42 +66,30 @@ public class SportTypeServiceImpl implements SportTypeService {
      */
 
     @Override
-    public List<SportTypeDto> getAllSportDtoByAuthentication(Authentication authentication) {
-        return sportTypeMapper.mapEntityToDto(findUserByAuthentication(authentication).getSports());
-    }
-
-    @Override
-    public List<SportTypeDto> updateSportsByAuthentication(List<SportTypeDto> dtoList, Authentication authentication) {
-        List<SportType> sportTypeList = repository.findAllById(sportTypeMapper.mapDtoToShort(dtoList));
-        User user = findUserByAuthentication(authentication);
-        user.getSports().addAll(sportTypeList);
-        return sportTypeMapper.mapEntityToDto(userService.save(user).getSports());
+    public Set<String> getAllSportTypeByAuthentication(Authentication authentication) {
+        return sportTypeMapper.mapEntityToString(findUserByAuthentication(authentication).getSports());
     }
 
     @Transactional
     @Override
-    public boolean addSportByAuthentication(Short sportTypeId, Authentication authentication) {
+    public boolean addSportTypeToFavorite(String sportTypeTitle, Authentication authentication) {
+        SportType sportType = getSportTypeByTitle(sportTypeTitle);
         User user = findUserByAuthentication(authentication);
-        SportType sportType = findSportById(sportTypeId);
-        user.getSports().add(sportType);
-        return userService.save(user).getSports().contains(sportType);
+        if (user.getSports().add(sportType)) {
+            return userService.save(user).getSports().contains(sportType);
+        }
+        return true;
     }
 
     @Transactional
     @Override
-    public boolean deleteSportByAuthentication(Short sportTypeId, Authentication authentication) {
+    public boolean deleteSportByAuthentication(String sportTypeTitle, Authentication authentication) {
+        SportType sportType = getSportTypeByTitle(sportTypeTitle);
         User user = findUserByAuthentication(authentication);
-        SportType sportType = findSportById(sportTypeId);
-        user.getSports().remove(sportType);
-        return !userService.save(user).getSports().contains(sportType);
-    }
-
-    /**
-     * Найти вид спорта по идентификатору
-     */
-    private SportType findSportById(Short id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException(String.format(DATA_NOT_FOUND_BY_ID, id)));
+        if (user.getSports().remove(sportType)) {
+            return !userService.save(user).getSports().contains(sportType);
+        }
+        return true;
     }
 
     /**

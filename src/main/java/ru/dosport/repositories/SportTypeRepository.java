@@ -12,5 +12,9 @@ public interface SportTypeRepository extends JpaRepository<SportType, Short> {
 
     Optional<SportType> findByTitle(String title);
 
+    void deleteByTitle(String title);
+
+    boolean existsByTitle(String title);
+
     Set<SportType> findAllByTitleIn(Set<String> titles);
 }

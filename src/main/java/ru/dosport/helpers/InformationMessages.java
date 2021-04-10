@@ -61,4 +61,5 @@ public final class InformationMessages {
     // Отсутствие данных по индексу
     public static final String EVENT_NOT_FOUND_BY_ID = "Мероприятие c индексом %s не найдено";
     public static final String MESSAGE_NOT_FOUND_BY_ID = "Сообщение c индексом %s не найдено";
+    public static final String DATA_NOT_FOUND_BY_TITLE = "Данные c названием вида спорта %s не найдены";
 }

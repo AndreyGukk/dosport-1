@@ -99,8 +99,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userMapper.mapEntityToDto(userRepository.save(user));
     }
 
-
-
     @Override
     public boolean updatePassword(PasswordRequest passwordRequest,
                                   Authentication authentication) {
@@ -133,8 +131,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<UserDto> getSubscribersByAuthentication(Authentication authentication) {
-        List<User> users = userRepository.findSubscribersByUserId(getUserId(authentication));
-        return userMapper.mapEntityToDto(users);
+        User user = findById(getUserId(authentication));
+        return userMapper.mapEntityToDto(user.getSubscribers());
     }
 
     /*
@@ -193,7 +191,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      * Получить id пользователя по данным аутентификации
      */
     private Long getUserId(Authentication authentication) {
-        if (authentication==null) {
+        if (authentication == null) {
             throw new DataNotFoundException(ACCESS_DENIED);
         }
         return ((JwtUser) authentication.getPrincipal()).getId();

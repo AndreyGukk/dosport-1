@@ -4,9 +4,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
-import ru.dosport.dto.SportTypeDto;
 import ru.dosport.entities.SportType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,25 +16,11 @@ import java.util.Set;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {})
 public interface SportTypeMapper {
 
-    @Mappings({
-            @Mapping(target = "sportTypeId", source = "entity.id"),
-    })
-    SportTypeDto mapEntityToDto(SportType entity);
-
-    List<SportTypeDto> mapEntityToDto(List<SportType> entities);
-
-    List<SportTypeDto> mapEntityToDto(Set<SportType> entities);
-
-    @Mappings({
-            @Mapping(target = "id", source = "dto.sportTypeId"),
-    })
-    SportType mapDtoToEntity(SportTypeDto dto);
-
-    List<SportType> mapDtoToEntity(List<SportTypeDto> dtos);
-
-    default Short mapDtoToShort(SportTypeDto dto) {
-        return dto.getSportTypeId();
+    default String mapEntityToString(SportType sportType){
+        return sportType.getTitle();
     }
 
-    List<Short> mapDtoToShort(List<SportTypeDto> entities);
+    Set<String> mapEntityToString(List<SportType>entities);
+
+    Set<String> mapEntityToString(Set<SportType>entities);
 }
