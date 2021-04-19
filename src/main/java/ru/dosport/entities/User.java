@@ -3,9 +3,11 @@ package ru.dosport.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.dosport.enums.AuthorityType;
 import ru.dosport.enums.Gender;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,6 +42,27 @@ public class User {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
+    // Ключ активации пользователя
+    @Column(name = "activation_code")
+    private String activationCode;
+
+    // Наименивание соцсети зарегистрированного пользователя
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "authority_type")
+    private AuthorityType authorityType;
+
+    // Идентификатор пользователя в соц. сети
+    @Column(name = "social_id")
+    private String socialId;
+
+    // Список ролей
+    @ManyToMany(fetch = EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "user_authorities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    private Set<Authority> authorities = new HashSet<>();
+
     // Дата рождения
     @Column(name = "birthday_date")
     private LocalDate birthdayDate;
@@ -56,13 +79,6 @@ public class User {
     // Ссылка на адрес фотографии
     @Column(name = "photo_link", length = 150)
     private String photoLink;
-
-    // Список ролей
-    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_authorities",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private Set<Authority> authorities = new HashSet<>();
 
     // Список подписок - пользователей, на которых подписался данный пользователь
     @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)

@@ -1,6 +1,7 @@
 package ru.dosport.security;
 
 import io.jsonwebtoken.*;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import ru.dosport.services.api.UserService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -18,18 +20,18 @@ import java.util.List;
 /**
  * Утилитный класс провайдера JWT токенов, генерирующий и валидирующий JWT токены.
  */
+@Log4j2
 @Component
 public class JwtTokenProvider {
 
-    @Value("lknjdlkgnfdkjngjkrdnjkgdj")
+    @Value("${app.auth.tokenSecret}")
     private String secret;
 
-    // Токен действителен 10 дней
-    @Value("864000000")
-    private long validityInMilliseconds;
+    @Value("${app.auth.tokenExpirationMsec}")
+    private Long tokenExpirationMsec;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserService userService;
 
     @PostConstruct
     protected void init() {
@@ -43,7 +45,7 @@ public class JwtTokenProvider {
         claims.put("roles", roles);
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        Date validity = new Date(now.getTime() + tokenExpirationMsec);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -54,7 +56,8 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
+
+        UserDetails userDetails = userService.getJwtByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

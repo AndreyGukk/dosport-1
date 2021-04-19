@@ -9,7 +9,7 @@ CREATE TABLE users
     birthday_date   TIMESTAMP,
     gender          SMALLINT,
     info            VARCHAR(150),
-    photo_link      VARCHAR(150),
+    photo_link      VARCHAR(255),
     PRIMARY KEY (id),
     CONSTRAINT valid_gender CHECK (gender >= 0 AND gender <= 2)
 );

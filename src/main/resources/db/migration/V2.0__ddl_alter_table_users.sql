@@ -1,0 +1,6 @@
+ALTER TABLE users
+ADD COLUMN activation_code VARCHAR (255);
+ALTER TABLE users
+ADD COLUMN authority_type VARCHAR (255);
+ALTER TABLE users
+ADD COLUMN social_id VARCHAR (255);

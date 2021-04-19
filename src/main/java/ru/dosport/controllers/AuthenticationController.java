@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.dosport.dto.*;
@@ -45,14 +47,15 @@ public class AuthenticationController {
     ) {
         try {
             String username = requestDto.getUsername();
-            authenticationManager.authenticate(
+
+            Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             JwtUser user = userService.getJwtByUsername(username);
             if (user == null) {
                 throw new UsernameNotFoundException(String.format(USER_NOT_FOUND_BY_USERNAME, username));
             }
             log.debug(String.format(USER_WAS_FOUND, username));
-
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtTokenProvider.createToken(username, user.getId(),
                     user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
@@ -76,7 +79,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/activate/{activationCode}")
-    @ApiOperation(value = "Активирует пользователя с помощью кода активации")
+    @ApiOperation(value = "Активирует профиль пользователя с помощью кода активации")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SUCCESSFUL_REQUEST),
             @ApiResponse(code = 400, message = BAD_REQUEST, response = ErrorDto.class),
@@ -85,6 +88,6 @@ public class AuthenticationController {
     public ResponseEntity<?> activateUser(
             @ApiParam("Код активации") @PathVariable String activationCode
     ) {
-        return ResponseEntity.ok(userService.activateUser(activationCode));
+        return ResponseEntity.ok(userService.activate(activationCode));
     }
 }

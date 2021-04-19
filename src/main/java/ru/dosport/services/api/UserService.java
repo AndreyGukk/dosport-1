@@ -124,7 +124,7 @@ public interface UserService {
      * @param activationCode значение строки запроса валидации
      * @return значение активен ли пользователь
      */
-    String activateUser(String activationCode);
+    String activate(String activationCode);
 
     /*
      * Методы относящиеся к подпискам и подписчикам пользователя

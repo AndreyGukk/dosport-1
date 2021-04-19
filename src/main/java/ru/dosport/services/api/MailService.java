@@ -8,7 +8,9 @@ public interface MailService {
     /**
      * Отправляет почтовое сообщение по адресу почты
      *
-     * @param email адрес почты
+     * @param emailTo адрес почты
+     * @param subject тема письма
+     * @param message тело письма
      */
-    void sendEmail(String email);
+    void sendEmail(String emailTo, String subject, String message);
 }

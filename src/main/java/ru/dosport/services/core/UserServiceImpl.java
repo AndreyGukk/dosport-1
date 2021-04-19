@@ -1,28 +1,33 @@
 package ru.dosport.services.core;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dosport.dto.PasswordRequest;
 import ru.dosport.dto.UserDto;
 import ru.dosport.dto.UserRequest;
 import ru.dosport.entities.Authority;
-import ru.dosport.entities.User;
+import ru.dosport.enums.AuthorityType;
 import ru.dosport.enums.Gender;
+import ru.dosport.entities.User;
 import ru.dosport.exceptions.DataBadRequestException;
 import ru.dosport.exceptions.DataNotFoundException;
 import ru.dosport.mappers.UserMapper;
 import ru.dosport.repositories.AuthorityRepository;
 import ru.dosport.repositories.UserRepository;
 import ru.dosport.security.JwtUser;
+import ru.dosport.services.api.MailService;
 import ru.dosport.services.api.UserService;
 
 import java.util.List;
+import java.util.UUID;
 
 import static ru.dosport.helpers.InformationMessages.*;
 import static ru.dosport.helpers.Roles.ROLE_USER;
@@ -35,10 +40,14 @@ import static ru.dosport.helpers.Roles.ROLE_USER;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     // Необходимые сервисы, мапперы и репозитории
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
+    private final MailService mailService;
+
+    @Value("${app.user.activation_url}")
+    private String activationUrl;
 
     @Override
     public UserDto getDtoById(Long id) {
@@ -82,10 +91,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         User newUser = userMapper.mapDtoToEntity(userRequest);
         newUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        newUser.setActivationCode(UUID.randomUUID().toString());
         newUser.setGender(Gender.NOT_SELECTED);
         Authority authority = authorityRepository.findByAuthority(ROLE_USER);
         newUser.getAuthorities().add(authority);
-        return userMapper.mapEntityToDto(userRepository.save(newUser));
+        newUser.setAuthorityType(AuthorityType.REGULAR);
+        userRepository.save(newUser);
+        sendEmail(newUser);
+        return userMapper.mapEntityToDto(newUser);
+    }
+
+    @Override
+    public String activate(String activationCode) {
+        User activatedUser = findByActivationCode(activationCode);
+        activatedUser.setActivationCode(null);
+        activatedUser.setEnabled(true);
+        userRepository.save(activatedUser);
+        return VALID_ACTIVATION_CODE;
     }
 
     @Override
@@ -121,12 +143,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Long id = getUserId(authentication);
         userRepository.deleteById(id);
         return !userRepository.existsById(id);
-    }
-
-    @Transactional
-    @Override
-    public String activateUser(String activationCode) {
-        return USER_WAS_ACTIVATED;
     }
 
     @Override
@@ -180,6 +196,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     /**
+     * Найти пользователя по activationCode
+     */
+    private User findByActivationCode(String activationCode) {
+        return userRepository.findByActivationCode(activationCode).orElseThrow(
+                () -> new DataNotFoundException(INVALID_ACTIVATION_CODE));
+    }
+
+    /**
      * Найти пользователя по username
      */
     private User findByUsername(String username) {
@@ -195,5 +219,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new DataNotFoundException(ACCESS_DENIED);
         }
         return ((JwtUser) authentication.getPrincipal()).getId();
+    }
+
+    /**
+     * Отправить код активации пользователю
+     */
+    private void sendEmail(User user) {
+        String username = user.getUsername();
+        mailService.sendEmail(
+                    username,
+                    ACTIVATION_CODE,
+                    String.format(
+                            USER_ACTIVATION_CODE,
+                            username,
+                            activationUrl,
+                            user.getActivationCode()
+                    )
+            );
     }
 }

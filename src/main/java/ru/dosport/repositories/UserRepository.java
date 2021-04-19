@@ -30,4 +30,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Найти пользователя по его логину
      */
     Optional<User> findByUsername(String username);
+
+    /**
+     * Найти пользователя по коду активации
+     */
+    Optional<User> findByActivationCode(String code);
 }
